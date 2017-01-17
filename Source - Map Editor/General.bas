@@ -1,1275 +1,1007 @@
 Attribute VB_Name = "General"
-'*****************************************************************
-'ORE 1.0 Map Editor - v0.7.0
+'Argentum Online 0.9.0.2
+'Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'*****************************************************************
-'Respective portions copyrighted by contributors listed below.
+'This program is free software; you can redistribute it and/or modify
+'it under the terms of the GNU General Public License as published by
+'the Free Software Foundation; either version 2 of the License, or
+'any later version.
 '
-'This library is free software; you can redistribute it and/or
-'modify it under the terms of the GNU Lesser General Public
-'License as published by the Free Software Foundation version 2.1 of
-'the License
-'
-'This library is distributed in the hope that it will be useful,
+'This program is distributed in the hope that it will be useful,
 'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-'Lesser General Public License for more details.
+'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU Lesser General Public
-'License along with this library; if not, write to the Free Software
+'You should have received a copy of the GNU General Public License
+'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'*****************************************************************
-
-'*****************************************************************
-'Contributors History
-'   When releasing modifications to this source file please add your
-'   date of release, name, email, and any info to the top of this list.
-'   Follow this template:
-'    XX/XX/200X - Your Name Here (Your Email Here)
-'       - Your Description Here
-'       Sub Release Contributors:
-'           XX/XX/2003 - Sub Contributor Name Here (SC Email Here)
-'               - SC Description Here
-'*****************************************************************
 '
-' 10/12/2004 - Juan Martín Sotuyo Dodero (juansotuyo@hotmailcom)
-'   -Add: Map Editor now can use resource files
-'   -Add: a few extra controls
-'   -Fix: some minor bugs
-'       David Justus (big.david@txun.net)
-'          - Add: Minimap
-'       Fredrik Alexandersson (fredrik_alexandersson@hotmail.com)
-'           - Add: frmNewNPC and frmNewItem (still not functional)
-'
-' 2/15/2004 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   -Change: GUI was changed a bit
-'   -Fix: several bugs
-'
-' 12/9/2003 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   -Add: controls for decorations
-'   -Add: Map Go To.. And Map Resize controls
-'   -Add: Speed and Life to particle groups
-'   -Change: Tile Groups.dat uses the new script system
-'   -Change: Tile Groups GUI a bit.
-'   -Change: There are 3 layers now, and a decorative layer which can be rendered at 2 different levels
-'   -Change: Grhs can be aligned either vertically, horizontally or both
-'   -Change: FireStarter's scripting system to allow unlimited numbers of nested nodes
-'   -Fix: Several bugs in the Particle Editor
-'   Sub Release Contributors:
-'       12/2/2003 - Murat Sütunç (Firestarter)
-'           -Add: Scripting system for grh script.dat
-'
-' 11/16/2003 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   -Add: the view pos is reset after loading / creating a map
-'   -Change: Center Grh option alligns both vertically and horizontally
-'
-' 10/28/2003 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   -Add: Tile Groups now has a grid
-'   -Add: the ability to center or not Grhs on layers 2-4.
-'   -Add: Undo - Redo buttons to the toolbar.
-'   -Add: Tile Groups (works as old Grh Groups, but only takes grhs the same size the tiles are).
-'   -Change: Tile Groups GUI a bit.
-'   -Change: map scroll now uses the keyboard. Now keys are A, S, D and W (combine them to get diagonals).
-'   -Change: Grh Groups. Now grhs can be different sizes. Nevertheless, only 1 grh can be displayed at a time.
-'   -Fix: Lists can now be scrolled using the arrow keys with no problem.
-'
-' 8/28/2003 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   -Add: undo - redo
-'   -Change: the way to select Light/shadow/base_lights
-'   -Change: the way to select either to erase 1 or all layers
-'   -Change: Adjacent map now allows to set no map in any side
-'   -Fix: several minor bugs
-'
-' 7/4/2003 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   -Add: Included the Particle Editor itself.
-'   -Change: Exits can now lead to the same map without having to save and restart the Map Editor.
-'   -Change: the GUI a little bit.
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
 '
 '
-' 6/27/2003 - Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'   First Release
+'You can contact me at:
+'morgolock@speedy.com.ar
+'www.geocities.com/gmorgolock
+'Calle 3 número 983 piso 7 dto A
+'La Plata - Pcia, Buenos Aires - Republica Argentina
+'Código Postal 1900
+'Pablo Ignacio Márquez
 
 Option Explicit
 
-Sub Main()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 10/12/2004
-'Main
-'*************************************************
-    frmLoading.Show
-    
-    'Init user-defined stuff
-    Load_User_Defined_Data
-    
-    'Are we using resource files?
-    If use_resource_files Then
-        'Load graphic resources
-        Extract_Files grh, resource_path, Nothing, Nothing, frmLoading.LoadingLbl
-    End If
-    
-    'Start up Engine
-    frmLoading.LoadingLbl.Caption = "Initializing Engine..."
-    'windowed
-    prgRun = Engine.Engine_Initialize(frmMain.hwnd, frmMain.MainView.hwnd, 1, resource_path, , , , , 17, 13, tile_size, use_resource_files)
-    
-    Engine.Engine_Base_Speed_Set base_speed
-    Engine.Engine_View_Pos_Set 5, 5
-    Engine.Engine_Special_Tiles_Show_Toggle
-    Engine.Engine_Blocked_Tiles_Show_Toggle
-    
-    'Initialize the Light_Color (white)
-    Light_Color = &HFFFFFF
-    
-    'Load .dat and .ini files
-    frmLoading.LoadingLbl.Caption = "Loading items..."
-    Load_Items_Data frmMain.OBJList
-    
-    frmLoading.LoadingLbl.Caption = "Loading NPCs..."
-    Load_NPC_Data frmMain.NPCList
-    
-    frmLoading.LoadingLbl.Caption = "Loading Grh Script..."
-    Load_Grh_Tree frmMain.tree, App.Path & "\Grh Script.dat"
-    
-    'Load Tile tree
-    frmLoading.LoadingLbl.Caption = "Loading Tile Script..."
-    Load_Grh_Tree frmTileGroups.tree, App.Path & "\Tile Script.dat"
-    
-    frmLoading.LoadingLbl.Caption = "Loading Triggers..."
-    Load_Triggers_Data_To_List frmMain.TriggerList
-    
-    frmLoading.LoadingLbl.Caption = "Loading Particle Streams..."
-    Load_Particle_Streams_To_ComboBox frmMain.ParticleType
-    
-    'Load all maps names to the exit´s map list
-    Load_Maps_To_ComboBox frmMain.ExitMapsList
-    
-    Modified = False
-    
-    'Set the Grh tool as default
-    Dim Button As Button
-    Set Button = frmMain.Toolbar1.Buttons(8)
-    frmMain.toolbar1_ButtonClick Button
-    
-    'Hide frmLoading
-    frmLoading.Hide
-    Unload frmLoading
-    
-    'Show the GrhViewer
-    frmGrhViewer.Show
-    
-    'Show the Mini Map
-    frmMap.Show
-    
-    'Show Main frame
-    frmMain.Show
-    
-    'Show Grh1
-    Engine.Grh_Render_To_Hdc 1, frmGrhViewer.hdc, 0, 0
-    
-    'Let window think
-    DoEvents
-    
-    'Start AutoSaver timer
-    frmMain.AutoSaveTimer.Enabled = True
-    
-MainLoop:
-    Do While prgRun
-    
-        If frmMain.WindowState <> 1 Then
-            '********* Render **********
-            prgRun = Engine.Engine_Render_Start
-            prgRun = Engine.Engine_Render_End
+'For Get and Write Var
+Declare Function writeprivateprofilestring Lib "Kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
+Declare Function getprivateprofilestring Lib "Kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
+
+'For KeyInput
+Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
+
+
+Sub SwitchMap(Map As String)
+'*****************************************************************
+'Loads and switches to a new room
+'*****************************************************************
+Dim LoopC As Integer
+Dim TempInt As Integer
+Dim Body As Integer
+Dim Head As Integer
+Dim Heading As Byte
+Dim Y As Integer
+Dim X As Integer
+   
+'Change mouse icon
+frmMain.MousePointer = 11
+   
+'Open files
+Open Map For Binary As #1
+
+
+Seek #1, 1
+
+Map = Left(Map, Len(Map) - 4)
+Map = Map & ".inf"
+Open Map For Binary As #2
+Seek #2, 1
+
+'Cabecera map
+Get #1, , MapInfo.MapVersion
+Get #1, , MiCabecera
+Get #1, , TempInt
+Get #1, , TempInt
+Get #1, , TempInt
+Get #1, , TempInt
+
+'Cabecera inf
+Get #2, , TempInt
+Get #2, , TempInt
+Get #2, , TempInt
+Get #2, , TempInt
+Get #2, , TempInt
+
+
+'Load arrays
+For Y = YMinMapSize To YMaxMapSize
+    For X = XMinMapSize To XMaxMapSize
+
+        '.map file
+        Get #1, , MapData(X, Y).Blocked
+        For LoopC = 1 To 4
+            Get #1, , MapData(X, Y).Graphic(LoopC).GrhIndex
             
-            '********* Check Keys *********
-            Check_Keys
-        
-            '********* Walk with mouse *********
-            If Walk_Mode Then
-                Mouse_Walk
+            'Set up GRH
+            If MapData(X, Y).Graphic(LoopC).GrhIndex > 0 Then
+
+                InitGrh MapData(X, Y).Graphic(LoopC), MapData(X, Y).Graphic(LoopC).GrhIndex
+
             End If
+        
+        Next LoopC
+        'Trigger
+        Get #1, , MapData(X, Y).Trigger
+        
+        Get #1, , TempInt
+        '.inf file
+        
+        'Tile exit
+        Get #2, , MapData(X, Y).TileExit.Map
+        Get #2, , MapData(X, Y).TileExit.X
+        Get #2, , MapData(X, Y).TileExit.Y
+                      
+        'make NPC
+        Get #2, , MapData(X, Y).NPCIndex
+        If MapData(X, Y).NPCIndex > 0 Then
+            
+            If MapData(X, Y).NPCIndex > 499 Then
+                Body = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & MapData(X, Y).NPCIndex, "Body"))
+                Head = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & MapData(X, Y).NPCIndex, "Head"))
+                Heading = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & MapData(X, Y).NPCIndex, "Heading"))
+            Else
+                Body = Val(GetVar(IniPath & "NPCs.dat", "NPC" & MapData(X, Y).NPCIndex, "Body"))
+                Head = Val(GetVar(IniPath & "NPCs.dat", "NPC" & MapData(X, Y).NPCIndex, "Head"))
+                Heading = Val(GetVar(IniPath & "NPCs.dat", "NPC" & MapData(X, Y).NPCIndex, "Heading"))
+            End If
+            
+            Call MakeChar(NextOpenChar(), Body, Head, Heading, X, Y)
         End If
         
-        '********* Go do other events *********
-        DoEvents
+        'Make obj
+        Get #2, , MapData(X, Y).OBJInfo.objindex
+        Get #2, , MapData(X, Y).OBJInfo.Amount
+        If MapData(X, Y).OBJInfo.objindex > 0 Then
+            InitGrh MapData(X, Y).ObjGrh, Val(GetVar(IniPath & "OBJ.dat", "OBJ" & MapData(X, Y).OBJInfo.objindex, "GrhIndex"))
+        End If
+        
+        'Empty place holders for future expansion
+        Get #2, , TempInt
+        Get #2, , TempInt
+             
+    Next X
+Next Y
+
+'Close files
+Close #1
+Close #2
+
+
+
+Map = Right(Map, Len(Map) - Len(App.Path & "\Maps\"))
+
+Map = Left(Map, Len(Map) - 4) & ".dat"
+
+MapInfo.Name = GetVar(App.Path & "\Maps\" & Map, Left(Map, Len(Map) - 4), "Name")
+MapInfo.Music = GetVar(App.Path & "\Maps\" & Map, Left(Map, Len(Map) - 4), "MusicNum")
+MapInfo.StartPos.Map = Val(ReadField(1, GetVar(App.Path & "\Maps\" & Map, Left(Map, Len(Map) - 4), "StartPos"), 45))
+MapInfo.StartPos.X = Val(ReadField(2, GetVar(Map, Left(Map, Len(Map) - 4), "StartPos"), 45))
+MapInfo.StartPos.Y = Val(ReadField(3, GetVar(Map, Left(Map, Len(Map) - 4), "StartPos"), 45))
+frmMain.Text2.Text = MapInfo.Music
+
+
+MapInfo.Terreno = GetVar(App.Path & "\Maps\" & Map, Left(Map, Len(Map) - 4), "Terreno")
+
+If MapInfo.Terreno = "BOSQUE" Then
+ frmCarac.Option1(0).value = True
+ElseIf MapInfo.Terreno = "DESIERTO" Then
+ frmCarac.Option1(1).value = True
+Else
+ frmCarac.Option1(2).value = True
+End If
+
+MapInfo.Zona = GetVar(App.Path & "\Maps\" & Map, Left(Map, Len(Map) - 4), "Zona")
+If MapInfo.Zona = "CIUDAD" Then
+ frmCarac.Option2(0).value = True
+ElseIf MapInfo.Zona = "DUNGEON" Then
+ frmCarac.Option2(1).value = True
+Else
+ frmCarac.Option2(2).value = True
+End If
+
+MapInfo.Rest = GetVar(App.Path & "\Maps\" & Map, Left(Map, Len(Map) - 4), "Restringir")
+
+If MapInfo.Rest = "Si" Then
+    frmCarac.Check1.value = vbChecked
+Else
+    frmCarac.Check1.value = vbUnchecked
+End If
+
+'CurMap = Map
+frmMain.Text1.Text = MapInfo.Name
+frmMain.Vers.Text = MapInfo.MapVersion
+
+'Set changed flag
+MapInfo.Changed = 0
+
+'Change mouse icon
+frmMain.MousePointer = 0
+MapaCargado = True
+frmMain.mAncho.SetFocus
+End Sub
+Sub ActualizaDespGrilla()
+If UserPos.X - 8 < 1 Or UserPos.Y - 6 < 1 Then Exit Sub
+Dim i As Integer, j As Integer
+gDespX = 0
+gDespY = 0
+j = 1
+   
+If UserPos.Y - 6 <> 1 Then
+   Do While j <> UserPos.Y - 6
+        gDespY = gDespY - 32
+        If gDespY = -Val(frmGrilla.Alto) Then gDespY = 0
+        j = j + 1
+   Loop
+End If
+
+i = 1
+If UserPos.X - 8 <> 1 Then
+    Do While i <> UserPos.X - 8
+        gDespX = gDespX - 32
+        If gDespX = -Val(frmGrilla.Ancho) Then gDespX = 0
+        i = i + 1
     Loop
-    
-    '*******************
-    'Close Down
-    '*******************
-    'Unload engine
-    Engine.Engine_DeInitialize
-    
-    'Unlock and delete all graphics
-    Close_Handler_List GRH_Handles, True
-    Kill resource_path & "\graphics\*.bmp"
-    
-    'Destroy the Engine object
-    Set Engine = Nothing
-    
-    '********* Unload forms and end *********
-    Unload frmMap
-    Unload frmGrhViewer
-    Unload frmTileGroups
-    Unload frmMain
-    End
+End If
 End Sub
+Sub CheckKeys()
 
-Sub ArrangeDialog(ByRef target As Object, ByVal Action As Single)
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 2/18/2003
-'Arranges the data for the common dialog control
-'*************************************************
-    
-    With target
-        Select Case Action
-            'Load
-            Case 1
-                .Filter = "Maps|*.map"
-                .DialogTitle = "Load"
-                .FileName = ""
-                .InitDir = resource_path & "\maps\"
-                .flags = cdlOFNFileMustExist
-                .ShowOpen
-            
-            'Save
-            Case 2
-                .Filter = "Maps|*.map"
-                .DialogTitle = "Save"
-                .DefaultExt = ".map"
-                .FileName = ""
-                .InitDir = resource_path & "\maps\"
-                .flags = cdlOFNPathMustExist
-                .ShowSave
-            'Color, complete (unfolded)
-            Case 3
-                .flags = cdlCCRGBInit Or cdlCCFullOpen
-                .ShowColor
-        End Select
-    End With
-    
-End Sub
 
-Sub Check_Keys()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 10/18/2003
-'Checks keys
-'*************************************************
-    Dim X As Long, Y As Long
-    Engine.Engine_View_Pos_Get X, Y
-    X = X - 9
-    Y = Y - 7
-    If Engine.Input_Key_Get(vbKeyW) And Engine.Input_Key_Get(vbKeyD) Then
-            frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-       If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 2) Then
-                If Engine.Engine_View_Move(2) Then
-                    Engine.Char_Move User_Char_Index, 2
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 2
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 2
-            End If
-        Else
-            Engine.Engine_View_Move 2
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyD) And Engine.Input_Key_Get(vbKeyS) Then
-                    frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 4) Then
-                If Engine.Engine_View_Move(4) Then
-                    Engine.Char_Move User_Char_Index, 4
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 4
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 4
-            End If
-        Else
-            Engine.Engine_View_Move 4
-            
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyS) And Engine.Input_Key_Get(vbKeyA) Then
-                    frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 6) Then
-                If Engine.Engine_View_Move(6) Then
-                    Engine.Char_Move User_Char_Index, 6
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 6
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 6
-            End If
-        Else
-            Engine.Engine_View_Move 6
-           
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyA) And Engine.Input_Key_Get(vbKeyW) Then
-                    frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 8) Then
-                If Engine.Engine_View_Move(8) Then
-                    Engine.Char_Move User_Char_Index, 8
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 8
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 8
-            End If
-        Else
-            Engine.Engine_View_Move 8
-            frmMap.shparea.top = frmMap.shparea.top + 1
-            frmMap.shparea.left = frmMap.shparea.left - 1
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyW) Then
-                    frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 1) Then
-                If Engine.Engine_View_Move(1) Then
-                    Engine.Char_Move User_Char_Index, 1
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 1
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 1
-            End If
-        Else
-            Engine.Engine_View_Move 1
-            
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyD) Then
-            frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 3) Then
-                If Engine.Engine_View_Move(3) Then
-                    Engine.Char_Move User_Char_Index, 3
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 3
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 3
-               
-            End If
-        Else
-            Engine.Engine_View_Move 3
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyS) Then
-            frmMap.shparea.top = Y
-            frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 5) Then
-                If Engine.Engine_View_Move(5) Then
-                    Engine.Char_Move User_Char_Index, 5
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 5
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 5
-                
-            End If
-        Else
-            Engine.Engine_View_Move 5
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    If Engine.Input_Key_Get(vbKeyA) Then
-        frmMap.shparea.top = Y
-        frmMap.shparea.left = X
-        If Walk_Mode Then
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, 7) Then
-                If Engine.Engine_View_Move(7) Then
-                    Engine.Char_Move User_Char_Index, 7
-                    Engine.Light_Move_By_Head Cursor_Light_Index, 7
-                End If
-            Else
-                Engine.Char_Heading_Set User_Char_Index, 7
-            End If
-        Else
-            Engine.Engine_View_Move 7
-            
-        End If
-        frmMain.Statusbar_Update
-    End If
-    
-    'Set tool
-    Dim Button As Button
-    'Set grh tool
-    If Engine.Input_Key_Get(vbKeyF1) Then
-        Set Button = frmMain.Toolbar1.Buttons(8)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-    
-    'Set tiles tool
-    If Engine.Input_Key_Get(vbKeyF2) Then
-        Set Button = frmMain.Toolbar1.Buttons(9)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-    
-    'Set lights tool
-    If Engine.Input_Key_Get(vbKeyF3) Then
-        Set Button = frmMain.Toolbar1.Buttons(10)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-    
-    'Set particle groups tool
-    If Engine.Input_Key_Get(vbKeyF4) Then
-        Set Button = frmMain.Toolbar1.Buttons(11)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-    
-    'Set exits tool
-    If Engine.Input_Key_Get(vbKeyF5) Then
-        Set Button = frmMain.Toolbar1.Buttons(12)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-    
-    'Set OBJs tool
-    If Engine.Input_Key_Get(vbKeyF6) Then
-        Set Button = frmMain.Toolbar1.Buttons(13)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-    
-    'Set NPCs tool
-    If Engine.Input_Key_Get(vbKeyF7) Then
-        Set Button = frmMain.Toolbar1.Buttons(14)
-        frmMain.toolbar1_ButtonClick Button
-    End If
-
-End Sub
-
-Sub Mouse_Walk()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 5/18/2003
-'Moves char using mouse
-'*************************************************
-    
-    'Make sure the mouse is in the view area
-    If Engine.Input_Mouse_In_View Then
-    
-        'Get position in the map
-        Dim temp_x As Long
-        Dim temp_y As Long
-        Engine.Input_Mouse_Map_Get temp_x, temp_y
-    
-        'Check the mouse for movement
-        If Engine.Input_Mouse_Moved_Get Then
-            'Move the light over the cursor
-            Engine.Light_Move Cursor_Light_Index, temp_x, temp_y
+    If GetKeyState(vbKeyUp) < 0 Then
+        
+        If LegalPos(UserPos.X, UserPos.Y - 1) Then
+            UserPos.Y = UserPos.Y - 1
+            ActualizaDespGrilla
+            frmMain.Apuntador.Move UserPos.X - 8, UserPos.Y - 6
+            frmMain.SetFocus
         End If
         
-        'Check left button
-        If Engine.Input_Mouse_Button_Left_Get Then
-            'Check it´s a legal pos
-            If Engine.Map_Legal_Char_Pos_By_Heading(User_Char_Index, Engine.Input_Mouse_Heading_Get) Then
-                'Move the view position, the user_char and the cursor_light
-                If Engine.Engine_View_Move(Engine.Input_Mouse_Heading_Get) Then
-                    Engine.Char_Move User_Char_Index, Engine.Input_Mouse_Heading_Get
-                    Engine.Light_Move_By_Head Cursor_Light_Index, Engine.Input_Mouse_Heading_Get
-                End If
-            Else
-                'Turn in the place
-                Engine.Char_Heading_Set User_Char_Index, Engine.Input_Mouse_Heading_Get
-            End If
-            frmMain.Statusbar_Update
+        Exit Sub
+    End If
+
+    If GetKeyState(vbKeyRight) < 0 Then
+        If LegalPos(UserPos.X + 1, UserPos.Y) Then
+            UserPos.X = UserPos.X + 1
+            ActualizaDespGrilla
+            frmMain.Apuntador.Move UserPos.X - 8, UserPos.Y - 6
+            frmMain.SetFocus
+        End If
+        Exit Sub
+    End If
+
+    If GetKeyState(vbKeyDown) < 0 Then
+        If LegalPos(UserPos.X, UserPos.Y + 1) Then
+            UserPos.Y = UserPos.Y + 1
+            ActualizaDespGrilla
+            frmMain.Apuntador.Move UserPos.X - 8, UserPos.Y - 6
+            frmMain.SetFocus
+        End If
+        Exit Sub
+    End If
+
+    If GetKeyState(vbKeyLeft) < 0 Then
+        If LegalPos(UserPos.X - 1, UserPos.Y) Then
+            UserPos.X = UserPos.X - 1
+            ActualizaDespGrilla
+            frmMain.Apuntador.Move UserPos.X - 8, UserPos.Y - 6
+            frmMain.SetFocus
+        End If
+        Exit Sub
+    End If
+    
+
+End Sub
+
+
+
+Sub ReacttoMouseClick(Button As Integer, tX As Integer, tY As Integer)
+
+'*****************************************************************
+'React to mouse button
+'*****************************************************************
+Dim LoopC As Integer
+Dim NPCIndex As Integer
+Dim objindex As Integer
+Dim Head As Integer
+Dim Body As Integer
+Dim Heading As Byte
+
+'Right
+If Button = vbRightButton Then
+    
+    'Show Info
+    
+    'Position
+    frmMain.StatTxt.Text = frmMain.StatTxt.Text & ENDL & "Posicion " & tX & "," & tY & "  Bloqueada=" & MapData(tX, tY).Blocked
+    
+    'Exits
+    If MapData(tX, tY).TileExit.Map > 0 Then
+        frmMain.StatTxt.Text = frmMain.StatTxt.Text & ENDL & "Salida a: " & MapData(tX, tY).TileExit.Map & "," & MapData(tX, tY).TileExit.X & "," & MapData(tX, tY).TileExit.Y
+    End If
+    
+    'NPCs
+    If MapData(tX, tY).NPCIndex > 0 Then
+        If MapData(tX, tY).NPCIndex > 499 Then
+            frmMain.StatTxt.Text = frmMain.StatTxt.Text & ENDL & "NPC: " & GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & MapData(tX, tY).NPCIndex, "Name")
+        Else
+            frmMain.StatTxt.Text = frmMain.StatTxt.Text & ENDL & "NPC: " & GetVar(IniPath & "NPCs.dat", "NPC" & MapData(tX, tY).NPCIndex, "Name")
         End If
     End If
     
-End Sub
+    'OBJs
+    If MapData(tX, tY).OBJInfo.objindex > 0 Then
+        frmMain.StatTxt.Text = frmMain.StatTxt.Text & ENDL & "OBJ: " & GetVar(IniPath & "OBJ.dat", "OBJ" & MapData(tX, tY).OBJInfo.objindex, "Name") & "   Cantidad=" & MapData(tX, tY).OBJInfo.Amount
+    End If
+    
+    'Append
+    frmMain.StatTxt.Text = frmMain.StatTxt.Text & ENDL
+    frmMain.StatTxt.SelStart = Len(frmMain.StatTxt.Text)
+    
+    Exit Sub
+End If
 
-Sub Mouse_React_to_Click()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 10/13/2004
-'Reacts to mouse click
-'*************************************************
-    Dim X As Long
-    Dim Y As Long
-    Dim LoopC As Long
-    
-    'Get map pos
-    Engine.Input_Mouse_Map_Get X, Y
-    
-    
-    ''************ Left click
-    If Engine.Input_Mouse_Button_Left_Get Then
-        Select Case tool
-            '********** Grh Tool **********
-            Case Is = "grh"
-                'Pick Grh
-                If frmMain.GrhPickCmd.Enabled = False Then
-                    'Find the Grh index
-                    Dim index As Long
-                    If frmMain.GrhLayerList.ListIndex = 0 Or frmMain.GrhLayerList.ListIndex = 2 Or frmMain.GrhLayerList.ListIndex = 4 Then
-                        index = Engine.Map_Grh_Get(X, Y, frmMain.GrhLayerList.ListIndex / 2 + 1)
-                    ElseIf frmMain.GrhLayerList.ListIndex = 1 Or frmMain.GrhLayerList.ListIndex = 3 Then
-                        index = Engine.Map_Decoration_Get(X, Y, Engine.Input_Mouse_Subtile_Get)
-                    End If
-                    If index = 0 Then
-                        Exit Sub
-                    End If
-                    current_grh = index
-                    If frmMain.GrhViewerMnuChk.Checked Then
-                        frmGrhViewer.Cls
-                        Engine.Grh_Render_To_Hdc current_grh, frmGrhViewer.hdc, 0, 0
-                    End If
-                    For LoopC = 1 To frmMain.tree.Nodes.count
-                        If frmMain.tree.Nodes(LoopC).text = "Grh " & current_grh Then
-                            frmMain.tree.Nodes(LoopC).Selected = True
-                        Else
-                            frmMain.tree.Nodes(LoopC).Selected = False
-                        End If
-                    Next LoopC
-                    Exit Sub
-                End If
-                'Place a Grh
-                If frmMain.GrhLayerList.ListIndex = 0 Or frmMain.GrhLayerList.ListIndex = 2 Or frmMain.GrhLayerList.ListIndex = 4 Then
-                    If Engine.Map_Grh_Set(X, Y, current_grh, (frmMain.GrhLayerList.ListIndex + 2) / 2, frmMain.GrhAlphaBlendingChk.value, Val(frmMain.GrhAngleTxt.text) * PI / 180, frmMain.GrhHCenteredChk.value, frmMain.GrhVCenteredChk.value) Then
-                        store_action grh_map, place, X, Y, , frmMain.GrhLayerList.ListIndex + 1
-                        'Update mini map
-                        If (frmMain.GrhLayerList.ListIndex = 0 Or frmMain.GrhLayerList.ListIndex = 2) And frmMap.Visible Then
-                            frmMap.Cls
-                            Engine.Engine_Render_Mini_Map_To_hDC frmMap.hdc
-                        End If
-                        Modified = True
-                        Exit Sub
-                    End If
-                'Place a decoration
-                ElseIf frmMain.GrhLayerList.ListIndex = 1 Or frmMain.GrhLayerList.ListIndex = 3 Then
-                    Dim Render_On_Top As Boolean
-                    If frmMain.GrhLayerList.ListIndex = 1 Then
-                        Render_On_Top = False
-                    Else
-                        Render_On_Top = True
-                    End If
-                    If Engine.Map_Decoration_Add(X, Y, frmMain.DecorationPositionLst.ListIndex, current_grh, Render_On_Top, frmMain.GrhAlphaBlendingChk.value, Val(frmMain.GrhAngleTxt.text), frmMain.GrhHCenteredChk.value, frmMain.GrhVCenteredChk.value) Then
-                        store_action grh_map, place, X, Y, , frmMain.GrhLayerList.ListIndex + 1, , , , , , , , , , , frmMain.DecorationPositionLst.ListIndex
-                        Modified = True
-                        Exit Sub
-                    End If
-                End If
-            '********** Blocking Tool **********
-            Case Is = "tiles"
-                'Block a tile
-                If frmMain.TileToolChk(0).value = True Then
-                    'Check if it wasn´t already blocked
-                    If Engine.Map_Blocked_Get(X, Y) Then
-                        Exit Sub
-                    End If
-                    store_action blocking, place, X, Y
-                    If Engine.Map_Blocked_Set(X, Y, True) Then
-                        Modified = True
-                        Exit Sub
-                    End If
-                Else
-                    store_action trigger, place, X, Y
-                    If Engine.Map_Trigger_Set(X, Y, frmMain.TriggerList.ListIndex) Then
-                        Modified = True
-                        Exit Sub
-                    End If
-                End If
-            '********** Lights Tool **********
-            Case Is = "lights"
-                'Pick Light Color
-                If frmMain.PickColorCmd.Enabled = False Then
-                    Engine.Light_Color_Value_Get Engine.Map_Light_Get(X, Y), Light_Color
-                    frmMain.arrange_light_color Light_Color
-                    Exit Sub
-                End If
-                'Pick Base Light Color
-                If frmMain.PickBaseLightColorCmd.Enabled = False Then
-                    Light_Color = Engine.Map_Base_Light_Get(X, Y)
-                    frmMain.arrange_light_color Light_Color
-                    Exit Sub
-                End If
-                'Place a Base Light
-                If frmMain.LightToolChk(1).value = True Then
-                    store_action lights, place, X, Y, , , Light_Color, , , base_light
-                    Engine.Map_Base_Light_Set X, Y, Light_Color
-                    Modified = True
-                    Exit Sub
-                End If
-                'Place a Shadow
-                If frmMain.LightToolChk(2).value = True Then
-                    Dim counter As Long
-                    For LoopC = 0 To 3
-                        If frmMain.CornerChk(LoopC).value = vbChecked Then
-                            counter = counter + 1
-                            store_action lights, place, X, Y, counter, , , , LoopC, shadow
-                            Engine.Map_Base_Light_Set X, Y, Light_Color, LoopC
-                        End If
-                    Next LoopC
-                    Modified = True
-                    Exit Sub
-                End If
-                'Place a Light
-                Engine.Light_Create X, Y, Light_Color, Val(frmMain.Rangetxt.text)
-                store_action lights, place, X, Y, , , Light_Color, Val(frmMain.Rangetxt.text), , Light
-                Modified = True
+
+'Left click
+If Button = vbLeftButton Then
+
+    '************** Place grh
+    If frmMain.PlaceGrhCmd.Enabled = False Then
+
+        'Erase 2-3
+        If frmMain.EraseAllchk.value = 1 Then
+            For LoopC = 2 To 3
+                MapData(tX, tY).Graphic(LoopC).GrhIndex = 0
+            Next LoopC
+            Exit Sub
+        End If
+
+        'Erase layer
+        If frmMain.Erasechk.value = 1 Then
+        
+            If Val(frmMain.Layertxt.Text) = 1 Then
+                MsgBox "No puedo borrar el layer 1!"
                 Exit Sub
-            '********** Particle Groups Tools **********
-            Case Is = "particle_groups"
-                Dim PIndex As Long
-                If Not Engine.Map_In_Bounds(X, Y) Then Exit Sub
+            End If
+            
+       MapData(tX, tY).Graphic(Val(frmMain.Layertxt.Text)).GrhIndex = 0
+            Exit Sub
+        End If
+        If frmMain.MOSAICO.value = vbChecked Then
+          Dim aux As Integer
+          Dim dy As Integer
+          Dim DX As Integer
+          If frmMain.DespMosaic.value = vbChecked Then
+                        dy = Val(frmMain.DMLargo)
+                        DX = Val(frmMain.DMAncho.Text)
+          Else
+                    dy = 0
+                    DX = 0
+          End If
                 
-                PIndex = frmMain.ParticleType.ListIndex + 1
+          If frmMain.Completar = vbUnchecked Then
+                aux = Val(frmMain.Grhtxt.Text) + _
+                (((tY + dy) Mod frmMain.mLargo) * frmMain.mAncho) + ((tX + DX) Mod frmMain.mAncho)
+                 MapData(tX, tY).Blocked = frmMain.Blockedchk.value
+                 MapData(tX, tY).Graphic(Val(frmMain.Layertxt.Text)).GrhIndex = aux
+                 InitGrh MapData(tX, tY).Graphic(Val(frmMain.Layertxt.Text)), aux
+          Else
+            Dim tXX As Integer, tYY As Integer, i As Integer, j As Integer, desptile As Integer
+            tXX = tX
+            tYY = tY
+            desptile = 0
+            For i = 1 To frmMain.mLargo
+                For j = 1 To frmMain.mAncho
+                    aux = Val(frmMain.Grhtxt.Text) + desptile
+                     
+                     MapData(tXX, tYY).Blocked = frmMain.Blockedchk.value
+                     
+                     MapData(tXX, tYY).Graphic(Val(frmMain.Layertxt.Text)).GrhIndex = aux
+                     
+                     InitGrh MapData(tXX, tYY).Graphic(Val(frmMain.Layertxt.Text)), aux
+                     tXX = tXX + 1
+                     desptile = desptile + 1
+                Next
+                tXX = tX
+                tYY = tYY + 1
+            Next
+            tYY = tY
                 
-                If frmMain.ParticleType.ListIndex >= 0 Then
-                    
-                    Dim rgb_list(0 To 3) As Long
-                    rgb_list(0) = RGB(StreamData(PIndex).colortint(0).r, StreamData(PIndex).colortint(0).g, StreamData(PIndex).colortint(0).b)
-                    rgb_list(1) = RGB(StreamData(PIndex).colortint(1).r, StreamData(PIndex).colortint(1).g, StreamData(PIndex).colortint(1).b)
-                    rgb_list(2) = RGB(StreamData(PIndex).colortint(2).r, StreamData(PIndex).colortint(2).g, StreamData(PIndex).colortint(2).b)
-                    rgb_list(3) = RGB(StreamData(PIndex).colortint(3).r, StreamData(PIndex).colortint(3).g, StreamData(PIndex).colortint(3).b)
-                    
-                    Engine.Particle_Group_Create X, Y, StreamData(PIndex).grh_list, rgb_list(), StreamData(PIndex).NumOfParticles, frmMain.ParticleType.ListIndex + 1, _
-                                StreamData(PIndex).AlphaBlend, StreamData(PIndex).life_counter, StreamData(PIndex).speed, , StreamData(PIndex).x1, StreamData(PIndex).y1, StreamData(PIndex).angle, _
-                                StreamData(PIndex).vecx1, StreamData(PIndex).vecx2, StreamData(PIndex).vecy1, StreamData(PIndex).vecy2, _
-                                StreamData(PIndex).life1, StreamData(PIndex).life2, StreamData(PIndex).friction, StreamData(PIndex).spin_speedL, _
-                                StreamData(PIndex).gravity, StreamData(PIndex).grav_strength, StreamData(PIndex).bounce_strength, StreamData(PIndex).x2, _
-                                StreamData(PIndex).y2, StreamData(PIndex).XMove, StreamData(PIndex).move_x1, StreamData(PIndex).move_x2, StreamData(PIndex).move_y1, _
-                                StreamData(PIndex).move_y2, StreamData(PIndex).YMove, StreamData(PIndex).spin_speedH, StreamData(PIndex).spin
-                    
-                    store_action particle_stream, place, X, Y
-                    
-                    Modified = True
-                    
-                    Exit Sub
+                
+          End If
+          
+        Else
+            'Else Place graphic
+            If tX < 1 Or tX > 100 Then Exit Sub
+            If tY < 1 Or tY > 100 Then Exit Sub
+            MapData(tX, tY).Blocked = frmMain.Blockedchk.value
+            MapData(tX, tY).Graphic(Val(frmMain.Layertxt.Text)).GrhIndex = Val(frmMain.Grhtxt.Text)
+            
+            
+            'Setup GRH
+    
+            InitGrh MapData(tX, tY).Graphic(Val(frmMain.Layertxt.Text)), Val(frmMain.Grhtxt.Text)
+        End If
+        
+        
+        
+        
+    End If
+    
+    '************** Place blocked tile
+    If frmMain.PlaceBlockCmd.Enabled = False Then
+        MapData(tX, tY).Blocked = frmMain.Blockedchk.value
+    End If
+
+    '************** Place exit
+    If frmHerramientas.PlaceExitCmd.Enabled = False Then
+        If frmHerramientas.EraseExitChk.value = 0 Then
+            If frmHerramientas.Adya = vbChecked Then
+                MapData(tX, tY).TileExit.Map = Val(frmHerramientas.MapExitTxt.Text)
+                If tX = 92 Then
+                          MapData(tX, tY).TileExit.X = 10
+                          MapData(tX, tY).TileExit.Y = tY
+                ElseIf tX = 9 Then
+                    MapData(tX, tY).TileExit.X = 91
+                    MapData(tX, tY).TileExit.Y = tY
                 End If
-            '********* Exit Tools **********
-            Case Is = "exits"
-                'Pick data from an existing exit
-                If Not Engine.Map_In_Bounds(X, Y) Then Exit Sub
                 
-                If frmMain.ExitPickCmd.Enabled = False Then
-                    Dim map_name As String
-                    Dim map_x As Long
-                    Dim map_y As Long
-                    Engine.Map_Exit_Get X, Y, map_name, map_x, map_y
-                    
-                    'Make sure there is an exit in the tile
-                    If map_name = "" Then
-                        frmMain.ExitMapsList.ListIndex = 0
-                        frmMain.ExitXCoordTxt.text = "0"
-                        frmMain.ExitYCoordTxt.text = "0"
-                    Else
-                        Do Until frmMain.ExitMapsList.List(LoopC) = map_name
-                            LoopC = LoopC + 1
-                        Loop
+                If tY = 94 Then
+                         MapData(tX, tY).TileExit.Y = 8
+                         MapData(tX, tY).TileExit.X = tX
+                ElseIf tY = 7 Then
+                    MapData(tX, tY).TileExit.Y = 93
+                    MapData(tX, tY).TileExit.X = tX
+                End If
                         
-                        frmMain.ExitMapsList.ListIndex = LoopC
-                        frmMain.ExitXCoordTxt.text = map_x
-                        frmMain.ExitYCoordTxt.text = map_y
-                    End If
-                    Exit Sub
-                End If
-                'Place exit
-                If frmMain.ExitMapsList.text = "None" Then Exit Sub
-                store_action exits, place, X, Y
-                Engine.Map_Exit_Add X, Y, frmMain.ExitMapsList.text, Val(frmMain.ExitXCoordTxt.text), Val(frmMain.ExitYCoordTxt.text)
-                Modified = True
-                Exit Sub
-            '********* Object Tools **********
-            Case Is = "OBJs"
-                'Place OBJ
-                If Not Engine.Map_In_Bounds(X, Y) Then Exit Sub
-                
-                store_action object, place, X, Y
-                Engine.Map_Item_Add X, Y, frmMain.OBJList.ListIndex + 1, Val(frmMain.OBJAmountTxt.text)
-                Modified = True
-                Exit Sub
-            '********* NPCs Tools **********
-            Case Is = "NPCs"
-                'Place NPC
-                If Not Engine.Map_In_Bounds(X, Y) Then Exit Sub
-                
-                store_action NPC, place, X, Y
-                Engine.Map_NPC_Add X, Y, frmMain.NPCList.ListIndex + 1
-                Modified = True
-                Exit Sub
-        End Select
-    End If
-    
-    
-    '************ Right click
-    If Engine.Input_Mouse_Button_Right_Get Then
-    Engine.Engine_Render_Mini_Map_To_hDC frmMap.picmain.hdc
-        Select Case tool
-            '********** Grh Tool **********
-            Case Is = "grh"
-                'Erase Layers
-                If frmMain.GrhErase(1).value = True Then
-                    'Erase layers 1 - 3 and both decoration layers
-                    store_action grh_map, Remove_all, X, Y
-                    For LoopC = 1 To 3
-                        If Engine.Map_Grh_UnSet(X, Y, LoopC) Then
-                            Modified = True
-                        End If
-                    Next LoopC
-                    For LoopC = 0 To 8
-                        If Engine.Map_Decoration_Remove(X, Y, LoopC) Then
-                            Modified = True
-                        End If
-                    Next LoopC
-                    Exit Sub
-                Else
-                    'Erase 1 layer
-                    If frmMain.DecorationPositionLst.Enabled And frmMain.DecorationPositionLst.ListIndex > -1 Then
-                        store_action grh_map, Remove, X, Y, , frmMain.GrhLayerList.ListIndex + 1, , , , , , , , , , , frmMain.DecorationPositionLst.ListIndex
-                    Else
-                        store_action grh_map, Remove, X, Y, , frmMain.GrhLayerList.ListIndex + 1
-                    End If
-                    If frmMain.GrhLayerList.ListIndex = 0 Or frmMain.GrhLayerList.ListIndex = 2 Or frmMain.GrhLayerList.ListIndex = 4 Then
-                        If Engine.Map_Grh_UnSet(X, Y, frmMain.GrhLayerList.ListIndex / 2 + 1) Then
-                            Modified = True
-                        End If
-                    Else
-                        If Engine.Map_Decoration_Remove(X, Y, Engine.Input_Mouse_Subtile_Get) Then
-                            Modified = True
-                        End If
-                    End If
-                    Exit Sub
-                End If
-            '********* Blocking Tool **********
-            Case Is = "tiles"
-                If frmMain.TileToolChk(0).value = True Then
-                    If Not Engine.Map_Blocked_Get(X, Y) Then
-                        Exit Sub
-                    End If
-                    store_action blocking, Remove, X, Y
-                    If Engine.Map_Blocked_Set(X, Y, False) Then
-                        Modified = True
-                        Exit Sub
-                    End If
-                Else
-                    If Engine.Map_Trigger_Get(X, Y) = 0 Then
-                        Exit Sub
-                    End If
-                    store_action trigger, Remove, X, Y
-                    If Engine.Map_Trigger_Unset(X, Y) Then
-                        Modified = True
-                        Exit Sub
-                    End If
-                End If
-            '********* Lights Tool **********
-            Case Is = "lights"
-                If Engine.Map_Light_Get(X, Y) = 0 Then
-                    Exit Sub
-                End If
-                store_action lights, Remove, X, Y, , , , , , Light
-                If Engine.light_remove(Engine.Map_Light_Get(X, Y)) Then
-                    Modified = True
-                    Exit Sub
-                End If
-            '********* Particle Groups Tools **********
-            Case Is = "particle_groups"
-                store_action particle_stream, Remove, X, Y
-                If Engine.Particle_Group_Remove(Engine.Map_Particle_Group_Get(X, Y)) Then
-                    Modified = True
-                    Exit Sub
-                End If
-            '********* Exits **********
-            Case Is = "exits"
-                store_action exits, Remove, X, Y
-                If Engine.Map_Exit_Remove(X, Y) Then
-                    Modified = True
-                    Exit Sub
-                End If
-            '********* OBJs **********
-            Case Is = "OBJs"
-                store_action object, Remove, X, Y
-                If Engine.Map_Item_Remove(X, Y) Then
-                    Modified = True
-                    Exit Sub
-                End If
-            '********* NPCs **********
-            Case Is = "NPCs"
-                store_action NPC, Remove, X, Y
-                If Engine.Map_NPC_Remove(X, Y) Then
-                    Modified = True
-                    Exit Sub
-                End If
-        End Select
-    End If
-
-End Sub
-
-Public Sub Toggle_Walk_Mode()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 2/23/2003
-'Toggles Wal_Mode on / off
-'*************************************************
-    If Walk_Mode = False Then
-        Walk_Mode = True
-    Else
-        Walk_Mode = False
-    End If
-    
-    If Not Walk_Mode Then
-        'Erase character
-        Engine.Char_Remove User_Char_Index
-        'Erase light
-        Engine.light_remove Cursor_Light_Index
-    Else
-        Dim X As Long
-        Dim Y As Long
-        
-        Engine.Engine_View_Pos_Get X, Y
-    
-        'Make Character and cursor light
-        If Not Engine.Map_Blocked_Get(X, Y) Then
-            User_Char_Index = Engine.Char_Create(X, Y, 5, 1)
-            Cursor_Light_Index = Engine.Light_Create(X, Y, RGB(255, 255, 255))
-            'Char label
-            Engine.Char_Label_Set User_Char_Index, char_label, 1
+            Else
+                MapData(tX, tY).TileExit.Map = Val(frmHerramientas.MapExitTxt.Text)
+                MapData(tX, tY).TileExit.X = Val(frmHerramientas.XExitTxt.Text)
+                MapData(tX, tY).TileExit.Y = Val(frmHerramientas.YExitTxt.Text)
+            End If
         Else
-            MsgBox "Error: Must move to a free tile first."
-            frmMain.WalkModeChk.value = 0
-            Walk_Mode = False
+            MapData(tX, tY).TileExit.Map = 0
+            MapData(tX, tY).TileExit.X = 0
+            MapData(tX, tY).TileExit.Y = 0
+        End If
+    End If
+
+    '************** Place NPC
+    If frmHerramientas.PlaceNPCCmd.Enabled = False Then
+        If frmHerramientas.EraseNPCChk.value = 0 Then
+            If frmHerramientas.NPCLst.ListIndex >= 0 Then
+                NPCIndex = frmHerramientas.NPCLst.ListIndex + 1
+                Body = Val(GetVar(IniPath & "NPCs.dat", "NPC" & NPCIndex, "Body"))
+                Head = Val(GetVar(IniPath & "NPCs.dat", "NPC" & NPCIndex, "Head"))
+                Heading = Val(GetVar(IniPath & "NPCs.dat", "NPC" & NPCIndex, "Heading"))
+                Call MakeChar(NextOpenChar(), Body, Head, Heading, tX, tY)
+                MapData(tX, tY).NPCIndex = NPCIndex
+            End If
+            
+        Else
+            If MapData(tX, tY).NPCIndex > 0 Then
+                MapData(tX, tY).NPCIndex = 0
+                Call EraseChar(MapData(tX, tY).CharIndex)
+            End If
         End If
     End If
     
-End Sub
-
-Public Sub Load_User_Defined_Data()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last modified: 10/12/2004
-'Loads all user-defined stuff from the Map Editor.ini file
-'*************************************************
-    
-    resource_path = App.Path & General_Var_Get(App.Path & "\Map Editor.ini", "SYSTEM", "ResourcePath")
-    autosave_delay = Val(General_Var_Get(App.Path & "\Map Editor.ini", "SYSTEM", "AutoSaveDelay"))
-    use_ini_files = CBool(General_Var_Get(App.Path & "\Map Editor.ini", "SYSTEM", "UseIniFiles"))
-    use_resource_files = CBool(General_Var_Get(App.Path & "\Map Editor.ini", "SYSTEM", "UseResFiles"))
-    tile_size = Val(General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "TileSize"))
-    map_height = Val(General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "MapHeight"))
-    map_width = Val(General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "MapWidth"))
-    x_border = Val(General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "MapBorderX"))
-    y_border = Val(General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "MapBorderY"))
-    base_speed = Val(General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "EngineSpeed"))
-    char_label = General_Var_Get(App.Path & "\Map Editor.ini", "PREFERENCES", "CharName")
-
-End Sub
-
-Public Sub Save_User_Defined_Data()
-'*************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last modified: 10/12/2004
-'Saves all user-defined stuff to the Map Editor.ini file
-'*************************************************
-    
-    General_Var_Write App.Path & "\Map Editor.ini", "SYSTEM", "ResourcePath", resource_path
-    General_Var_Write App.Path & "\Map Editor.ini", "SYSTEM", "AutoSaveDelay", autosave_delay
-    General_Var_Write App.Path & "\Map Editor.ini", "SYSTEM", "UseIniFiles", CLng(use_ini_files)
-    General_Var_Write App.Path & "\Map Editor.ini", "SYSTEM", "UseResFiles", CLng(use_resource_files)
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "TileSize", tile_size
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "MapHeight", map_height
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "MapWidth", map_width
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "MapBorderX", x_border
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "MapBorderY", y_border
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "EngineSpeed", Str(base_speed)
-    General_Var_Write App.Path & "\Map Editor.ini", "PREFERENCES", "CharName", char_label
-
-End Sub
-
-Public Sub Load_Maps_To_ComboBox(ByRef ComboBoxName As ComboBox)
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 6/24/2003
-'Loads all map names to the given ComboBox
-'*************************************
-    Dim path_name As String
-    Dim map_name As String
-    
-    ComboBoxName.Clear
-    
-    path_name = resource_path & "\maps\"
-    
-    ComboBoxName.AddItem "None"
-    
-    'check there are maps
-    map_name = Dir(resource_path & "\maps\*.map", vbNormal)
-    If map_name = "" Then
-        Exit Sub
-    End If
-    
-    'Load all maps
-    Do While map_name <> ""
-        'Add it without the .map extension
-        ComboBoxName.AddItem left$(map_name, Len(map_name) - 4)
-        'Load next map
-        map_name = Dir
-    Loop
-    
-    'See if current map already exists, or add it to the map
-    If Current_Map = "" Then
-        ComboBoxName.AddItem "Current Map"
-    End If
-    
-    'Select first map
-    ComboBoxName.ListIndex = 0
-End Sub
-
-Public Sub Load_Items_Data(ByRef ListBoxName As ListBox)
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 5/20/2003
-'Loads items.ini to the given ListBox
-'*************************************
-    Dim NumItems As Long
-    Dim Item As Long
-    
-    NumItems = Val(General_Var_Get(App.Path & resource_path & "\scripts\item.ini", "GENERAL", "item_count"))
-    
-    For Item = 1 To NumItems
-        ListBoxName.AddItem General_Var_Get(App.Path & resource_path & "\scripts\item.ini", "ITEM" & Item, "item_name")
-    Next Item
-    
-End Sub
-
-Public Sub Load_NPC_Data(ByRef ListBoxName As ListBox)
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 5/20/2003
-'Loads NPC.ini to the given ListBox
-'*************************************
-    Dim NumNPCs As Long
-    Dim NPC As Long
-    
-    NumNPCs = Val(General_Var_Get(resource_path & "\scripts\npc.ini", "GENERAL", "npc_count"))
-    For NPC = 1 To NumNPCs
-        ListBoxName.AddItem General_Var_Get(resource_path & "\scripts\npc.ini", "NPC" & NPC, "npc_name")
-    Next NPC
-    
-End Sub
-
-Public Function Item_Get_Index_From_Name(ByVal item_name As String) As Long
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 5/22/2003
-'Gets the item index based on the given name
-'*************************************
-    Dim NumItems As Long
-    Dim LoopC As Long
-    
-    NumItems = Val(General_Var_Get(resource_path & "\scripts\item.ini", "GENERAL", "item_count"))
-    
-    For LoopC = 1 To NumItems
-        If item_name = General_Var_Get(resource_path & "\scripts\item.ini", "ITEM" & LoopC, "item_name") Then
-            Item_Get_Index_From_Name = LoopC
-            Exit Function
+    If frmHerramientas.PlaceNPCHOSTCmd.Enabled = False Then
+        If frmHerramientas.EraseNPCHOSTChk.value = 0 Then
+            If frmHerramientas.NPCHOSTLst.ListIndex >= 0 Then
+                NPCIndex = frmHerramientas.NPCHOSTLst.ListIndex + 1 + 499
+                Body = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & NPCIndex, "Body"))
+                Head = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & NPCIndex, "Head"))
+                Heading = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & NPCIndex, "Heading"))
+                Call MakeChar(NextOpenChar(), Body, Head, Heading, tX, tY)
+                MapData(tX, tY).NPCIndex = NPCIndex
+            End If
+         
+            
+        Else
+            If MapData(tX, tY).NPCIndex > 0 Then
+                MapData(tX, tY).NPCIndex = 0
+                Call EraseChar(MapData(tX, tY).CharIndex)
+            End If
         End If
-    Next LoopC
+    End If
     
+    '************** Place OBJ
+    If frmHerramientas.PlaceObjCmd.Enabled = False Then
+        MapData(tX, tY).Blocked = frmMain.Blockedchk.value
+        If frmHerramientas.EraseObjChk.value = 0 Then
+            If frmHerramientas.ObjLst.ListIndex >= 0 Then
+                objindex = frmHerramientas.ObjLst.ListIndex + 1
+                InitGrh MapData(tX, tY).ObjGrh, Val(GetVar(IniPath & "OBJ.dat", "OBJ" & objindex, "GrhIndex"))
+                MapData(tX, tY).OBJInfo.objindex = objindex
+                MapData(tX, tY).OBJInfo.Amount = Val(frmHerramientas.OBJAmountTxt)
+            End If
+        Else
+            MapData(tX, tY).OBJInfo.objindex = 0
+            MapData(tX, tY).OBJInfo.Amount = 0
+            MapData(tX, tY).ObjGrh.GrhIndex = 0
+        End If
+    End If
+    
+    If frmHerramientas.CmdTrigger.Enabled = False Then
+            MapData(tX, tY).Trigger = frmHerramientas.triggerlist.ListIndex
+    End If
+    
+    'Set changed flag
+    MapInfo.Changed = 1
+End If
+
+End Sub
+
+Function FileExist(File As String, FileType As VbFileAttribute) As Boolean
+'*****************************************************************
+'Checks to see if a file exists
+'*****************************************************************
+
+If Dir(File, FileType) = "" Then
+    FileExist = False
+Else
+    FileExist = True
+End If
+
 End Function
 
-Public Function NPC_Get_Index_From_Name(ByVal npc_name As String) As Long
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 5/22/2003
-'Gets the npc index based on the given name
-'*************************************
-    Dim NumNPCs As Long
-    Dim LoopC As Long
-    
-    NumNPCs = Val(General_Var_Get(resource_path & "\scripts\npc.ini", "GENERAL", "npc_count"))
-    
-    For LoopC = 1 To NumNPCs
-        If npc_name = General_Var_Get(resource_path & "\scripts\npc.ini", "NPC" & LoopC, "npc_name") Then
-            NPC_Get_Index_From_Name = LoopC
+Public Function ReadField(pos As Integer, Text As String, SepASCII As Integer) As String
+'*****************************************************************
+'Gets a field from a string
+'*****************************************************************
+Dim i As Integer
+Dim LastPos As Integer
+Dim CurChar As String * 1
+Dim FieldNum As Integer
+Dim Seperator As String
+
+Seperator = Chr(SepASCII)
+LastPos = 0
+FieldNum = 0
+
+For i = 1 To Len(Text)
+    CurChar = Mid(Text, i, 1)
+    If CurChar = Seperator Then
+        FieldNum = FieldNum + 1
+        If FieldNum = pos Then
+            ReadField = Mid(Text, LastPos + 1, (InStr(LastPos + 1, Text, Seperator, vbTextCompare) - 1) - (LastPos))
             Exit Function
         End If
-    Next LoopC
-    
+        LastPos = i
+    End If
+Next i
+FieldNum = FieldNum + 1
+
+If FieldNum = pos Then
+    ReadField = Mid(Text, LastPos + 1)
+End If
+
 End Function
 
-Public Sub Draw_Tile_Group(ByVal Draw_Grid As Boolean, ByVal Grid_Color As Long)
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 10/18/2003
-'Draws a Grh Group
-'*************************************
-    Dim Grhs_per_Row As Byte
-    Dim Row As Long
-    Dim Column As Long
-    Dim LoopC As Long
+Private Sub AbrirBD()
+Err.Clear
+On Error GoTo fin
+
+With Conexion
+    .Provider = "Microsoft.Jet.OLEDB.3.51"
+    .ConnectionString = "Data Source=" & App.Path & "\grhindex\grhindex.mdb"
+    .Open
+End With
+
+Exit Sub
+
+
+
+fin:
+If Err Then
+    MsgBox "No se puede abrir la base de datos"
+    End
+End If
+
+End Sub
+Private Sub CargarIndices()
+Dim rs As New Recordset
+rs.Open "GrhIndex", Conexion, , adLockReadOnly, adCmdTable
+Do While Not rs.EOF
+    frmMain.lCelda.AddItem _
+    rs!Nombre
+    rs.MoveNext
+Loop
+rs.Close
+End Sub
+
+
+Sub Main()
+Call IniciarCabecera(MiCabecera)
+
+NumMidi = GetVar(App.Path & "\grh.ini", "INIT", "NumMidi")
+Dim i
+For i = 1 To NumMidi
+    frmMusica.List1.AddItem "Mus" & i & ".mid"
+Next
+
+IniciarDirectSound
+frmCargando.Show
+frmCargando.Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
+AbrirBD
+CargarIndices
+frmMain.Dialog.InitDir = App.Path & "\maps\"
+
+'*****************************************************************
+'Main
+'*****************************************************************
+Dim LoopC As Integer
+
+'***************************************************
+'Start up
+'***************************************************
+
+'****** INIT vars ******
+ENDL = Chr(13) & Chr(10)
+'Start up engine
+frmCargando.Visible = False
+'Display form handle, View window offset from 0,0 of display form, Tile Size, Display size in tiles, Screen buffer
+If InitTileEngine(frmMain.hWnd, frmMain.MainViewShp.Top + 40, frmMain.MainViewShp.Left + 4, 32, 32, 13, 17, 12) Then
+
+    '****** Load files into memory ******
+    Call LoadBodyData
+    Call LoadHeadData
+    Call LoadNPCData
+    Call LoadOBJData
+    Call LoadOBJData2
+    Call LoadTriggers
+
+End If
+
+CargarMIDI App.Path & MidiDir & "Mus1.mid"
+'****** Show frmmain ******
+frmMain.Show
+
+
+
+'***************************************************
+'Main Loop
+'***************************************************
+prgRun = True
+Do While prgRun
+
+    'Show Next Frame
+    If frmMain.WindowState = 2 And MapaCargado Then
+        ShowNextFrame frmMain.Top, frmMain.Left
+    End If
+
+    Call CheckKeys
+   
     
-    'Check there´s is a selected group
-    If Current_Group.Name = "" Then
-        Exit Sub
+    '****** Draw currently selected Grh in ShowPic ******
+    If CurrentGrh.GrhIndex = 0 Then
+        InitGrh CurrentGrh, 1
     End If
     
-    'Calculate how many Grhs fit in a row
-    Grhs_per_Row = frmTileGroups.TileGroupViewer.ScaleWidth / tile_size
+    Call MostrarGrh
     
-    'Erase viewer
-    frmTileGroups.TileGroupViewer.Cls
     
-    For LoopC = Grhs_per_Row * TileGroupOffset + 1 To UBound(Current_Group.GrhIndexes)
-        Engine.Grh_Render_To_Hdc Current_Group.GrhIndexes(LoopC), frmTileGroups.TileGroupViewer.hdc, Column * tile_size, Row * tile_size
-        
-        Column = Column + 1
-        If Column = Grhs_per_Row Then
-            Row = Row + 1
-            Column = 0
-        End If
-    Next LoopC
+    '****** Go do other events ******
+    DoEvents
+'    If Play Then
+'        If Not EstaSonandoVieja Then
+'            If frmMusica.Check1 = vbUnchecked Then
+'                    Play_Midi
+'            ElseIf frmMusica.Check1 = vbChecked Then
+'                Dim N As Integer
+'                N = RandomNumber(1, frmMusica.List1.ListCount)
+'                stopmidi
+'                CargarMIDI App.Path & MidiDir & "Mus" & N & ".mid"
+'                CurMidi = "Mus" & N & ".mid"
+'                frmMusica.MIdiAct.Caption = CurMidi
+'                Play_Midi
+'            End If
+'
+'        End If
+'    End If
+Loop
     
-    'Draw grid
-    If Draw_Grid Then
-        For LoopC = 1 To Grhs_per_Row - 1
-            frmTileGroups.Grid(LoopC).x1 = LoopC * tile_size - 1
-            frmTileGroups.Grid(LoopC).x2 = frmTileGroups.Grid(LoopC).x1
-            frmTileGroups.Grid(LoopC).Visible = True
-            frmTileGroups.Grid(LoopC).BorderColor = Grid_Color
-        Next LoopC
-        For LoopC = 7 To 9
-            frmTileGroups.Grid(LoopC).y1 = (LoopC - 6) * tile_size - 1
-            frmTileGroups.Grid(LoopC).y2 = frmTileGroups.Grid(LoopC).y1
-            frmTileGroups.Grid(LoopC).Visible = True
-            frmTileGroups.Grid(LoopC).BorderColor = Grid_Color
-        Next LoopC
+
+'*****************************************************************
+'Close Down
+'*****************************************************************
+
+'****** Check if map is saved ******
+If MapInfo.Changed = 1 Then
+    If MsgBox("Este mapa há sido modificado. Vas a perder todos los cambios si no lo grabas. Lo queres grabar ahora?", vbYesNo) = vbYes Then
+        Call SaveMapData(frmMain.Dialog.FileName)
+    End If
+End If
+
+'Unload engine
+DeInitTileEngine
+LiberarDirectSound
+'****** Unload forms and end******
+Dim f
+For Each f In Forms
+    Unload f
+Next
+End
+
+End Sub
+
+
+
+Function GetVar(File As String, Main As String, Var As String) As String
+'*****************************************************************
+'Get a var to from a text file
+'*****************************************************************
+Dim l As Integer
+Dim Char As String
+Dim sSpaces As String ' This will hold the input that the program will retrieve
+Dim szReturn As String ' This will be the defaul value if the string is not found
+
+szReturn = ""
+
+sSpaces = Space(5000) ' This tells the computer how long the longest string can be. If you want, you can change the number 75 to any number you wish
+
+
+getprivateprofilestring Main, Var, szReturn, sSpaces, Len(sSpaces), File
+
+GetVar = RTrim(sSpaces)
+GetVar = Left(GetVar, Len(GetVar) - 1)
+
+End Function
+
+Sub WriteVar(File As String, Main As String, Var As String, value As String)
+'*****************************************************************
+'Writes a var to a text file
+'*****************************************************************
+
+writeprivateprofilestring Main, Var, value, File
+
+End Sub
+
+Sub ToggleWalkMode()
+'*****************************************************************
+'Toggle walk mode on or off
+'*****************************************************************
+On Error GoTo fin:
+If WalkMode = False Then
+    WalkMode = True
+Else
+    WalkMode = False
+End If
+
+If WalkMode = False Then
+    'Erase character
+    Call EraseChar(UserCharIndex)
+    MapData(UserPos.X, UserPos.Y).CharIndex = 0
+Else
+    'MakeCharacter
+    If LegalPos(UserPos.X, UserPos.Y) Then
+        Call MakeChar(NextOpenChar(), 1, 1, SOUTH, UserPos.X, UserPos.Y)
+        UserCharIndex = MapData(UserPos.X, UserPos.Y).CharIndex
     Else
-        For LoopC = 1 To 9
-            frmTileGroups.Grid(LoopC).Visible = False
+        MsgBox "Error: ubicacion ilegal."
+        'frmMain.WalkModeChk.value = 0
+    End If
+End If
+fin:
+End Sub
+
+
+
+Sub FixCoasts(ByVal GrhIndex As Integer, ByVal X As Integer, ByVal Y As Integer)
+
+If GrhIndex = 7284 Or GrhIndex = 7290 Or GrhIndex = 7291 Or GrhIndex = 7297 Or _
+   GrhIndex = 7300 Or GrhIndex = 7301 Or GrhIndex = 7302 Or GrhIndex = 7303 Or _
+   GrhIndex = 7304 Or GrhIndex = 7306 Or GrhIndex = 7308 Or GrhIndex = 7310 Or _
+   GrhIndex = 7311 Or GrhIndex = 7313 Or GrhIndex = 7314 Or GrhIndex = 7315 Or _
+   GrhIndex = 7316 Or GrhIndex = 7317 Or GrhIndex = 7319 Or GrhIndex = 7321 Or _
+   GrhIndex = 7325 Or GrhIndex = 7326 Or GrhIndex = 7327 Or GrhIndex = 7328 Or GrhIndex = 7332 Or _
+   GrhIndex = 7338 Or GrhIndex = 7339 Or GrhIndex = 7345 Or GrhIndex = 7348 Or _
+   GrhIndex = 7349 Or GrhIndex = 7350 Or GrhIndex = 7351 Or GrhIndex = 7352 Or _
+   GrhIndex = 7349 Or GrhIndex = 7350 Or GrhIndex = 7351 Or _
+   GrhIndex = 7354 Or GrhIndex = 7357 Or GrhIndex = 7358 Or GrhIndex = 7360 Or _
+   GrhIndex = 7362 Or GrhIndex = 7363 Or GrhIndex = 7365 Or GrhIndex = 7366 Or _
+   GrhIndex = 7367 Or GrhIndex = 7368 Or GrhIndex = 7369 Or GrhIndex = 7371 Or _
+   GrhIndex = 7373 Or GrhIndex = 7375 Or GrhIndex = 7376 Then MapData(X, Y).Graphic(2).GrhIndex = 0
+
+End Sub
+
+Sub SaveMapData(SaveAs As String)
+Dim LoopC As Integer
+Dim TempInt As Integer
+Dim Y As Integer
+Dim X As Integer
+
+If FileExist(SaveAs, vbNormal) = True Then
+    If MsgBox("¿Desea sobrescribir" & SaveAs & ".x archivos?", vbYesNo) = vbNo Then
+        Exit Sub
+    End If
+End If
+
+'Change mouse icon
+frmMain.MousePointer = 11
+
+If FileExist(SaveAs, vbNormal) = True Then
+    Kill SaveAs
+End If
+
+If FileExist(Left(SaveAs, Len(SaveAs) - 4) & ".inf", vbNormal) = True Then
+    Kill Left(SaveAs, Len(SaveAs) - 4) & ".inf"
+End If
+
+'Open .map file
+Open SaveAs For Binary As #1
+Seek #1, 1
+
+
+SaveAs = Left(SaveAs, Len(SaveAs) - 4)
+SaveAs = SaveAs & ".inf"
+'Open .inf file
+Open SaveAs For Binary As #2
+Seek #2, 1
+'map Header
+If frmMain.Vers.Text = "" Then
+        Put #1, , 0
+Else
+        Put #1, , CInt(frmMain.Vers.Text)
+End If
+
+Put #1, , MiCabecera
+
+Put #1, , TempInt
+Put #1, , TempInt
+Put #1, , TempInt
+Put #1, , TempInt
+
+'inf Header
+Put #2, , TempInt
+Put #2, , TempInt
+Put #2, , TempInt
+Put #2, , TempInt
+Put #2, , TempInt
+
+'Write .map file
+For Y = YMinMapSize To YMaxMapSize
+    For X = XMinMapSize To XMaxMapSize
+        
+        '.map file
+        Put #1, , MapData(X, Y).Blocked
+        For LoopC = 1 To 4
+            If LoopC = 2 Then Call FixCoasts(MapData(X, Y).Graphic(LoopC).GrhIndex, X, Y)
+            Put #1, , MapData(X, Y).Graphic(LoopC).GrhIndex
         Next LoopC
-    End If
-    
+        
+        Put #1, , MapData(X, Y).Trigger
+        
+        Put #1, , TempInt
+        
+        '.inf file
+        'Tile exit
+        Put #2, , MapData(X, Y).TileExit.Map
+        Put #2, , MapData(X, Y).TileExit.X
+        Put #2, , MapData(X, Y).TileExit.Y
+        
+        'NPC
+        Put #2, , MapData(X, Y).NPCIndex
+        
+        'Object
+        Put #2, , MapData(X, Y).OBJInfo.objindex
+        Put #2, , MapData(X, Y).OBJInfo.Amount
+        
+        'Empty place holders for future expansion
+        Put #2, , TempInt
+        Put #2, , TempInt
+        
+    Next X
+Next Y
+
+'Close .map file
+Close #1
+
+'Close .inf file
+Close #2
+
+'write .dat file
+'SaveAs = Left(SaveAs, Len(SaveAs) - 4) & ".dat"
+SaveAs = Right(SaveAs, Len(SaveAs) - Len(App.Path & "\Mapas\") + 1)
+
+SaveAs = Left(SaveAs, Len(SaveAs) - 4) & ".dat"
+
+Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Name", MapInfo.Name)
+Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "MusicNum", frmMain.Text2.Text)
+Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "StartPos", MapInfo.StartPos.Map & "-" & MapInfo.StartPos.X & "-" & MapInfo.StartPos.Y)
+
+
+If frmCarac.Option1(0).value Then
+    Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Terreno", frmCarac.Option1(0).Caption)
+ElseIf frmCarac.Option1(1).value Then
+    Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Terreno", frmCarac.Option1(1).Caption)
+ElseIf frmCarac.Option1(2).value Then
+    Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Terreno", frmCarac.Option1(2).Caption)
+End If
+
+If frmCarac.Option2(0).value Then
+    Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Zona", frmCarac.Option2(0).Caption)
+ElseIf frmCarac.Option2(1).value Then
+    Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Zona", frmCarac.Option2(1).Caption)
+ElseIf frmCarac.Option2(2).value Then
+    Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Zona", frmCarac.Option2(2).Caption)
+End If
+
+If frmCarac.Check1 = vbChecked Then
+        Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Restringir", "Si")
+Else
+        Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "Restringir", "No")
+End If
+
+Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "MusicNum", frmMain.Text2.Text)
+Call WriteVar(App.Path & "\Maps\" & SaveAs, Left(SaveAs, Len(SaveAs) - 4), "StartPos", MapInfo.StartPos.Map & "-" & MapInfo.StartPos.X & "-" & MapInfo.StartPos.Y)
+
+'Change mouse icon
+frmMain.MousePointer = 0
+
+MsgBox ("Mapa guardado como " & Left(SaveAs, Len(SaveAs) - 4) & ".map")
+
 End Sub
 
-Public Function Tile_Group_Index_Get(ByVal X As Long, ByVal Y As Long) As Long
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 10/18/2003
-'Gets the grh index, based on the click coords
-'*************************************
-    Dim temp_x As Long
-    Dim temp_y As Long
-    Dim Grhs_per_Row As Long
-    Dim temp_grh As Long
-    
-    'Check there´s is a selected group
-    If Current_Group.Name = "" Then
-        Exit Function
-    End If
-    
-    temp_x = CLng(X \ tile_size)
-    temp_y = CLng(Y \ tile_size)
-    
-    'Calculate how many Grhs fit in a row
-    Grhs_per_Row = frmTileGroups.TileGroupViewer.ScaleWidth / tile_size
-    
-    temp_grh = temp_x + (temp_y * Grhs_per_Row + 1) + (TileGroupOffset * Grhs_per_Row)
-    
-    If temp_grh = 0 Then temp_grh = 1
-    
-    If temp_grh > UBound(Current_Group.GrhIndexes) Then temp_grh = UBound(Current_Group.GrhIndexes)
-    
-    Tile_Group_Index_Get = Current_Group.GrhIndexes(temp_grh)
-    
+
+
+Sub LoadOBJData()
+'*****************************************************************
+'Setup OBJ list
+'*****************************************************************
+Dim NumOBJs As Integer
+Dim Obj As Integer
+
+'Get Number of Maps
+NumOBJs = Val(GetVar(IniPath & "OBJ.dat", "INIT", "NumOBJs"))
+
+'Add OBJs to the OBJ list
+For Obj = 1 To NumOBJs
+     frmHerramientas.ObjLst.AddItem GetVar(IniPath & "OBJ.dat", "OBJ" & Obj, "Name")
+Next Obj
+
+End Sub
+
+Sub LoadTriggers()
+
+Dim Numt As Integer
+Dim t As Integer
+
+
+Numt = Val(GetVar(IniPath & "Triggers.dat", "INIT", "NumTriggers"))
+
+'Add OBJs to the OBJ list
+For t = 1 To Numt
+     frmHerramientas.triggerlist.AddItem GetVar(IniPath & "Triggers.dat", "Trig" & t, "Name")
+Next t
+
+End Sub
+
+Sub LoadNPCData()
+
+Dim NumNPCs As Integer
+Dim NumNPCsHOST As Integer
+Dim NPC As Integer
+
+NumNPCs = Val(GetVar(IniPath & "NPCs.dat", "INIT", "NumNPCs"))
+For NPC = 1 To NumNPCs
+    frmHerramientas.NPCLst.AddItem GetVar(IniPath & "NPCs.dat", "NPC" & NPC, "Name")
+Next NPC
+
+NumNPCsHOST = Val(GetVar(IniPath & "NPCs-HOSTILES.dat", "INIT", "NumNPCs"))
+For NPC = 1 To NumNPCsHOST
+    frmHerramientas.NPCHOSTLst.AddItem GetVar(IniPath & "NPCs-HOSTILES.dat", "NPC" & NPC + 499, "Name")
+Next NPC
+
+End Sub
+
+Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
+
+Randomize Timer
+
+RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
+
 End Function
 
-Public Sub Load_Triggers_Data_To_List(ByRef ListBoxName As ListBox)
-'*************************************
-'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-'Last Modified: 5/27/2003
-'Loads the Triggers.dat file to the given list
-'*************************************
-    Dim Numtriggers As Long
-    Dim trigger As Long
-    
-    Numtriggers = Val(General_Var_Get(App.Path & "\Triggers.dat", "INIT", "NumTriggers"))
-    
-    For trigger = 1 To Numtriggers
-        ListBoxName.AddItem General_Var_Get(App.Path & "\Triggers.dat", "TRIG" & trigger, "Name")
-    Next trigger
-    
-End Sub
-
-Public Sub Load_Particle_Streams_To_ComboBox(ByRef ComboBoxName As ComboBox)
-'*************************************
-'Coded by Onezero (onezero_ss@hotmail.com)
-'Last Modified: 6/4/2003
-'Loads the Particles.ini file to the ComboBox
-'Edited by Juan Martín Sotuyo Dodero to add speed and life
-'*************************************
-    Dim LoopC As Long
-    Dim i As Long
-    Dim GrhListing As String
-    Dim TempSet As String
-    Dim ColorSet As Long
-    Dim StreamFile As String
-    
-    StreamFile = resource_path & "\Particles.ini"
-    
-    TotalStreams = Val(General_Var_Get(StreamFile, "INIT", "Total"))
-    
-    'resize StreamData array
-    ReDim StreamData(1 To TotalStreams) As Stream
-    
-    'clear combo box
-    ComboBoxName.Clear
-    
-    'fill StreamData array with info from Particles.ini
-    For LoopC = 1 To TotalStreams
-        StreamData(LoopC).Name = General_Var_Get(StreamFile, Val(LoopC), "Name")
-        StreamData(LoopC).NumOfParticles = General_Var_Get(StreamFile, Val(LoopC), "NumOfParticles")
-        StreamData(LoopC).x1 = General_Var_Get(StreamFile, Val(LoopC), "X1")
-        StreamData(LoopC).y1 = General_Var_Get(StreamFile, Val(LoopC), "Y1")
-        StreamData(LoopC).x2 = General_Var_Get(StreamFile, Val(LoopC), "X2")
-        StreamData(LoopC).y2 = General_Var_Get(StreamFile, Val(LoopC), "Y2")
-        StreamData(LoopC).angle = General_Var_Get(StreamFile, Val(LoopC), "Angle")
-        StreamData(LoopC).vecx1 = General_Var_Get(StreamFile, Val(LoopC), "VecX1")
-        StreamData(LoopC).vecx2 = General_Var_Get(StreamFile, Val(LoopC), "VecX2")
-        StreamData(LoopC).vecy1 = General_Var_Get(StreamFile, Val(LoopC), "VecY1")
-        StreamData(LoopC).vecy2 = General_Var_Get(StreamFile, Val(LoopC), "VecY2")
-        StreamData(LoopC).life1 = General_Var_Get(StreamFile, Val(LoopC), "Life1")
-        StreamData(LoopC).life2 = General_Var_Get(StreamFile, Val(LoopC), "Life2")
-        StreamData(LoopC).friction = General_Var_Get(StreamFile, Val(LoopC), "Friction")
-        StreamData(LoopC).spin = General_Var_Get(StreamFile, Val(LoopC), "Spin")
-        StreamData(LoopC).spin_speedL = General_Var_Get(StreamFile, Val(LoopC), "Spin_SpeedL")
-        StreamData(LoopC).spin_speedH = General_Var_Get(StreamFile, Val(LoopC), "Spin_SpeedH")
-        StreamData(LoopC).AlphaBlend = General_Var_Get(StreamFile, Val(LoopC), "AlphaBlend")
-        StreamData(LoopC).gravity = General_Var_Get(StreamFile, Val(LoopC), "Gravity")
-        StreamData(LoopC).grav_strength = General_Var_Get(StreamFile, Val(LoopC), "Grav_Strength")
-        StreamData(LoopC).bounce_strength = General_Var_Get(StreamFile, Val(LoopC), "Bounce_Strength")
-        StreamData(LoopC).XMove = General_Var_Get(StreamFile, Val(LoopC), "XMove")
-        StreamData(LoopC).YMove = General_Var_Get(StreamFile, Val(LoopC), "YMove")
-        StreamData(LoopC).move_x1 = General_Var_Get(StreamFile, Val(LoopC), "move_x1")
-        StreamData(LoopC).move_x2 = General_Var_Get(StreamFile, Val(LoopC), "move_x2")
-        StreamData(LoopC).move_y1 = General_Var_Get(StreamFile, Val(LoopC), "move_y1")
-        StreamData(LoopC).move_y2 = General_Var_Get(StreamFile, Val(LoopC), "move_y2")
-        StreamData(LoopC).life_counter = General_Var_Get(StreamFile, Val(LoopC), "life_counter")
-        StreamData(LoopC).speed = Val(General_Var_Get(StreamFile, Val(LoopC), "Speed"))
-        
-        StreamData(LoopC).NumGrhs = General_Var_Get(StreamFile, Val(LoopC), "NumGrhs")
-        
-        ReDim StreamData(LoopC).grh_list(1 To StreamData(LoopC).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(LoopC), "Grh_List")
-        
-        For i = 1 To StreamData(LoopC).NumGrhs
-            StreamData(LoopC).grh_list(i) = General_Field_Read(Str(i), GrhListing, 44)
-        Next i
-        StreamData(LoopC).grh_list(i - 1) = StreamData(LoopC).grh_list(i - 1)
-        For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(LoopC), "ColorSet" & ColorSet)
-            StreamData(LoopC).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, 44)
-            StreamData(LoopC).colortint(ColorSet - 1).g = General_Field_Read(2, TempSet, 44)
-            StreamData(LoopC).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, 44)
-            DoEvents
-        Next ColorSet
-        
-        'fill stream type combo box
-        ComboBoxName.AddItem LoopC & " - " & StreamData(LoopC).Name
-    Next LoopC
-    
-    'set list box index to 1st item
-    ComboBoxName.ListIndex = 0
-
-End Sub
-
-Public Function Load_Grh_Tree(ByRef TreeName As TreeView, ByVal file_path As String) As Boolean
-'*************************************************
-'Coded by Juan Martín Sotuyo Dodero
-'Last Modified: 6/13/2004
-'Loads the Tile Script file to the given tree view
-'*************************************************
-On Local Error GoTo ErrHandler
-    Dim ScriptLine As String
-    Dim NodeLevel As Long
-    Dim NodeCount As Long
-    Dim GrhCount As Long
-    Dim ParentNodeKey As String
-    Dim LoopC As Long
-    Dim NodeX As Node
-    Dim FirstChar As String * 1
-    
-    'Check script file exists
-    If Not General_File_Exists(file_path, vbNormal) Then
-        MsgBox "File " & file_path & " doesn´t exist!", , "Error"
-        Exit Function
+Private Sub MostrarGrh()
+frmGrafico.ShowPic = frmGrafico.Picture1
+    If frmMain.MOSAICO = vbUnchecked Then
+        Call DrawGrhtoHdc(frmGrafico.ShowPic.hdc, CurrentGrh, 0, 0, 0, 0, SRCCOPY)
+    Else
+        Dim X As Integer, Y As Integer, j As Integer, i As Integer
+        Dim cont As Integer
+        For i = 1 To CInt(Val(frmMain.mLargo))
+            For j = 1 To CInt(Val(frmMain.mAncho))
+                Call DrawGrhtoHdc(frmGrafico.ShowPic.hdc, CurrentGrh, (j - 1) * 32, (i - 1) * 32, 0, 0, SRCCOPY)
+                If cont < CInt(Val(frmMain.mLargo)) * CInt(Val(frmMain.mAncho)) Then
+                    cont = cont + 1
+                    CurrentGrh.GrhIndex = CurrentGrh.GrhIndex + 1
+                End If
+            Next
+        Next
+        CurrentGrh.GrhIndex = CurrentGrh.GrhIndex - cont
     End If
-    
-    Open file_path For Input As #1
-    
-    Do Until EOF(1)
-        Line Input #1, ScriptLine
-        
-        'Get First Char
-        FirstChar = ScriptLine
-        
-        If FirstChar = "#" And left$(ScriptLine, 4) <> "#EOF" Then
-            NodeLevel = NodeLevel + 1
-            NodeCount = NodeCount + 1
-            'Check if it´s a child or a root
-            If NodeLevel = 1 Then
-                Set NodeX = TreeName.Nodes.Add(, , Str(NodeLevel) & "-" & Str(NodeCount), Right$(ScriptLine, Len(ScriptLine) - 1))
-            Else
-                Do Until Val(General_Field_Read(1, NodeX.Key, 45)) = NodeLevel - 1
-                    Set NodeX = NodeX.Parent
-                Loop
-                ParentNodeKey = NodeX.Key
-                Set NodeX = TreeName.Nodes.Add(ParentNodeKey, tvwChild, Str(NodeLevel) & "-" & Str(NodeCount), Right$(ScriptLine, Len(ScriptLine) - 1))
-            End If
-        End If
-        
-        If left$(ScriptLine, 4) = "#EOF" Then
-            NodeLevel = NodeLevel - 1
-            'Check if file has ended
-            If NodeLevel = -1 Then Exit Do
-            NodeCount = Val(General_Field_Read(2, NodeX.Parent.Key, 45))
-        End If
-        
-        If FirstChar = "$" Then
-            GrhCount = GrhCount + 1
-            Set NodeX = TreeName.Nodes.Add(Str(NodeLevel) & "-" & Str(NodeCount), tvwChild, "grh" & Str(GrhCount), "< On " & frmMain.GrhLayerList.List(Val(Right$(ScriptLine, Len(ScriptLine) - 1)) - 1) & " Layer >")
-        End If
-        
-        If FirstChar = ">" Then
-            GrhCount = GrhCount + 1
-            If left$(ScriptLine, 2) = ">$" Then
-                'Parent is a Grh
-                Set NodeX = TreeName.Nodes.Add("grh" & "-" & Str(GrhCount - 1), tvwChild, "grh" & Str(GrhCount), "< On " & frmMain.GrhLayerList.List(Val(Right$(ScriptLine, Len(ScriptLine) - 1)) - 1) & " Layer >")
-            Else
-                Set NodeX = TreeName.Nodes.Add(Str(NodeLevel) & "-" & Str(NodeCount), tvwChild, "grh" & Str(GrhCount), "Grh " & Right$(ScriptLine, Len(ScriptLine) - 1))
-            End If
-        End If
-        
-        DoEvents
-    Loop
-    
-    Set NodeX = Nothing
-    Close #1
-    Load_Grh_Tree = True
-Exit Function
+     
+frmGrafico.ShowPic.Picture = frmGrafico.ShowPic.Image
+frmMain.Picture3 = frmGrafico.ShowPic
 
-ErrHandler:
-    MsgBox "Incorrect Script found. Aborting."
-    Set NodeX = Nothing
-    prgRun = False
-    Close #1
-End Function
+    
+
+End Sub
