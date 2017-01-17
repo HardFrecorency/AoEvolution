@@ -1,9 +1,6 @@
 Attribute VB_Name = "Declaraciones"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -34,6 +31,10 @@ Attribute VB_Name = "Declaraciones"
 
 Option Explicit
 
+Public MixedKey As Long
+Public ServerIp As String
+Public CrcSubKey As String
+
 Type tEstadisticasDiarias
     Segundos As Double
     MaxUsuarios As Integer
@@ -60,7 +61,7 @@ Public Type tLlamadaGM
     Desc As String * 255
 End Type
 
-Public Const LimiteNewbie = 12
+Public Const LimiteNewbie = 8
 
 Public Type tCabecera 'Cabecera de los con
     Desc As String * 255
@@ -191,7 +192,7 @@ Public Const SOUTH = 3
 Public Const WEST = 4
 
 
-Public Const MAXMASCOTAS = 6
+Public Const MAXMASCOTAS = 3
 
 '%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
 Public Const vlASALTO = 100
@@ -441,10 +442,10 @@ Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
     
     Materializa As Byte
-    itemIndex As Byte
+    ItemIndex As Byte
     
     MinSkill As Integer
     ManaRequerido As Integer
@@ -485,14 +486,14 @@ End Type
 
 
 Type Position
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 End Type
 
 Type WorldPos
     Map As Integer
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 End Type
 
 Type FXdata
@@ -625,9 +626,19 @@ End Type
 Public Type Obj
     ObjIndex As Integer
     Amount As Integer
-    
 End Type
 
+'[KEVIN]
+'Banco Objs
+Public Const MAX_BANCOINVENTORY_SLOTS = 40
+'[/KEVIN]
+
+'[KEVIN]
+Type BancoInventario
+    Object(1 To MAX_BANCOINVENTORY_SLOTS) As UserOBJ
+    NroItems As Integer
+End Type
+'[/KEVIN]
 
 
 '*********************************************************
@@ -702,13 +713,6 @@ Type UserFlags
     Descuento As String
     Hambre As Byte
     Sed As Byte
-    LastAtacar  As Long
-    LastSpell As Long
-    LastWork As Long
-    LastUsar As Long
-    TimesWalk As Long
-    StartWalk As Long
-    CountSH As Long
     PuedeAtacar As Byte
     PuedeMoverse As Byte
     PuedeLanzarSpell As Byte
@@ -787,6 +791,10 @@ Type UserCounters
     Pena As Long
     SendMapCounter As WorldPos
     Pasos As Integer
+    '[Gonzalo]
+    Saliendo As Boolean
+    Salir As Integer
+    '[/Gonzalo]
 End Type
 
 Type tFacciones
@@ -846,6 +854,11 @@ Type User
     
     CommandsBuffer As New CColaArray
     
+    '[KEVIN]
+    BancoInvent As BancoInventario
+    '[/KEVIN]
+    
+    
     Counters As UserCounters
     
     MascotasIndex(1 To MAXMASCOTAS) As Integer
@@ -853,7 +866,7 @@ Type User
     NroMacotas As Integer
     
     Stats As UserStats
-    Flags As UserFlags
+    flags As UserFlags
     NumeroPaquetesPorMiliSec As Long
     BytesTransmitidosUser As Long
     BytesTransmitidosSvr As Long
@@ -867,18 +880,14 @@ Type User
     PrevCRC As Long
     PacketNumber As Long
     RandKey As Long
-        
+    
     ip As String
     
-    ClaseModificadorEvasion As Currency
-    ClaseModificadorPoderAtaqueArmas As Currency
-    ClaseModificadorPoderAtaqueProyectiles As Currency
-    ClaseModicadorDañoClaseArmas As Currency
-    ClaseModicadorDañoClaseProyectiles As Currency
-    ClaseModEvasionDeEscudoClase As Currency
-    NivelModificador As Currency
+     '[Alejo]
+    ComUsu As tCOmercioUsuario
+    '[/Alejo]
     
-
+    AntiCuelgue As Long
 End Type
 
 
@@ -976,7 +985,8 @@ Type NpcPathFindingInfo
 End Type
 '<--------- New type for holding the pathfinding info ------>
 
-Type Npc
+
+Type npc
     Name As String
     Char As Char 'Define como se vera
     Desc As String
@@ -984,7 +994,7 @@ Type Npc
     NPCtype As Integer
     Numero As Integer
     
-    Level As Integer
+    level As Integer
     
     InvReSpawn As Byte
     
@@ -1011,7 +1021,7 @@ Type Npc
     GiveGLD As Long
     
     Stats As NPCStats
-    Flags As NPCFlags
+    flags As NPCFlags
     Contadores As NpcCounters
     
     Invent As Inventario
@@ -1032,6 +1042,8 @@ Type Npc
     
     '<---------New!! Needed for pathfindig----------->
     PFINFO As NpcPathFindingInfo
+
+    
 End Type
 
 '**********************************************************
@@ -1047,7 +1059,7 @@ Type MapBlock
     NpcIndex As Integer
     OBJInfo As Obj
     TileExit As WorldPos
-    Trigger As Integer
+    trigger As Integer
 End Type
 
 'Info del mapa
@@ -1118,12 +1130,11 @@ Public Minutos As String
 Public haciendoBK As Boolean
 Public Oscuridad As Integer
 Public NocheDia As Integer
-
+Public PuedeCrearPersonajes As Byte
 
 '*****************ARRAYS PUBLICOS*************************
-Public SocketHandle() As Long
 Public UserList() As User 'USUARIOS
-Public Npclist() As Npc 'NPCS
+Public Npclist() As npc 'NPCS
 Public MapData() As MapBlock
 Public MapInfo() As MapInfo
 Public Hechizos() As tHechizo
@@ -1136,8 +1147,8 @@ Public ForbidenNames() As String
 Public ArmasHerrero() As Integer
 Public ArmadurasHerrero() As Integer
 Public ObjCarpintero() As Integer
-Public GameInputMapArray() As Integer
-Public GameOutputIndexArray() As Integer
+Public MD5s() As String
+Public BanIps As New Collection
 '*********************************************************
 
 Public Nix As WorldPos
@@ -1151,11 +1162,13 @@ Public Libertad As WorldPos
 
 Public Ayuda As New cCola
 
+Public Declare Function GetTickCount Lib "kernel32" () As Long
+
 
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
 Public Declare Function getprivateprofilestring Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
 Public Declare Function sndPlaySound Lib "winmm.dll" Alias "sndPlaySoundA" (ByVal lpszSoundName As String, ByVal uFlags As Long) As Long
-Public Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
+Public Declare Function GenCrC Lib "crc" Alias "GenCrc" (ByVal CrcKey As Long, ByVal CrcString As String) As Long
 
 
 Sub PlayWaveAPI(file As String)

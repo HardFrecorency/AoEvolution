@@ -11,11 +11,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -43,7 +40,6 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
 
 'this member variables should be private.. but i
@@ -76,7 +72,7 @@ Public Elections As Boolean
 
 Private Type tVotes
         Name As String
-        cant As Long
+        Cant As Long
 End Type
 
 
@@ -471,10 +467,10 @@ Public Function IsEnemy(ByVal GuildName As String) As Boolean
 
 Dim k As Integer
 
-GuildName = UCase(GuildName)
+GuildName = UCase$(GuildName)
 
 For k = 1 To EnemyGuilds.Count
-    If UCase(EnemyGuilds(k)) = GuildName Then
+    If UCase$(EnemyGuilds(k)) = GuildName Then
             IsEnemy = True
             Exit Function
     End If
@@ -487,10 +483,10 @@ Public Function IsAllie(ByVal GuildName As String) As Boolean
 
 Dim k As Integer
 
-GuildName = UCase(GuildName)
+GuildName = UCase$(GuildName)
 
 For k = 1 To AlliedGuilds.Count
-    If UCase(AlliedGuilds(k)) = GuildName Then
+    If UCase$(AlliedGuilds(k)) = GuildName Then
             IsAllie = True
             Exit Function
     End If
@@ -503,10 +499,10 @@ Public Function SolicitudesIncludes(ByVal UserName As String) As Boolean
 Dim k As Integer
 
 
-UserName = UCase(UserName)
+UserName = UCase$(UserName)
 
 For k = 1 To Solicitudes.Count
-    If UCase(Solicitudes(k).UserName) = UserName Then
+    If UCase$(Solicitudes(k).UserName) = UserName Then
             SolicitudesIncludes = True
             Exit Function
     End If
@@ -520,10 +516,10 @@ Public Sub RemoveSolicitud(ByVal UserName As String)
 Dim k As Integer
 
 
-UserName = UCase(UserName)
+UserName = UCase$(UserName)
 
 For k = 1 To Solicitudes.Count
-    If UCase(Solicitudes(k).UserName) = UserName Then
+    If UCase$(Solicitudes(k).UserName) = UserName Then
             Call Solicitudes.Remove(k)
             Exit Sub
     End If
@@ -538,10 +534,10 @@ Public Sub RemoveProposition(ByVal UserName As String)
 Dim k As Integer
 
 
-UserName = UCase(UserName)
+UserName = UCase$(UserName)
 
 For k = 1 To PeacePropositions.Count
-    If UCase(PeacePropositions(k).UserName) = UserName Then
+    If UCase$(PeacePropositions(k).UserName) = UserName Then
             Call PeacePropositions.Remove(k)
             Exit Sub
     End If
@@ -554,9 +550,9 @@ End Sub
 
 Public Sub RemoveAllie(ByVal Name As String)
 Dim k As Integer
-Name = UCase(Name)
+Name = UCase$(Name)
 For k = 1 To AlliedGuilds.Count
-    If UCase(AlliedGuilds(k)) = Name Then
+    If UCase$(AlliedGuilds(k)) = Name Then
             Call AlliedGuilds.Remove(k)
             Exit Sub
     End If
@@ -565,9 +561,9 @@ End Sub
 
 Public Sub RemoveEnemy(ByVal Name As String)
 Dim k As Integer
-Name = UCase(Name)
+Name = UCase$(Name)
 For k = 1 To EnemyGuilds.Count
-    If UCase(EnemyGuilds(k)) = Name Then
+    If UCase$(EnemyGuilds(k)) = Name Then
             Call EnemyGuilds.Remove(k)
             Exit Sub
     End If
@@ -580,10 +576,10 @@ Public Sub RemoveMember(ByVal UserName As String)
 Dim k As Integer
 
 
-UserName = UCase(UserName)
+UserName = UCase$(UserName)
 
 For k = 1 To Members.Count
-    If UCase(Members(k)) = UserName Then
+    If UCase$(Members(k)) = UserName Then
             Call Members.Remove(k)
             Exit Sub
     End If
@@ -602,10 +598,10 @@ Public Function GetPeaceRequest(ByVal UserName As String) As cSolicitud
 Dim k As Integer
 
 
-UserName = UCase(UserName)
+UserName = UCase$(UserName)
 
 For k = 1 To PeacePropositions.Count
-    If UCase(PeacePropositions(k).UserName) = UserName Then
+    If UCase$(PeacePropositions(k).UserName) = UserName Then
             Set GetPeaceRequest = PeacePropositions(k)
             Exit Function
     End If
@@ -630,10 +626,10 @@ Public Function GetSolicitud(ByVal UserName As String) As cSolicitud
 Dim k As Integer
 
 
-UserName = UCase(UserName)
+UserName = UCase$(UserName)
 
 For k = 1 To Solicitudes.Count
-    If UCase(Solicitudes(k).UserName) = UserName Then
+    If UCase$(Solicitudes(k).UserName) = UserName Then
             Set GetSolicitud = Solicitudes(k)
             Exit Function
     End If
@@ -646,10 +642,10 @@ Public Function IncludesPeaceOffer(ByVal Name As String) As Boolean
 
 Dim k As Integer
 
-Name = UCase(Name)
+Name = UCase$(Name)
 
 For k = 1 To PeacePropositions.Count
-    If UCase(PeacePropositions(k).UserName) = Name Then
+    If UCase$(PeacePropositions(k).UserName) = Name Then
             IncludesPeaceOffer = True
             Exit Function
     End If
@@ -673,10 +669,10 @@ Public Function IsMember(ByVal Name As String) As Boolean
 
 Dim k As Integer
 
-Name = UCase(Name)
+Name = UCase$(Name)
 
 For k = 1 To Members.Count
-    If UCase(Members(k)) = Name Then
+    If UCase$(Members(k)) = Name Then
             IsMember = True
             Exit Function
     End If
@@ -702,7 +698,7 @@ ReDim totals(1 To Members.Count)
 For j = 1 To Members.Count
 
     totals(j).Name = Members(j)
-    totals(j).cant = 0
+    totals(j).Cant = 0
     
 Next j
 
@@ -710,8 +706,8 @@ Next j
 For j = 1 To Votes.Count
     
     For c = 1 To Members.Count
-        If UCase(totals(c).Name) = UCase(Votes(j)) Then
-            totals(c).cant = totals(c).cant + 1
+        If UCase$(totals(c).Name) = UCase$(Votes(j)) Then
+            totals(c).Cant = totals(c).Cant + 1
             Exit For
         End If
     Next c
@@ -722,8 +718,8 @@ Dim max As Integer
 max = -1
 
 For j = 1 To Members.Count
-    If totals(j).cant > max Then
-            max = totals(j).cant
+    If totals(j).Cant > max Then
+            max = totals(j).Cant
             NuevoLider = totals(j).Name
     End If
 Next j

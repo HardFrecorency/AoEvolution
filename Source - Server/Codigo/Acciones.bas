@@ -1,9 +1,6 @@
 Attribute VB_Name = "Acciones"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -31,8 +28,6 @@ Attribute VB_Name = "Acciones"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
-
 Option Explicit
 
 
@@ -151,25 +146,25 @@ On Error Resume Next
 
 '¿Hay mensajes?
 Dim f As String, tit As String, men As String, base As String, auxcad As String
-f = App.Path & "\foros\" & UCase(ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).ForoID) & ".for"
+f = App.Path & "\foros\" & UCase$(ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).ForoID) & ".for"
 If FileExist(f, vbNormal) Then
     Dim num As Integer
     num = val(GetVar(f, "INFO", "CantMSG"))
-    base = Left(f, Len(f) - 4)
+    base = Left$(f, Len(f) - 4)
     Dim i As Integer
-    Dim n As Integer
+    Dim N As Integer
     For i = 1 To num
-        n = FreeFile
+        N = FreeFile
         f = base & i & ".for"
-        Open f For Input Shared As #n
-        Input #n, tit
+        Open f For Input Shared As #N
+        Input #N, tit
         men = ""
         auxcad = ""
-        Do While Not EOF(n)
-            Input #n, auxcad
+        Do While Not EOF(N)
+            Input #N, auxcad
             men = men & vbCrLf & auxcad
         Loop
-        Close #n
+        Close #N
         Call SendData(ToIndex, UserIndex, 0, "FMSG" & tit & Chr(176) & men)
         
     Next

@@ -1,9 +1,6 @@
 Attribute VB_Name = "Extra"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -32,6 +29,7 @@ Attribute VB_Name = "Extra"
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
+
 Option Explicit
 
 Public Function EsNewbie(ByVal UserIndex As Integer) As Boolean
@@ -55,26 +53,22 @@ If InMapBounds(Map, X, Y) Then
     
     If MapData(Map, X, Y).TileExit.Map > 0 Then
         '¿Es mapa de newbies?
-        If UCase(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "SI" Then
+        If UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "SI" Then
             '¿El usuario es un newbie?
             If EsNewbie(UserIndex) Then
                 If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
                     If FxFlag Then '¿FX?
                         Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
-                        Exit Sub
                     Else
                         Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y)
-                        Exit Sub
                     End If
                 Else
                     Call ClosestLegalPos(MapData(Map, X, Y).TileExit, nPos)
                     If nPos.X <> 0 And nPos.Y <> 0 Then
                         If FxFlag Then
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, True)
-                            Exit Sub
                         Else
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
-                            Exit Sub
                         End If
                     End If
                 End If
@@ -84,27 +78,22 @@ If InMapBounds(Map, X, Y) Then
                 Call ClosestLegalPos(UserList(UserIndex).Pos, nPos)
                 If nPos.X <> 0 And nPos.Y <> 0 Then
                         Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
-                        Exit Sub
                 End If
             End If
         Else 'No es un mapa de newbies
             If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
                 If FxFlag Then
                     Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
-                    Exit Sub
                 Else
                     Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y)
-                    Exit Sub
                 End If
             Else
                 Call ClosestLegalPos(MapData(Map, X, Y).TileExit, nPos)
                 If nPos.X <> 0 And nPos.Y <> 0 Then
                     If FxFlag Then
                         Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, True)
-                        Exit Sub
                     Else
                         Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
-                        Exit Sub
                     End If
                 End If
             End If
@@ -120,15 +109,24 @@ errhandler:
 
 End Sub
 
+Function InRangoVision(ByVal UserIndex As Integer, X As Integer, Y As Integer) As Boolean
+
+If X > UserList(UserIndex).Pos.X - MinXBorder And X < UserList(UserIndex).Pos.X + MinXBorder Then
+    If Y > UserList(UserIndex).Pos.Y - MinYBorder And Y < UserList(UserIndex).Pos.Y + MinYBorder Then
+        InRangoVision = True
+        Exit Function
+    End If
+End If
+InRangoVision = False
+
+End Function
 
 Function InMapBounds(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 
 If X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder Then
     InMapBounds = False
-    Exit Function
 Else
     InMapBounds = True
-    Exit Function
 End If
 
 End Function
@@ -188,7 +186,7 @@ If Name = "" Then
 End If
   
 UserIndex = 1
-Do Until UCase(Left$(UserList(UserIndex).Name, Len(Name))) = UCase(Name)
+Do Until UCase$(Left$(UserList(UserIndex).Name, Len(Name))) = UCase$(Name)
     
     UserIndex = UserIndex + 1
     
@@ -201,10 +199,39 @@ Loop
 NameIndex = UserIndex
 End Function
 
+
+Function IP_Index(ByVal inIP As String) As Integer
+On Error GoTo local_errHand
+
+Dim UserIndex As Integer
+'¿Nombre valido?
+If inIP = "" Then
+    IP_Index = 0
+    Exit Function
+End If
+  
+UserIndex = 1
+Do Until UserList(UserIndex).ip = inIP
+    
+    UserIndex = UserIndex + 1
+    
+    If UserIndex > MaxUsers Then
+        IP_Index = 0
+        Exit Do
+    End If
+    
+Loop
+
+local_errHand:
+    
+    IP_Index = UserIndex
+
+End Function
+
 Function CheckForSameIP(ByVal UserIndex As Integer, ByVal UserIP As String) As Boolean
 Dim LoopC As Integer
 For LoopC = 1 To MaxUsers
-    If UserList(LoopC).Flags.UserLogged = True Then
+    If UserList(LoopC).flags.UserLogged = True Then
         If UserList(LoopC).ip = UserIP And UserIndex <> LoopC Then
             CheckForSameIP = True
             Exit Function
@@ -218,8 +245,8 @@ Function CheckForSameName(ByVal UserIndex As Integer, ByVal Name As String) As B
 'Controlo que no existan usuarios con el mismo nombre
 Dim LoopC As Integer
 For LoopC = 1 To MaxUsers
-    If UserList(LoopC).Flags.UserLogged Then
-        If UCase$(UserList(LoopC).Name) = UCase$(Name) Then
+    If UserList(LoopC).flags.UserLogged Then
+        If UCase$(UserList(LoopC).Name) = UCase$(Name) And UserList(LoopC).ConnID <> -1 Then
             CheckForSameName = True
             Exit Function
         End If
@@ -232,26 +259,38 @@ Sub HeadtoPos(Head As Byte, ByRef Pos As WorldPos)
 '*****************************************************************
 'Toma una posicion y se mueve hacia donde esta perfilado
 '*****************************************************************
+Dim X As Integer
+Dim Y As Integer
+Dim tempVar As Single
+Dim nX As Integer
+Dim nY As Integer
+
+X = Pos.X
+Y = Pos.Y
 
 If Head = NORTH Then
-    Pos.Y = Pos.Y - 1
-    Exit Sub
+    nX = X
+    nY = Y - 1
 End If
 
 If Head = SOUTH Then
-    Pos.Y = Pos.Y + 1
-    Exit Sub
+    nX = X
+    nY = Y + 1
 End If
 
 If Head = EAST Then
-    Pos.X = Pos.X + 1
-    Exit Sub
+    nX = X + 1
+    nY = Y
 End If
 
 If Head = WEST Then
-    Pos.X = Pos.X - 1
-    Exit Sub
+    nX = X - 1
+    nY = Y
 End If
+
+'Devuelve valores
+Pos.X = nX
+Pos.Y = nY
 
 End Sub
 
@@ -261,7 +300,6 @@ Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, 
 If (Map <= 0 Or Map > NumMaps) Or _
    (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
             LegalPos = False
-            Exit Function
 Else
   
   If Not PuedeAgua Then
@@ -269,13 +307,11 @@ Else
                    (MapData(Map, X, Y).UserIndex = 0) And _
                    (MapData(Map, X, Y).NpcIndex = 0) And _
                    (Not HayAgua(Map, X, Y))
-        Exit Function
   Else
         LegalPos = (MapData(Map, X, Y).Blocked <> 1) And _
                    (MapData(Map, X, Y).UserIndex = 0) And _
                    (MapData(Map, X, Y).NpcIndex = 0) And _
                    (HayAgua(Map, X, Y))
-        Exit Function
   End If
    
 End If
@@ -289,22 +325,19 @@ Function LegalPosNPC(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
 If (Map <= 0 Or Map > NumMaps) Or _
    (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
     LegalPosNPC = False
-    Exit Function
 Else
 
  If AguaValida = 0 Then
    LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
      (MapData(Map, X, Y).UserIndex = 0) And _
      (MapData(Map, X, Y).NpcIndex = 0) And _
-     (MapData(Map, X, Y).Trigger <> POSINVALIDA) _
+     (MapData(Map, X, Y).trigger <> POSINVALIDA) _
      And Not HayAgua(Map, X, Y)
-     Exit Function
  Else
    LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
      (MapData(Map, X, Y).UserIndex = 0) And _
      (MapData(Map, X, Y).NpcIndex = 0) And _
-     (MapData(Map, X, Y).Trigger <> POSINVALIDA)
-     Exit Function
+     (MapData(Map, X, Y).trigger <> POSINVALIDA)
  End If
  
 End If
@@ -341,46 +374,46 @@ Dim Stat As String
 
 '¿Posicion valida?
 If InMapBounds(Map, X, Y) Then
-    UserList(UserIndex).Flags.TargetMap = Map
-    UserList(UserIndex).Flags.TargetX = X
-    UserList(UserIndex).Flags.TargetY = Y
+    UserList(UserIndex).flags.TargetMap = Map
+    UserList(UserIndex).flags.TargetX = X
+    UserList(UserIndex).flags.TargetY = Y
     '¿Es un obj?
     If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
         'Informa el nombre
         Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-        UserList(UserIndex).Flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
-        UserList(UserIndex).Flags.TargetObjMap = Map
-        UserList(UserIndex).Flags.TargetObjX = X
-        UserList(UserIndex).Flags.TargetObjY = Y
+        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
+        UserList(UserIndex).flags.TargetObjMap = Map
+        UserList(UserIndex).flags.TargetObjX = X
+        UserList(UserIndex).flags.TargetObjY = Y
         FoundSomething = 1
     ElseIf MapData(Map, X + 1, Y).OBJInfo.ObjIndex > 0 Then
         'Informa el nombre
         If ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).ObjType = OBJTYPE_PUERTAS Then
             Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-            UserList(UserIndex).Flags.TargetObj = MapData(Map, X + 1, Y).OBJInfo.ObjIndex
-            UserList(UserIndex).Flags.TargetObjMap = Map
-            UserList(UserIndex).Flags.TargetObjX = X + 1
-            UserList(UserIndex).Flags.TargetObjY = Y
+            UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).OBJInfo.ObjIndex
+            UserList(UserIndex).flags.TargetObjMap = Map
+            UserList(UserIndex).flags.TargetObjX = X + 1
+            UserList(UserIndex).flags.TargetObjY = Y
             FoundSomething = 1
         End If
     ElseIf MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex > 0 Then
         If ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).ObjType = OBJTYPE_PUERTAS Then
             'Informa el nombre
             Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-            UserList(UserIndex).Flags.TargetObj = MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex
-            UserList(UserIndex).Flags.TargetObjMap = Map
-            UserList(UserIndex).Flags.TargetObjX = X + 1
-            UserList(UserIndex).Flags.TargetObjY = Y + 1
+            UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex
+            UserList(UserIndex).flags.TargetObjMap = Map
+            UserList(UserIndex).flags.TargetObjX = X + 1
+            UserList(UserIndex).flags.TargetObjY = Y + 1
             FoundSomething = 1
         End If
     ElseIf MapData(Map, X, Y + 1).OBJInfo.ObjIndex > 0 Then
         If ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).ObjType = OBJTYPE_PUERTAS Then
             'Informa el nombre
             Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-            UserList(UserIndex).Flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
-            UserList(UserIndex).Flags.TargetObjMap = Map
-            UserList(UserIndex).Flags.TargetObjX = X
-            UserList(UserIndex).Flags.TargetObjY = Y + 1
+            UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
+            UserList(UserIndex).flags.TargetObjMap = Map
+            UserList(UserIndex).flags.TargetObjX = X
+            UserList(UserIndex).flags.TargetObjY = Y + 1
             FoundSomething = 1
         End If
     End If
@@ -411,12 +444,12 @@ If InMapBounds(Map, X, Y) Then
     'Reaccion al personaje
     If FoundChar = 1 Then '  ¿Encontro un Usuario?
             
-       If UserList(TempCharIndex).Flags.AdminInvisible = 0 Then
-
+       If UserList(TempCharIndex).flags.AdminInvisible = 0 Then
+            
             If EsNewbie(TempCharIndex) Then
                 Stat = " <NEWBIE>"
             End If
-            
+
             If UserList(TempCharIndex).Faccion.ArmadaReal = 1 Then
                 Stat = Stat & " <Ejercito real> " & "<" & TituloReal(TempCharIndex) & ">"
             ElseIf UserList(TempCharIndex).Faccion.FuerzasCaos = 1 Then
@@ -430,11 +463,13 @@ If InMapBounds(Map, X, Y) Then
             If Len(UserList(TempCharIndex).Desc) > 1 Then
                 Stat = "||Ves a " & UserList(TempCharIndex).Name & Stat & " - " & UserList(TempCharIndex).Desc
             Else
-                Call SendData(ToIndex, UserIndex, 0, "||Ves a " & UserList(TempCharIndex).Name & Stat)
+                'Call SendData(ToIndex, UserIndex, 0, "||Ves a " & UserList(TempCharIndex).Name & Stat)
                 Stat = "||Ves a " & UserList(TempCharIndex).Name & Stat
             End If
             
-            If Criminal(TempCharIndex) Then
+            If UserList(TempCharIndex).flags.Privilegios > 0 Then
+                Stat = Stat & " <GAME MASTER> ~0~185~0~1~0"
+            ElseIf Criminal(TempCharIndex) Then
                 Stat = Stat & " <CRIMINAL> ~255~0~0~1~0"
             Else
                 Stat = Stat & " <CIUDADANO> ~0~0~200~1~0"
@@ -444,9 +479,9 @@ If InMapBounds(Map, X, Y) Then
                 
             
             FoundSomething = 1
-            UserList(UserIndex).Flags.TargetUser = TempCharIndex
-            UserList(UserIndex).Flags.TargetNpc = 0
-            UserList(UserIndex).Flags.TargetNpcTipo = 0
+            UserList(UserIndex).flags.TargetUser = TempCharIndex
+            UserList(UserIndex).flags.TargetNpc = 0
+            UserList(UserIndex).flags.TargetNpcTipo = 0
        
        End If
        
@@ -465,40 +500,40 @@ If InMapBounds(Map, X, Y) Then
                 
             End If
             FoundSomething = 1
-            UserList(UserIndex).Flags.TargetNpcTipo = Npclist(TempCharIndex).NPCtype
-            UserList(UserIndex).Flags.TargetNpc = TempCharIndex
-            UserList(UserIndex).Flags.TargetUser = 0
-            UserList(UserIndex).Flags.TargetObj = 0
+            UserList(UserIndex).flags.TargetNpcTipo = Npclist(TempCharIndex).NPCtype
+            UserList(UserIndex).flags.TargetNpc = TempCharIndex
+            UserList(UserIndex).flags.TargetUser = 0
+            UserList(UserIndex).flags.TargetObj = 0
         
     End If
     
     If FoundChar = 0 Then
-        UserList(UserIndex).Flags.TargetNpc = 0
-        UserList(UserIndex).Flags.TargetNpcTipo = 0
-        UserList(UserIndex).Flags.TargetUser = 0
+        UserList(UserIndex).flags.TargetNpc = 0
+        UserList(UserIndex).flags.TargetNpcTipo = 0
+        UserList(UserIndex).flags.TargetUser = 0
     End If
     
     '*** NO ENCOTRO NADA ***
     If FoundSomething = 0 Then
-        UserList(UserIndex).Flags.TargetNpc = 0
-        UserList(UserIndex).Flags.TargetNpcTipo = 0
-        UserList(UserIndex).Flags.TargetUser = 0
-        UserList(UserIndex).Flags.TargetObj = 0
-        UserList(UserIndex).Flags.TargetObjMap = 0
-        UserList(UserIndex).Flags.TargetObjX = 0
-        UserList(UserIndex).Flags.TargetObjY = 0
+        UserList(UserIndex).flags.TargetNpc = 0
+        UserList(UserIndex).flags.TargetNpcTipo = 0
+        UserList(UserIndex).flags.TargetUser = 0
+        UserList(UserIndex).flags.TargetObj = 0
+        UserList(UserIndex).flags.TargetObjMap = 0
+        UserList(UserIndex).flags.TargetObjX = 0
+        UserList(UserIndex).flags.TargetObjY = 0
         Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
 
 Else
     If FoundSomething = 0 Then
-        UserList(UserIndex).Flags.TargetNpc = 0
-        UserList(UserIndex).Flags.TargetNpcTipo = 0
-        UserList(UserIndex).Flags.TargetUser = 0
-        UserList(UserIndex).Flags.TargetObj = 0
-        UserList(UserIndex).Flags.TargetObjMap = 0
-        UserList(UserIndex).Flags.TargetObjX = 0
-        UserList(UserIndex).Flags.TargetObjY = 0
+        UserList(UserIndex).flags.TargetNpc = 0
+        UserList(UserIndex).flags.TargetNpcTipo = 0
+        UserList(UserIndex).flags.TargetUser = 0
+        UserList(UserIndex).flags.TargetObj = 0
+        UserList(UserIndex).flags.TargetObjMap = 0
+        UserList(UserIndex).flags.TargetObjX = 0
+        UserList(UserIndex).flags.TargetObjY = 0
         Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
 End If

@@ -1,9 +1,6 @@
 Attribute VB_Name = "AI"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -218,9 +215,13 @@ Call RestoreOldMovement(NpcIndex)
 End Sub
 
 Private Sub RestoreOldMovement(ByVal NpcIndex As Integer)
-Npclist(NpcIndex).Movement = Npclist(NpcIndex).Flags.OldMovement
-Npclist(NpcIndex).Hostile = Npclist(NpcIndex).Flags.OldHostil
-Npclist(NpcIndex).Flags.AttackedBy = ""
+
+If Npclist(NpcIndex).MaestroUser = 0 Then
+    Npclist(NpcIndex).Movement = Npclist(NpcIndex).Flags.OldMovement
+    Npclist(NpcIndex).Hostile = Npclist(NpcIndex).Flags.OldHostil
+    Npclist(NpcIndex).Flags.AttackedBy = ""
+End If
+
 End Sub
 
 
@@ -341,7 +342,7 @@ On Error GoTo ErrorHandler
         Else
             'Evitamos que ataque a su amo, a menos
             'que el amo lo ataque.
-            Call HostilBuenoAI(NpcIndex)
+            'Call HostilBuenoAI(NpcIndex)
         End If
         
         '<<<<<<<<<<<Movimiento>>>>>>>>>>>>>>>>
@@ -499,28 +500,27 @@ Dim X As Integer
 
 For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10    'Makes a loop that looks at
      For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10   '5 tiles in every direction
+
          'Make sure tile is legal
          If X > MinXBorder And X < MaxXBorder And Y > MinYBorder And Y < MaxYBorder Then
+         
              'look for a user
              If MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex > 0 Then
                  'Move towards user
                   Dim tmpUserIndex As Integer
-                  Dim mierda As ValueConstants
                   tmpUserIndex = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
-                  If UserList(tmpUserIndex).Flags.Muerto = 0 Then
-                    If UserList(tmpUserIndex).Flags.Invisible = 0 Then
-                        'We have to invert the coordinates, this is because
-                        'ORE refers to maps in converse way of my pathfinding
-                        'routines.
-                        Npclist(NpcIndex).PFINFO.Target.X = UserList(tmpUserIndex).Pos.Y
-                        Npclist(NpcIndex).PFINFO.Target.Y = UserList(tmpUserIndex).Pos.X 'ops!
-                        Npclist(NpcIndex).PFINFO.TargetUser = tmpUserIndex
-                        Call SeekPath(NpcIndex)
-                        Exit Function
-                    End If
-                  End If
+                  'We have to invert the coordinates, this is because
+                  'ORE refers to maps in converse way of my pathfinding
+                  'routines.
+                  Npclist(NpcIndex).PFINFO.Target.X = UserList(tmpUserIndex).Pos.Y
+                  Npclist(NpcIndex).PFINFO.Target.Y = UserList(tmpUserIndex).Pos.X 'ops!
+                  Npclist(NpcIndex).PFINFO.TargetUser = tmpUserIndex
+                  Call SeekPath(NpcIndex)
+                  Exit Function
              End If
+             
          End If
+              
      Next X
  Next Y
 End Function

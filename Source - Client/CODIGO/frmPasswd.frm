@@ -228,15 +228,26 @@ If CheckDatos() Then
     frmMain.Socket1.HostName = CurServerIp
     frmMain.Socket1.RemotePort = CurServerPort
     
-    SendNewChar = True
+    'SendNewChar = True
+    EstadoLogin = CrearNuevoPj
+    
     Me.MousePointer = 11
     
+'    If Not frmMain.Socket1.Connected Then
+'        frmMain.Socket1.Connect
+'    Else
+'        Call SendData("gIvEmEvAlcOde")
+'    End If
+
+    EstadoLogin = CrearNuevoPj
+
     If Not frmMain.Socket1.Connected Then
-        frmMain.Socket1.Connect
+        MsgBox "Error: Se ha perdido la conexion con el server."
+        Unload Me
+        
     Else
-        Call SendData("gIvEmEvAlcOde")
+        Call Login(ValidarLoginMSG(CInt(bRK)))
     End If
-    
 End If
 
 End Sub

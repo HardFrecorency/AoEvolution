@@ -1,9 +1,6 @@
 Attribute VB_Name = "modClanes"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -31,6 +28,7 @@ Attribute VB_Name = "modClanes"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
 
 Option Explicit
 
@@ -80,7 +78,7 @@ For k = 1 To myGuild.Members.Count
     If Index <> 0 Then 'is online
         UserList(Index).GuildInfo.YaVoto = 0
     Else
-        UserFile = CharPath & UCase(myGuild.Members(k)) & ".chr"
+        UserFile = CharPath & UCase$(myGuild.Members(k)) & ".chr"
         If FileExist(UserFile, vbNormal) Then
                 Call WriteVar(UserFile, "GUILD", "YaVoto", 0)
         End If
@@ -129,14 +127,14 @@ For t% = 1 To Guilds.Count
                     newleaderindex = DameUserIndexConNombre(leader$)
                     oldleaderindex = DameUserIndexConNombre(Guilds(t%).leader)
                     
-                    If UCase(leader$) <> UCase(Guilds(t%).leader) Then
+                    If UCase$(leader$) <> UCase$(Guilds(t%).leader) Then
                         
                         
                         
                         If oldleaderindex <> 0 Then
                             UserList(oldleaderindex).GuildInfo.EsGuildLeader = 0
                         Else
-                            UserFile = CharPath & UCase(Guilds(t%).leader) & ".chr"
+                            UserFile = CharPath & UCase$(Guilds(t%).leader) & ".chr"
                             If FileExist(UserFile, vbNormal) Then
                                     Call WriteVar(UserFile, "GUILD", "EsGuildLeader", 0)
                             End If
@@ -146,7 +144,7 @@ For t% = 1 To Guilds.Count
                             UserList(newleaderindex).GuildInfo.EsGuildLeader = 1
                             Call AddtoVar(UserList(newleaderindex).GuildInfo.VecesFueGuildLeader, 1, 10000)
                         Else
-                            UserFile = CharPath & UCase(leader$) & ".chr"
+                            UserFile = CharPath & UCase$(leader$) & ".chr"
                             If FileExist(UserFile, vbNormal) Then
                                     Call WriteVar(UserFile, "GUILD", "EsGuildLeader", 1)
                             End If
@@ -264,9 +262,9 @@ If UserList(UserIndex).GuildInfo.EsGuildLeader = 0 Then Exit Sub
 
 Dim H$
 
-H$ = UCase(ReadField(1, rdata, 44))
+H$ = UCase$(ReadField(1, rdata, 44))
 
-If UCase(UserList(UserIndex).GuildInfo.GuildName) = UCase(H$) Then Exit Sub
+If UCase$(UserList(UserIndex).GuildInfo.GuildName) = UCase$(H$) Then Exit Sub
 
 Dim oGuild As cGuild
 
@@ -504,7 +502,7 @@ If UserList(UserIndex).GuildInfo.EsGuildLeader = 0 Then Exit Sub
 
 
 Dim UserFile As String
-UserFile = CharPath & UCase(UserName) & ".chr"
+UserFile = CharPath & UCase$(UserName) & ".chr"
 
 If FileExist(UserFile, vbNormal) = False Then Exit Sub
 
@@ -674,7 +672,7 @@ Public Sub DeclareAllie(ByVal UserIndex As Integer, ByVal rdata As String)
 
 If UserList(UserIndex).GuildInfo.EsGuildLeader = 0 Then Exit Sub
 
-If UCase(UserList(UserIndex).GuildInfo.GuildName) = UCase(rdata) Then Exit Sub
+If UCase$(UserList(UserIndex).GuildInfo.GuildName) = UCase$(rdata) Then Exit Sub
 
 
 Dim LeaderGuild As cGuild, enemyGuild As cGuild
@@ -718,7 +716,7 @@ Public Sub DeclareWar(ByVal UserIndex As Integer, ByVal rdata As String)
 
 If UserList(UserIndex).GuildInfo.EsGuildLeader = 0 Then Exit Sub
 
-If UCase(UserList(UserIndex).GuildInfo.GuildName) = UCase(rdata) Then Exit Sub
+If UCase$(UserList(UserIndex).GuildInfo.GuildName) = UCase$(rdata) Then Exit Sub
 
 
 Dim LeaderGuild As cGuild, enemyGuild As cGuild
@@ -762,9 +760,9 @@ Dim LoopC As Integer
   
 LoopC = 1
   
-GuildName = UCase(GuildName)
+GuildName = UCase$(GuildName)
   
-Do Until UCase(UserList(LoopC).GuildInfo.GuildName) = GuildName
+Do Until UCase$(UserList(LoopC).GuildInfo.GuildName) = GuildName
 
     LoopC = LoopC + 1
     
@@ -846,7 +844,7 @@ End Sub
 Public Function FetchGuild(ByVal GuildName As String) As Object
 Dim k As Integer
 For k = 1 To Guilds.Count
-    If UCase(Guilds.Item(k).GuildName) = UCase(GuildName) Then
+    If UCase$(Guilds.Item(k).GuildName) = UCase$(GuildName) Then
             Set FetchGuild = Guilds.Item(k)
             Exit Function
     End If
@@ -858,19 +856,19 @@ End Function
 
 Public Sub LoadGuildsDB()
 
-Dim file As String, cant As Integer
+Dim file As String, Cant As Integer
 
 file = App.Path & "\Guilds\" & "GuildsInfo.inf"
 
 If Not FileExist(file, vbNormal) Then Exit Sub
 
-cant = val(GetVar(file, "INIT", "NroGuilds"))
+Cant = val(GetVar(file, "INIT", "NroGuilds"))
 
 
 Dim NewGuild As cGuild
 Dim k%
 
-For k% = 1 To cant
+For k% = 1 To Cant
     Set NewGuild = New cGuild
     Call NewGuild.InitializeGuildFromDisk(k%)
     Call Guilds.Add(NewGuild)
@@ -947,10 +945,10 @@ End Function
 Public Function ExisteGuild(ByVal Name As String) As Boolean
 
 Dim k As Integer
-Name = UCase(Name)
+Name = UCase$(Name)
 
 For k = 1 To Guilds.Count
-    If UCase(Guilds(k).GuildName) = Name Then
+    If UCase$(Guilds(k).GuildName) = Name Then
             ExisteGuild = True
             Exit Function
     End If
@@ -979,7 +977,7 @@ If ExisteGuild(miClan.GuildName) Then
     Exit Function
 End If
 
-Call miClan.Members.Add(UCase(UserList(Index).Name))
+Call miClan.Members.Add(UCase$(UserList(Index).Name))
 
 Call Guilds.Add(miClan, miClan.GuildName)
 

@@ -45,6 +45,7 @@ Public Type tServerInfo
 End Type
 
 Public ServersLst() As tServerInfo
+Public ServersRecibidos As Boolean
 
 Public CurServer As Integer
 
@@ -63,6 +64,10 @@ Public Const bBrazoDerecho = 4
 Public Const bBrazoIzquierdo = 5
 Public Const bTorso = 6
 
+'Timers de GetTickCount
+Public Const tAt = 2000
+Public Const tUs = 600
+
 Public Const PrimerBodyBarco = 84
 Public Const UltimoBodyBarco = 87
 
@@ -73,6 +78,12 @@ Public NumEscudosAnims As Integer
 Public ArmasHerrero(0 To 100) As Integer
 Public ArmadurasHerrero(0 To 100) As Integer
 Public ObjCarpintero(0 To 100) As Integer
+
+'[KEVIN]
+Public Const MAX_BANCOINVENTORY_SLOTS = 40
+Public UserBancoInventory(1 To MAX_BANCOINVENTORY_SLOTS) As Inventory
+'[/KEVIN]
+
 
 Public Tips() As String * 255
 Public Const LoopAdEternum = 999
@@ -132,7 +143,9 @@ Type Inventory
     OBJIndex As Integer
     Name As String
     GrhIndex As Integer
-    Amount As Integer
+    '[Alejo]: tipo de datos ahora es Long
+    Amount As Long
+    '[/Alejo]
     Equipped As Byte
     Valor As Long
     ObjType As Integer
@@ -177,8 +190,11 @@ Public ListaClases() As String
 
 Public Nombres As Boolean
 
+Public MixedKey As Long
+
 'User status vars
 Public UserInventory(1 To MAX_INVENTORY_SLOTS) As Inventory
+Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Inventory
 
 Public UserHechizos(1 To MAXHECHI) As Integer
 
@@ -242,6 +258,17 @@ Public NoPuedeUsar As Boolean
 
 Public UsingSkill As Integer
 
+
+Public MD5HushYo As String * 16
+
+Public Enum E_MODO
+    Normal = 1
+    BorrarPj = 2
+    CrearNuevoPj = 3
+    Dados = 4
+    RecuperarPass = 5
+End Enum
+Public EstadoLogin As E_MODO
 
 'Server stuff
 Public RequestPosTimer As Integer 'Used in main loop

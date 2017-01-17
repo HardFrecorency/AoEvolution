@@ -12,7 +12,7 @@
 '4.....Terreno
 
 [INIT]
-NumeroHechizos=31
+NumeroHechizos=32
 
 [HECHIZO1]
 Nombre=Curar veneno
@@ -848,3 +848,24 @@ ManaRequerido=520
 Target=1
 
 
+[HECHIZO32]
+Nombre=Te hago el culo
+Desc=Causa 100 a 200 puntos de daño a la victima.
+PalabrasMagicas=Tê Ròmp'ï 'l öRt
+HechizeroMsg=Le rompiste el orto a
+TargetMsg=te rompio el orto.
+PropioMsg=Te rompiste el orto
+Tipo=1
+WAV=27
+FXgrh=13
+Loops=1
+Resis=1
+
+SubeHP=2
+MinHP=15000
+MaxHP=15000
+    
+MinSkill=1
+ManaRequerido=1
+
+Target=3

@@ -39,5 +39,6 @@ Option Explicit
 'envía al servidor.
 
 Public Function GenCrC(ByVal Key As Long, ByVal sdData As String) As Long
-GenCrC = 1
+
 End Function
+

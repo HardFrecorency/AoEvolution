@@ -85,39 +85,22 @@ If UserInventory(lPreItem).GrhIndex > 0 Then _
     ItemElegido = lPreItem: bInvMod = True
 End Sub
 
-'[CODE]:MatuX'
 Public Sub DibujarInvBox()
     On Error Resume Next
     If bStaticInit And ItemElegido <> 0 Then
         Call BoxSurface.BltColorFill(auxr, vbBlack)
         Call BoxSurface.BltFast(0, 0, SelSurface, auxr, DDBLTFAST_SRCCOLORKEY)
         
-        'inline hardcoded DDrawTransGrhToSurface()
-       '{
         With Grh(1)
-            '.FrameCounter = .FrameCounter + iFrameMod
-            'If (.FrameCounter >= GrhData(.GrhIndex).NumFrames) Then
-            '    iFrameMod = -1
-            'ElseIf (.FrameCounter <= 1) Then
-            '    iFrameMod = 1
-            'End If
             .FrameCounter = 2
-            Call BoxSurface.BltFast(0, 0, SurfaceDB(GrhData(GrhData(.GrhIndex).Frames(.FrameCounter)).FileNum), rBoxFrame(.FrameCounter - 1), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
+            Call BoxSurface.BltFast(0, 0, SurfaceDB.GetBMP(GrhData(GrhData(.GrhIndex).Frames(.FrameCounter)).FileNum), rBoxFrame(.FrameCounter - 1), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
         End With
-       '}
         Call BoxSurface.BltToDC(frmMain.picInv.Hdc, auxr, rBox)
         Call frmMain.picInv.Refresh
     End If
 End Sub
-'[END]'
 
-'Sub DibujarInv(PictureHandler As Long, desp As Integer)
 Sub DibujarInv()
-'[CODE]:MatuX'
-'
-'
-'[END]'
-
 Dim iX As Integer
 
 If Not bStaticInit Then _
@@ -131,7 +114,7 @@ frmMain.picInv.Cls
 For iX = OffsetDelInv + 1 To UBound(UserInventory)
     If UserInventory(iX).GrhIndex > 0 Then
         AuxSurface.BltColorFill auxr, vbBlack
-        AuxSurface.BltFast 0, 0, SurfaceDB(GrhData(UserInventory(iX).GrhIndex).FileNum), auxr, DDBLTFAST_NOCOLORKEY
+        AuxSurface.BltFast 0, 0, SurfaceDB.GetBMP(GrhData(UserInventory(iX).GrhIndex).FileNum), auxr, DDBLTFAST_NOCOLORKEY
         AuxSurface.DrawText 0, 0, UserInventory(iX).Amount, False
 
         If UserInventory(iX).Equipped Then
@@ -141,13 +124,8 @@ For iX = OffsetDelInv + 1 To UBound(UserInventory)
         End If
 
         If ItemElegido = iX Then
-            'Call SelSurface.BltColorFill(auxr, vbBlack)
-            'Call SelSurface.BltFast(0, 0, AuxSurface, auxr, DDBLTFAST_SRCCOLORKEY)
-
             With r2: .Left = (mx - 1) * 32: .Right = r2.Left + 32: .Top = (my - 1) * 32: .Bottom = r2.Top + 32: End With
-            'With rBox: .Top = r2.Top: .Left = r2.Left: .Bottom = r2.Bottom: .Right = r2.Right: End With
-            
-            Call AuxSurface.BltFast(0, 0, SurfaceDB(GrhData(GrhData(Grh(1).GrhIndex).Frames(2)).FileNum), rBoxFrame(2), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
+            Call AuxSurface.BltFast(0, 0, SurfaceDB.GetBMP(GrhData(GrhData(Grh(1).GrhIndex).Frames(2)).FileNum), rBoxFrame(2), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
         End If
         AuxSurface.BltToDC frmMain.picInv.Hdc, auxr, r2
     End If
@@ -168,17 +146,12 @@ For iX = OffsetDelInv + 1 To UBound(UserInventory)
     End If
 Next iX
 
-'frmMain.picInv.Refresh
-
-'Call DibujarInvBox
-
 bInvMod = False
 
 If ItemElegido = 0 Then _
     Call ItemClick(2, 2)
 
 End Sub
-
 Private Sub InitMem()
     Dim ddck        As DDCOLORKEY
     Dim SurfaceDesc As DDSURFACEDESC2

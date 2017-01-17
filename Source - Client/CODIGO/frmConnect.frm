@@ -210,9 +210,11 @@ Dim i As Integer
 
 lst_servers.Clear
 
-For i = 1 To UBound(ServersLst)
-    lst_servers.AddItem ServersLst(i).Ip & ":" & ServersLst(i).Puerto & " - Desc:" & ServersLst(i).desc
-Next i
+If ServersRecibidos Then
+    For i = 1 To UBound(ServersLst)
+        lst_servers.AddItem ServersLst(i).Ip & ":" & ServersLst(i).Puerto & " - Desc:" & ServersLst(i).desc
+    Next i
+End If
 
 End Sub
 
@@ -224,16 +226,21 @@ End Sub
 
 
 Private Sub Form_Activate()
+'On Error Resume Next
 
-If CurServer <> 0 Then
-    IPTxt = ServersLst(CurServer).Ip
-    PortTxt = ServersLst(CurServer).Puerto
+If ServersRecibidos Then
+    If CurServer <> 0 Then
+        IPTxt = ServersLst(CurServer).Ip
+        PortTxt = ServersLst(CurServer).Puerto
+    Else
+        IPTxt = IPdelServidor
+        PortTxt = PuertoDelServidor
+    End If
+    
+    Call CargarLst
 Else
-    IPTxt = IPdelServidor
-    PortTxt = PuertoDelServidor
+    lst_servers.Clear
 End If
-
-Call CargarLst
 
 End Sub
 
@@ -308,21 +315,23 @@ End Sub
 Private Sub Image1_Click(Index As Integer)
 
 
-If Not IsIp(IPTxt) And CurServer <> 0 Then
-    If MsgBox("Atencion, está intentando conectarse a un servidor no oficial, NoLand Studios no se hace responsable de los posibles problemas que estos servidores presenten. ¿Desea continuar?", vbYesNo) = vbNo Then
-        If CurServer <> 0 Then
-            IPTxt = ServersLst(CurServer).Ip
-            PortTxt = ServersLst(CurServer).Puerto
-        Else
-            IPTxt = IPdelServidor
-            PortTxt = PuertoDelServidor
+If ServersRecibidos Then
+    If Not IsIp(IPTxt) And CurServer <> 0 Then
+        If MsgBox("Atencion, está intentando conectarse a un servidor no oficial, NoLand Studios no se hace responsable de los posibles problemas que estos servidores presenten. ¿Desea continuar?", vbYesNo) = vbNo Then
+            If CurServer <> 0 Then
+                IPTxt = ServersLst(CurServer).Ip
+                PortTxt = ServersLst(CurServer).Puerto
+            Else
+                IPTxt = IPdelServidor
+                PortTxt = PuertoDelServidor
+            End If
+            Exit Sub
         End If
-        Exit Sub
     End If
-    CurServer = 0
-    IPdelServidor = IPTxt
-    PuertoDelServidor = PortTxt
 End If
+CurServer = 0
+IPdelServidor = IPTxt
+PuertoDelServidor = PortTxt
 
 
 Call PlayWaveDS(SND_CLICK)
@@ -339,7 +348,13 @@ Select Case Index
         
         
         
-        frmCrearPersonaje.Show vbModal
+        'frmCrearPersonaje.Show vbModal
+        EstadoLogin = Dados
+        frmMain.Socket1.HostName = CurServerIp
+        frmMain.Socket1.RemotePort = CurServerPort
+        Me.MousePointer = 11
+        frmMain.Socket1.Connect
+
         
     Case 1
     
@@ -372,8 +387,11 @@ End Sub
 
 
 Private Sub lst_servers_Click()
-CurServer = lst_servers.ListIndex + 1
-IPTxt = ServersLst(CurServer).Ip
-PortTxt = ServersLst(CurServer).Puerto
+If ServersRecibidos Then
+    CurServer = lst_servers.ListIndex + 1
+    IPTxt = ServersLst(CurServer).Ip
+    PortTxt = ServersLst(CurServer).Puerto
+End If
+
 End Sub
 

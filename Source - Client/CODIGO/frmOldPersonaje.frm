@@ -146,6 +146,8 @@ On Error Resume Next
 
 Call PlayWaveDS(SND_CLICK)
 
+
+
 Select Case Index
     Case 0
        
@@ -165,7 +167,8 @@ Select Case Index
         If CheckUserData(False) = True Then
             frmMain.Socket1.HostName = CurServerIp
             frmMain.Socket1.RemotePort = CurServerPort
-            SendNewChar = False
+            'SendNewChar = False
+            EstadoLogin = Normal
             Me.MousePointer = 11
             frmMain.Socket1.Connect
         End If

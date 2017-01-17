@@ -1,9 +1,6 @@
 Attribute VB_Name = "ModFacciones"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -92,27 +89,27 @@ Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Bienvenido a al Eje
 If UserList(UserIndex).Faccion.RecibioArmaduraReal = 0 Then
     Dim MiObj As Obj
     MiObj.Amount = 1
-    If UCase(UserList(UserIndex).Clase) = "MAGO" Then
-           If UCase(UserList(UserIndex).Raza) = "ENANO" Or _
-              UCase(UserList(UserIndex).Raza) = "GNOMO" Then
+    If UCase$(UserList(UserIndex).Clase) = "MAGO" Then
+           If UCase$(UserList(UserIndex).Raza) = "ENANO" Or _
+              UCase$(UserList(UserIndex).Raza) = "GNOMO" Then
                   MiObj.ObjIndex = TunicaMagoImperialEnanos
            Else
                   MiObj.ObjIndex = TunicaMagoImperial
            End If
-    ElseIf UCase(UserList(UserIndex).Clase) = "GUERRERO" Or _
-           UCase(UserList(UserIndex).Clase) = "CAZADOR" Or _
-           UCase(UserList(UserIndex).Clase) = "PALADIN" Or _
-           UCase(UserList(UserIndex).Clase) = "BANDIDO" Or _
-           UCase(UserList(UserIndex).Clase) = "ASESINO" Then
-              If UCase(UserList(UserIndex).Raza) = "ENANO" Or _
-                 UCase(UserList(UserIndex).Raza) = "GNOMO" Then
+    ElseIf UCase$(UserList(UserIndex).Clase) = "GUERRERO" Or _
+           UCase$(UserList(UserIndex).Clase) = "CAZADOR" Or _
+           UCase$(UserList(UserIndex).Clase) = "PALADIN" Or _
+           UCase$(UserList(UserIndex).Clase) = "BANDIDO" Or _
+           UCase$(UserList(UserIndex).Clase) = "ASESINO" Then
+              If UCase$(UserList(UserIndex).Raza) = "ENANO" Or _
+                 UCase$(UserList(UserIndex).Raza) = "GNOMO" Then
                   MiObj.ObjIndex = ArmaduraImperial3
               Else
                   MiObj.ObjIndex = ArmaduraImperial1
               End If
     Else
-              If UCase(UserList(UserIndex).Raza) = "ENANO" Or _
-                 UCase(UserList(UserIndex).Raza) = "GNOMO" Then
+              If UCase$(UserList(UserIndex).Raza) = "ENANO" Or _
+                 UCase$(UserList(UserIndex).Raza) = "GNOMO" Then
                   MiObj.ObjIndex = ArmaduraImperial3
               Else
                   MiObj.ObjIndex = ArmaduraImperial2
@@ -155,6 +152,11 @@ End Sub
 Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer)
 UserList(UserIndex).Faccion.ArmadaReal = 0
 Call SendData(ToIndex, UserIndex, 0, "||Has sido expulsado de las tropas reales!!!." & FONTTYPE_FIGHT)
+End Sub
+
+Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer)
+UserList(UserIndex).Faccion.FuerzasCaos = 0
+Call SendData(ToIndex, UserIndex, 0, "||Has sido expulsado de las fuerzas del caos!!!." & FONTTYPE_FIGHT)
 End Sub
 
 Public Function TituloReal(ByVal UserIndex As Integer) As String
@@ -224,22 +226,22 @@ Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Bienvenido a al lad
 If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
     Dim MiObj As Obj
     MiObj.Amount = 1
-    If UCase(UserList(UserIndex).Clase) = "MAGO" Then
+    If UCase$(UserList(UserIndex).Clase) = "MAGO" Then
                   MiObj.ObjIndex = TunicaMagoCaos
-    ElseIf UCase(UserList(UserIndex).Clase) = "GUERRERO" Or _
-           UCase(UserList(UserIndex).Clase) = "CAZADOR" Or _
-           UCase(UserList(UserIndex).Clase) = "PALADIN" Or _
-           UCase(UserList(UserIndex).Clase) = "BANDIDO" Or _
-           UCase(UserList(UserIndex).Clase) = "ASESINO" Then
-              If UCase(UserList(UserIndex).Raza) = "ENANO" Or _
-                 UCase(UserList(UserIndex).Raza) = "GNOMO" Then
+    ElseIf UCase$(UserList(UserIndex).Clase) = "GUERRERO" Or _
+           UCase$(UserList(UserIndex).Clase) = "CAZADOR" Or _
+           UCase$(UserList(UserIndex).Clase) = "PALADIN" Or _
+           UCase$(UserList(UserIndex).Clase) = "BANDIDO" Or _
+           UCase$(UserList(UserIndex).Clase) = "ASESINO" Then
+              If UCase$(UserList(UserIndex).Raza) = "ENANO" Or _
+                 UCase$(UserList(UserIndex).Raza) = "GNOMO" Then
                   MiObj.ObjIndex = ArmaduraCaos3
               Else
                   MiObj.ObjIndex = ArmaduraCaos1
               End If
     Else
-              If UCase(UserList(UserIndex).Raza) = "ENANO" Or _
-                 UCase(UserList(UserIndex).Raza) = "GNOMO" Then
+              If UCase$(UserList(UserIndex).Raza) = "ENANO" Or _
+                 UCase$(UserList(UserIndex).Raza) = "GNOMO" Then
                   MiObj.ObjIndex = ArmaduraCaos3
               Else
                   MiObj.ObjIndex = ArmaduraCaos2
@@ -288,7 +290,7 @@ End Sub
 Public Function TituloCaos(ByVal UserIndex As Integer) As String
 Select Case UserList(UserIndex).Faccion.RecompensasCaos
     Case 1
-        TituloCaos = "Esclavo de las sobras"
+        TituloCaos = "Esclavo de las sombras"
     Case 2
         TituloCaos = "Guerrero del caos"
     Case 3

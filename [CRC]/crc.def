@@ -1,4 +1,0 @@
-LIBRARY crc
-EXPORTS
-	GenCrc As _GenCrc@8
-

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
 Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Begin VB.Form frmMain 
@@ -75,7 +75,7 @@ Begin VB.Form frmMain
       Top             =   2220
    End
    Begin VB.Timer Trabajo 
-      Interval        =   600
+      Enabled         =   0   'False
       Left            =   7200
       Top             =   2760
    End
@@ -90,7 +90,7 @@ Begin VB.Form frmMain
       _ExtentX        =   1005
       _ExtentY        =   1005
       _Version        =   393216
-      RequestTimeout  =   999999
+      RequestTimeout  =   30
    End
    Begin VB.PictureBox PanelDer 
       AutoSize        =   -1  'True
@@ -461,7 +461,7 @@ Begin VB.Form frmMain
       End
    End
    Begin VB.Timer Attack 
-      Interval        =   2500
+      Enabled         =   0   'False
       Left            =   7170
       Top             =   1920
    End
@@ -499,7 +499,6 @@ Begin VB.Form frmMain
       _ExtentY        =   2646
       _Version        =   393217
       BackColor       =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"frmMain.frx":2CCB0
@@ -625,9 +624,9 @@ err_out:
 End Function
 
 
-Public Sub Play(ByVal nombre As String, Optional ByVal LoopSound As Boolean = False)
+Public Sub Play(ByVal Nombre As String, Optional ByVal LoopSound As Boolean = False)
     If Fx = 1 Then Exit Sub
-    Call LoadSoundBufferFromFile(nombre)
+    Call LoadSoundBufferFromFile(Nombre)
 
     If LoopSound Then
         gDSB.Play DSBPLAY_LOOPING
@@ -695,11 +694,11 @@ End Sub
 ''''''''''''''''''''''''''''''''''''''
 
 Private Sub Trabajo_Timer()
-    NoPuedeUsar = False
+    'NoPuedeUsar = False
 End Sub
 
 Private Sub Attack_Timer()
-    UserCanAttack = 1
+    'UserCanAttack = 1
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''
@@ -744,7 +743,7 @@ Private Sub cmdLanzar_Click()
     If hlst.List(hlst.ListIndex) <> "(None)" And UserCanAttack = 1 Then
         Call SendData("LH" & hlst.ListIndex + 1)
         Call SendData("UK" & Magia)
-        UserCanAttack = 0
+        'UserCanAttack = 0
     End If
 End Sub
 
@@ -783,9 +782,11 @@ Private Sub Form_Click()
         If UsingSkill = 0 Then
             SendData "LC" & tX & "," & tY
         Else
-            SendData "WLC" & tX & "," & tY & "," & UsingSkill
-            UsingSkill = 0
             frmMain.MousePointer = vbDefault
+            If (UsingSkill = Magia Or UsingSkill = Proyectiles) And UserCanAttack = 0 Then Exit Sub
+            SendData "WLC" & tX & "," & tY & "," & UsingSkill
+            If UsingSkill = Magia Or UsingSkill = Proyectiles Then UserCanAttack = 0
+            UsingSkill = 0
         End If
     End If
     
@@ -934,7 +935,7 @@ Private Sub Label1_Click()
         frmSkills3.Text1(i).Caption = UserSkills(i)
     Next i
     Alocados = SkillPoints
-    frmSkills3.puntos.Caption = "Puntos:" & SkillPoints
+    frmSkills3.Puntos.Caption = "Puntos:" & SkillPoints
     frmSkills3.Show
 End Sub
 
@@ -1065,15 +1066,21 @@ End Sub
 ''''''''''''''''''''''''''''''''''''''
 
 Private Sub Socket1_Connect()
+    
     Second.Enabled = True
     
-    If frmCrearPersonaje.Visible Then
+    'If frmCrearPersonaje.Visible Then
+    If EstadoLogin = CrearNuevoPj Then
         Call SendData("gIvEmEvAlcOde")
-    ElseIf Not frmRecuperar.Visible Then
+    'ElseIf Not frmRecuperar.Visible Then
+    ElseIf EstadoLogin = Normal Then
         Call SendData("gIvEmEvAlcOde")
-    Else
+    ElseIf EstadoLogin = Dados Then
+        Call SendData("gIvEmEvAlcOde")
+    'Else
+    ElseIf EstadoLogin = RecuperarPass Then
         Dim cmd$
-        cmd$ = "PASSRECO" & frmRecuperar.txtNombre.Text & "~" & frmRecuperar.Txtcorreo
+        cmd$ = "PASSRECO" & frmRecuperar.txtNombre.Text & "~" & frmRecuperar.txtCorreo
         frmMain.Socket1.Write cmd$, Len(cmd$)
     End If
 End Sub
@@ -1084,7 +1091,12 @@ Private Sub Socket1_Disconnect()
     logged = False
     Connected = False
     
-        
+    Socket1.Cleanup
+    
+    frmConnect.MousePointer = vbNormal
+    
+    If frmPasswd.Visible = True Then frmPasswd.Visible = False
+    frmCrearPersonaje.Visible = False
     frmConnect.Visible = True
     
     frmMain.Visible = False

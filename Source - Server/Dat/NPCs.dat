@@ -8,7 +8,7 @@
 ' 6====== DRAGONES
 
 [INIT]
-NumNPCs=99
+NumNPCs=100
 
 [NPC1] 'NPC
 Name=Aldeano
@@ -125,7 +125,7 @@ Movement=5
 Attackable=1
 Comercia=0
 Hostile=0
-GiveEXP=0
+GiveEXP=1000
 GiveGLD=0
 MinHP=1000
 MaxHP=1000
@@ -686,7 +686,7 @@ Movement=2
 Attackable=1
 Comercia=0
 Hostile=0
-GiveEXP=0
+GiveEXP=1000
 GiveGLD=0
 MinHP=1000
 MaxHP=1000
@@ -957,10 +957,10 @@ Heading=3
 Movement=1
 NroCriaturas=5
 CI1=500
-CI2=545
-CI3=565
-CI4=564
-CI5=563
+CI2=501
+CI3=504
+CI4=529
+CI5=516
 CN1=Murcielago
 CN2=Lobo
 CN3=Cobra
@@ -1258,7 +1258,7 @@ Movement=5
 Attackable=1
 Comercia=0
 Hostile=0
-GiveEXP=0
+GiveEXP=1000
 GiveGLD=0
 MinHP=1000
 MaxHP=1000
@@ -1405,7 +1405,7 @@ NROITEMS=1
 Obj1=534-100
 
 [NPC81] ' Guardia
-Name=Socerdote
+Name=Sacerdote
 NpcType=2
 Desc=Ohhh hijo mio!! que la llama de la virtud árda en tu corazón!!!
 Head=4
@@ -1693,7 +1693,6 @@ Domable=87
 AguaValida=1
 
 [NPC92] 'Elemental de agua
-ReSpawn=1
 Name=Elemental de agua
 Body=154
 Heading=3
@@ -1705,10 +1704,8 @@ MinHIT=100
 PoderAtaque=200
 PoderEvasion=200
 AguaValida=1
-Attackable=1
 
 [NPC93] 'Elemental de fuego
-ReSpawn=1
 Name=Elemental de fuego
 Body=153
 Heading=3
@@ -1721,11 +1718,9 @@ PoderAtaque=200
 PoderEvasion=200
 LanzaSpells=1
 Sp1=15
-Attackable=1
 
 [NPC94] 'Elemental de tierra
 Name=Elemental de tierra
-ReSpawn=1
 Body=152
 Heading=3
 Movement=2
@@ -1737,7 +1732,6 @@ PoderAtaque=200
 PoderEvasion=200
 LanzaSpells=1
 Sp1=24
-Attackable=1
 
 [NPC95] 'Jabalí
 Name=Jabalí
@@ -1806,7 +1800,6 @@ Attackable=0
 Desc=Si deseás unirte a las fuerzas del caos escribí /ENLISTAR
 Movement=1
 Faccion=1
-BackUp=1
 
 [NPC99] 'NPC
 Name=Sastre
@@ -1840,6 +1833,32 @@ obj18=504-100
 obj19=503-100
 obj20=502-100
 BackUp=1
+Domable=0
+
+[NPC100] ' Guardia
+Name=Guardia Imperial
+NpcType=2
+Desc=Dare carcel a todos los criminales y los perseguire hasta el fin.
+Head=0
+Body=15
+Heading=3
+Movement=10
+Attackable=1
+Comercia=0
+Hostile=0
+GiveEXP=1000
+GiveGLD=0
+MinHP=1000
+MaxHP=1000
+MaxHIT=250
+MinHIT=115
+PosOrig=1
+DEF=30
+Alineacion=0
+ReSpawn=0
+NROITEMS=0
+PoderAtaque=400
+PoderEvasion=400
 Domable=0
 
 

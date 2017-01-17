@@ -28,12 +28,12 @@ Begin VB.Form frmCrearPersonaje
       ForeColor       =   &H00FFFFFF&
       Height          =   315
       ItemData        =   "frmCrearPersonaje.frx":0000
-      Left            =   6030
+      Left            =   5925
       List            =   "frmCrearPersonaje.frx":0037
       Style           =   2  'Dropdown List
       TabIndex        =   31
-      Top             =   2730
-      Width           =   2520
+      Top             =   2700
+      Width           =   2820
    End
    Begin VB.ComboBox lstGenero 
       BackColor       =   &H00000000&
@@ -49,12 +49,12 @@ Begin VB.Form frmCrearPersonaje
       ForeColor       =   &H00FFFFFF&
       Height          =   315
       ItemData        =   "frmCrearPersonaje.frx":00D1
-      Left            =   6045
+      Left            =   5925
       List            =   "frmCrearPersonaje.frx":00DB
       Style           =   2  'Dropdown List
       TabIndex        =   30
-      Top             =   2280
-      Width           =   2520
+      Top             =   2250
+      Width           =   2820
    End
    Begin VB.ComboBox lstRaza 
       BackColor       =   &H00000000&
@@ -70,12 +70,12 @@ Begin VB.Form frmCrearPersonaje
       ForeColor       =   &H00FFFFFF&
       Height          =   315
       ItemData        =   "frmCrearPersonaje.frx":00EE
-      Left            =   6030
+      Left            =   5925
       List            =   "frmCrearPersonaje.frx":0101
       Style           =   2  'Dropdown List
       TabIndex        =   29
-      Top             =   1830
-      Width           =   2520
+      Top             =   1800
+      Width           =   2820
    End
    Begin VB.ComboBox lstHogar 
       BackColor       =   &H00000000&
@@ -131,7 +131,7 @@ Begin VB.Form frmCrearPersonaje
    End
    Begin VB.Image Image1 
       Height          =   3120
-      Left            =   3360
+      Left            =   3270
       Stretch         =   -1  'True
       Top             =   4710
       Width           =   2475
@@ -784,20 +784,20 @@ Begin VB.Form frmCrearPersonaje
    End
    Begin VB.Image imgHogar 
       Height          =   2850
-      Left            =   8790
+      Left            =   8775
       Picture         =   "frmCrearPersonaje.frx":3CD1
-      Top             =   3915
+      Top             =   3900
       Width           =   2985
    End
    Begin VB.Label lbCarisma 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
-      Caption         =   "11"
+      Caption         =   "0"
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   5100
+      Left            =   5310
       TabIndex        =   6
-      Top             =   3900
+      Top             =   3570
       Width           =   225
    End
    Begin VB.Label lbSabiduria 
@@ -814,32 +814,32 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label lbInteligencia 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
-      Caption         =   "5"
+      Caption         =   "0"
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   5100
+      Left            =   5310
       TabIndex        =   4
-      Top             =   3570
+      Top             =   3240
       Width           =   210
    End
    Begin VB.Label lbConstitucion 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
-      Caption         =   "8"
+      Caption         =   "0"
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   5100
+      Left            =   5310
       TabIndex        =   3
-      Top             =   3240
+      Top             =   3900
       Width           =   225
    End
    Begin VB.Label lbAgilidad 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
-      Caption         =   "10"
+      Caption         =   "0"
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   5100
+      Left            =   5310
       TabIndex        =   2
       Top             =   2910
       Width           =   225
@@ -847,10 +847,10 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label lbFuerza 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
-      Caption         =   "12"
+      Caption         =   "0"
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   5100
+      Left            =   5310
       TabIndex        =   1
       Top             =   2580
       Width           =   210
@@ -1006,16 +1006,18 @@ Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) 
 Randomize Timer
 
 RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
+If RandomNumber > UpperBound Then RandomNumber = UpperBound
 
 End Function
 
 
 Private Sub TirarDados()
-lbFuerza.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-lbInteligencia.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-lbAgilidad.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-lbCarisma.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-lbConstitucion.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
+'lbFuerza.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
+'lbInteligencia.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
+'lbAgilidad.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
+'lbCarisma.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
+'lbConstitucion.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
+Call SendData("TIRDAD")
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
@@ -1039,12 +1041,12 @@ Else
     End If
 End If
 
-puntos.Caption = SkillPoints
+Puntos.Caption = SkillPoints
 End Sub
 
 Private Sub Form_Load()
 SkillPoints = 10
-puntos.Caption = SkillPoints
+Puntos.Caption = SkillPoints
 Me.Picture = LoadPicture(App.Path & "\graficos\CP-Interface.jpg")
 imgHogar.Picture = LoadPicture(App.Path & "\graficos\CP-Ullathorpe.jpg")
 

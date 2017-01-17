@@ -1,9 +1,6 @@
 Attribute VB_Name = "General"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -31,6 +28,9 @@ Attribute VB_Name = "General"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
+Global ANpc As Long
+Global Anpc_host As Long
 
 Option Explicit
 
@@ -75,26 +75,26 @@ Select Case UCase$(UserList(UserIndex).Raza)
     
 End Select
 
-UserList(UserIndex).Flags.Desnudo = 1
+UserList(UserIndex).flags.Desnudo = 1
 
 End Sub
 
 
-Sub Bloquear(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, ByVal X As Integer, ByVal Y As Integer, b As Byte)
+Sub Bloquear(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, ByVal x As Integer, ByVal y As Integer, b As Byte)
 'b=1 bloquea el tile en (x,y)
 'b=0 desbloquea el tile indicado
 
-Call SendData(sndRoute, sndIndex, sndMap, "BQ" & X & "," & Y & "," & b)
+Call SendData(sndRoute, sndIndex, sndMap, "BQ" & x & "," & y & "," & b)
 
 End Sub
 
 
-Function HayAgua(Map As Integer, X As Integer, Y As Integer) As Boolean
+Function HayAgua(Map As Integer, x As Integer, y As Integer) As Boolean
 
-If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-    If MapData(Map, X, Y).Graphic(1) >= 1505 And _
-       MapData(Map, X, Y).Graphic(1) <= 1520 And _
-       MapData(Map, X, Y).Graphic(2) = 0 Then
+If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And y > 0 And y < 101 Then
+    If MapData(Map, x, y).Graphic(1) >= 1505 And _
+       MapData(Map, x, y).Graphic(1) <= 1520 And _
+       MapData(Map, x, y).Graphic(2) = 0 Then
             HayAgua = True
     Else
             HayAgua = False
@@ -117,7 +117,7 @@ Dim i As Integer
 For i = 1 To TrashCollector.Count
     Dim d As cGarbage
     Set d = TrashCollector(1)
-    Call EraseObj(ToMap, 0, d.Map, 1, d.Map, d.X, d.Y)
+    Call EraseObj(ToMap, 0, d.Map, 1, d.Map, d.x, d.y)
     Call TrashCollector.Remove(1)
     Set d = Nothing
 Next i
@@ -137,18 +137,20 @@ Next k
 Call SendData(ToIndex, UserIndex, 0, SD)
 End Sub
 
-Sub ConfigListeningSocket(ByRef Obj As Object, ByVal port As Integer)
+Sub ConfigListeningSocket(ByRef Obj As Object, ByVal Port As Integer)
+#If Not (UsarAPI = 1) Then
 
 Obj.AddressFamily = AF_INET
-Obj.Protocol = IPPROTO_IP
+Obj.protocol = IPPROTO_IP
 Obj.SocketType = SOCK_STREAM
 Obj.Binary = False
 Obj.Blocking = False
 Obj.BufferSize = 1024
-Obj.LocalPort = port
-Obj.Backlog = 5
-Obj.Listen
+Obj.LocalPort = Port
+Obj.backlog = 5
+Obj.listen
 
+#End If
 End Sub
 
 
@@ -157,18 +159,18 @@ End Sub
 Sub Main()
 On Error Resume Next
 
+ChDir App.Path
+ChDrive App.Path
 
-
-
-
+Call LoadMotd
 
 Prision.Map = 66
 Libertad.Map = 66
 
-Prision.X = 75
-Prision.Y = 47
-Libertad.X = 75
-Libertad.Y = 65
+Prision.x = 75
+Prision.y = 47
+Libertad.x = 75
+Libertad.y = 65
 
 
 LastBackup = Format(Now, "Short Time")
@@ -176,7 +178,7 @@ Minutos = Format(Now, "Short Time")
 
 
 
-ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 
 
@@ -331,8 +333,13 @@ frmCargando.Label1(2).Caption = "Cargando Server.ini"
 
 Call LoadSini
 
+'*************************************************
+Call CargaNpcsDat
+'*************************************************
+
 frmCargando.Label1(2).Caption = "Cargando Obj.Dat"
-Call LoadOBJData
+'Call LoadOBJData
+Call LoadOBJData_Nuevo
     
 frmCargando.Label1(2).Caption = "Cargando Hechizos.Dat"
 Call CargarHechizos
@@ -349,6 +356,7 @@ If BootDelBackUp Then
 Else
     frmCargando.Label1(2).Caption = "Cargando Mapas"
     Call LoadMapData
+    'Call LoadMapData_Nuevo
 End If
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
@@ -358,7 +366,6 @@ Dim LoopC As Integer
 'Resetea las conexiones de los usuarios
 For LoopC = 1 To MaxUsers
     UserList(LoopC).ConnID = -1
-    GameInputMapArray(LoopC) = -1
 Next LoopC
 
 frmMain.AutoSave.Enabled = True
@@ -368,10 +375,18 @@ frmMain.AutoSave.Enabled = True
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 'Configuracion de los sockets
+
+#If UsarAPI Then
+
+Call IniciaWsApi
+SockListen = ListenForConnect(Puerto, hWndMsg, "")
+
+#Else
+
 frmCargando.Label1(2).Caption = "Configurando Sockets"
 
 frmMain.Socket2(0).AddressFamily = AF_INET
-frmMain.Socket2(0).Protocol = IPPROTO_IP
+frmMain.Socket2(0).protocol = IPPROTO_IP
 frmMain.Socket2(0).SocketType = SOCK_STREAM
 frmMain.Socket2(0).Binary = False
 frmMain.Socket2(0).Blocking = False
@@ -379,8 +394,9 @@ frmMain.Socket2(0).BufferSize = 2048
 
 
 
-Call ConfigListeningSocket(frmMain.Socket1, puerto)
+Call ConfigListeningSocket(frmMain.Socket1, Puerto)
 
+#End If
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
@@ -392,11 +408,11 @@ Unload frmCargando
 
 
 'Log
-Dim n As Integer
-n = FreeFile
-Open App.Path & "\logs\Main.log" For Append Shared As #n
-Print #n, Date & " " & Time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
-Close #n
+Dim N As Integer
+N = FreeFile
+Open App.Path & "\logs\Main.log" For Append Shared As #N
+Print #N, Date & " " & Time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+Close #N
 
 'Ocultar
 If HideMe = 1 Then
@@ -404,6 +420,9 @@ If HideMe = 1 Then
 Else
     Call frmMain.InitMain(0)
 End If
+
+tInicioServer = GetTickCount()
+Call InicializaEstadisticas
 
 'ResetThread.CreateNewThread AddressOf ThreadResetActions, tpNormal
 
@@ -428,7 +447,43 @@ Else
 End If
 
 End Function
+Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
+'All these functions are much faster using the "$" sign
+'after the function. This happens for a simple reason:
+'The functions return a variant without the $ sign. And
+'variants are very slow, you should never use them.
 
+'*****************************************************************
+'Devuelve el string del campo
+'*****************************************************************
+Dim i As Integer
+Dim LastPos As Integer
+Dim CurChar As String * 1
+Dim FieldNum As Integer
+Dim Seperator As String
+  
+Seperator = Chr(SepASCII)
+LastPos = 0
+FieldNum = 0
+
+For i = 1 To Len(Text)
+    CurChar = Mid$(Text, i, 1)
+    If CurChar = Seperator Then
+        FieldNum = FieldNum + 1
+        If FieldNum = Pos Then
+            ReadField = Mid$(Text, LastPos + 1, (InStr(LastPos + 1, Text, Seperator, vbTextCompare) - 1) - (LastPos))
+            Exit Function
+        End If
+        LastPos = i
+    End If
+Next i
+
+FieldNum = FieldNum + 1
+If FieldNum = Pos Then
+    ReadField = Mid$(Text, LastPos + 1)
+End If
+
+End Function
 Function MapaValido(ByVal Map As Integer) As Boolean
 MapaValido = Map >= 1 And Map <= NumMaps
 End Function
@@ -532,12 +587,16 @@ errhandler:
 
 End Sub
 
-Public Sub LogGM(Nombre As String, texto As String)
+Public Sub LogGM(Nombre As String, texto As String, Consejero As Boolean)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
+If Consejero Then
+    Open App.Path & "\logs\consejeros\" & Nombre & ".log" For Append Shared As #nfile
+Else
+    Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
+End If
 Print #nfile, Date & " " & Time & " " & texto
 Close #nfile
 
@@ -639,6 +698,23 @@ Exit Sub
 errhandler:
 
 End Sub
+
+Public Sub LogAntiCheat(texto As String)
+On Error GoTo errhandler
+
+Dim nfile As Integer
+nfile = FreeFile ' obtenemos un canal
+Open App.Path & "\logs\AntiCheat.log" For Append Shared As #nfile
+Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, ""
+Close #nfile
+
+Exit Sub
+
+errhandler:
+
+End Sub
+
 Function ValidInputNP(ByVal cad As String) As Boolean
 Dim Arg As String
 Dim i As Integer
@@ -681,7 +757,7 @@ Next
 LastUser = 0
 NumUsers = 0
 
-ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 
 Call LoadSini
@@ -691,33 +767,36 @@ Call LoadMapData
 
 Call CargarHechizos
 
+#If Not (UsarAPI = 1) Then
 
 '*****************Setup socket
 frmMain.Socket1.AddressFamily = AF_INET
-frmMain.Socket1.Protocol = IPPROTO_IP
+frmMain.Socket1.protocol = IPPROTO_IP
 frmMain.Socket1.SocketType = SOCK_STREAM
 frmMain.Socket1.Binary = False
 frmMain.Socket1.Blocking = False
 frmMain.Socket1.BufferSize = 1024
 
 frmMain.Socket2(0).AddressFamily = AF_INET
-frmMain.Socket2(0).Protocol = IPPROTO_IP
+frmMain.Socket2(0).protocol = IPPROTO_IP
 frmMain.Socket2(0).SocketType = SOCK_STREAM
 frmMain.Socket2(0).Blocking = False
 frmMain.Socket2(0).BufferSize = 2048
 
 'Escucha
-frmMain.Socket1.LocalPort = val(puerto)
-frmMain.Socket1.Listen
+frmMain.Socket1.LocalPort = val(Puerto)
+frmMain.Socket1.listen
+
+#End If
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
 
 'Log it
-Dim n As Integer
-n = FreeFile
-Open App.Path & "\logs\Main.log" For Append Shared As #n
-Print #n, Date & " " & Time & " servidor reiniciado."
-Close #n
+Dim N As Integer
+N = FreeFile
+Open App.Path & "\logs\Main.log" For Append Shared As #N
+Print #N, Date & " " & Time & " servidor reiniciado."
+Close #N
 
 'Ocultar
 
@@ -734,9 +813,9 @@ End Sub
 Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
     
     If MapInfo(UserList(UserIndex).Pos.Map).Zona <> "DUNGEON" Then
-        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger <> 1 And _
-           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger <> 2 And _
-           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger <> 4 Then Intemperie = True
+        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger <> 1 And _
+           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger <> 2 And _
+           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger <> 4 Then Intemperie = True
     Else
         Intemperie = False
     End If
@@ -747,7 +826,7 @@ Public Sub EfectoLluvia(ByVal UserIndex As Integer)
 On Error GoTo errhandler
 
 
-If UserList(UserIndex).Flags.UserLogged Then
+If UserList(UserIndex).flags.UserLogged Then
     If Intemperie(UserIndex) Then
                 Dim modifi As Long
                 modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 3)
@@ -812,7 +891,8 @@ If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
 Else
   Call SendData(ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
   UserList(UserIndex).Counters.Invisibilidad = 0
-  UserList(UserIndex).Flags.Invisible = 0
+  UserList(UserIndex).flags.Invisible = 0
+  UserList(UserIndex).flags.Oculto = 0
   Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
 End If
             
@@ -824,7 +904,7 @@ Public Sub EfectoParalisisNpc(ByVal NpcIndex As Integer)
 If Npclist(NpcIndex).Contadores.Paralisis > 0 Then
     Npclist(NpcIndex).Contadores.Paralisis = Npclist(NpcIndex).Contadores.Paralisis - 1
 Else
-    Npclist(NpcIndex).Flags.Paralizado = 0
+    Npclist(NpcIndex).flags.Paralizado = 0
 End If
 
 End Sub
@@ -834,11 +914,11 @@ Public Sub EfectoCegueEstu(ByVal UserIndex As Integer)
 If UserList(UserIndex).Counters.Ceguera > 0 Then
     UserList(UserIndex).Counters.Ceguera = UserList(UserIndex).Counters.Ceguera - 1
 Else
-    If UserList(UserIndex).Flags.Ceguera = 1 Then
-        UserList(UserIndex).Flags.Ceguera = 0
+    If UserList(UserIndex).flags.Ceguera = 1 Then
+        UserList(UserIndex).flags.Ceguera = 0
         Call SendData(ToIndex, UserIndex, 0, "NSEGUE")
     Else
-        UserList(UserIndex).Flags.Estupidez = 0
+        UserList(UserIndex).flags.Estupidez = 0
         Call SendData(ToIndex, UserIndex, 0, "NESTUP")
     End If
     
@@ -853,16 +933,17 @@ Public Sub EfectoParalisisUser(ByVal UserIndex As Integer)
 If UserList(UserIndex).Counters.Paralisis > 0 Then
     UserList(UserIndex).Counters.Paralisis = UserList(UserIndex).Counters.Paralisis - 1
 Else
-    UserList(UserIndex).Flags.Paralizado = 0
+    UserList(UserIndex).flags.Paralizado = 0
+    'UserList(UserIndex).Flags.AdministrativeParalisis = 0
     Call SendData(ToIndex, UserIndex, 0, "PARADOK")
 End If
 
 End Sub
 Public Sub RecStamina(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Integer)
 
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 1 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 2 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 4 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger = 4 Then Exit Sub
        
       
 Dim massta As Integer
@@ -871,7 +952,7 @@ If UserList(UserIndex).Stats.MinSta < UserList(UserIndex).Stats.MaxSta Then
        UserList(UserIndex).Counters.STACounter = UserList(UserIndex).Counters.STACounter + 1
    Else
        UserList(UserIndex).Counters.STACounter = 0
-       massta = CInt(RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 10)))
+       massta = CInt(RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)))
        UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta + massta
        If UserList(UserIndex).Stats.MinSta > UserList(UserIndex).Stats.MaxSta Then UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MaxSta
            Call SendData(ToIndex, UserIndex, 0, "||Te sentis menos cansado." & FONTTYPE_INFO)
@@ -882,15 +963,15 @@ End If
 End Sub
 
 Public Sub EfectoVeneno(UserIndex As Integer, EnviarStats As Boolean)
-Dim n As Integer
+Dim N As Integer
 
 If UserList(UserIndex).Counters.Veneno < IntervaloVeneno Then
   UserList(UserIndex).Counters.Veneno = UserList(UserIndex).Counters.Veneno + 1
 Else
   Call SendData(ToIndex, UserIndex, 0, "||Estas envenenado, si no te curas moriras." & FONTTYPE_VENENO)
   UserList(UserIndex).Counters.Veneno = 0
-  n = RandomNumber(1, 5)
-  UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - n
+  N = RandomNumber(1, 5)
+  UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - N
   If UserList(UserIndex).Stats.MinHP < 1 Then Call UserDie(UserIndex)
   EnviarStats = True
 End If
@@ -900,11 +981,11 @@ End Sub
 Public Sub DuracionPociones(UserIndex As Integer)
 
 'Controla la duracion de las pociones
-If UserList(UserIndex).Flags.DuracionEfecto > 0 Then
-   UserList(UserIndex).Flags.DuracionEfecto = UserList(UserIndex).Flags.DuracionEfecto - 1
-   If UserList(UserIndex).Flags.DuracionEfecto = 0 Then
-        UserList(UserIndex).Flags.TomoPocion = False
-        UserList(UserIndex).Flags.TipoPocion = 0
+If UserList(UserIndex).flags.DuracionEfecto > 0 Then
+   UserList(UserIndex).flags.DuracionEfecto = UserList(UserIndex).flags.DuracionEfecto - 1
+   If UserList(UserIndex).flags.DuracionEfecto = 0 Then
+        UserList(UserIndex).flags.TomoPocion = False
+        UserList(UserIndex).flags.TipoPocion = 0
         'volvemos los atributos al estado normal
         Dim loopX As Integer
         For loopX = 1 To NUMATRIBUTOS
@@ -926,7 +1007,7 @@ If UserList(UserIndex).Stats.MinAGU > 0 Then
                             
           If UserList(UserIndex).Stats.MinAGU <= 0 Then
                UserList(UserIndex).Stats.MinAGU = 0
-               UserList(UserIndex).Flags.Sed = 1
+               UserList(UserIndex).flags.Sed = 1
           End If
                             
           fenviarAyS = True
@@ -943,7 +1024,7 @@ If UserList(UserIndex).Stats.MinHam > 0 Then
         UserList(UserIndex).Stats.MinHam = UserList(UserIndex).Stats.MinHam - 10
         If UserList(UserIndex).Stats.MinHam < 0 Then
                UserList(UserIndex).Stats.MinHam = 0
-               UserList(UserIndex).Flags.Hambre = 1
+               UserList(UserIndex).flags.Hambre = 1
         End If
         fenviarAyS = True
     End If
@@ -953,9 +1034,9 @@ End Sub
 
 Public Sub Sanar(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Integer)
 
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 1 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 2 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 4 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y).trigger = 4 Then Exit Sub
        
 
 Dim mashit As Integer
@@ -976,6 +1057,79 @@ End If
 
 End Sub
 
+Public Sub CargaNpcsDat()
+Dim npcfile As String
+
+npcfile = DatPath & "NPCs.dat"
+ANpc = INICarga(npcfile)
+Call INIConf(ANpc, 0, "", 0)
+
+npcfile = DatPath & "NPCs-HOSTILES.dat"
+Anpc_host = INICarga(npcfile)
+Call INIConf(Anpc_host, 0, "", 0)
+
+End Sub
+
+Public Sub DescargaNpcsDat()
+If ANpc <> 0 Then Call INIDescarga(ANpc)
+If Anpc_host <> 0 Then Call INIDescarga(Anpc_host)
+
+End Sub
+
+Sub PasarSegundo()
+    Dim i As Integer
+    For i = 1 To LastUser
+        'Cerrar usuario
+        If UserList(i).Counters.Saliendo Then
+            UserList(i).Counters.Salir = UserList(i).Counters.Salir - 1
+            If UserList(i).Counters.Salir <= 0 Then
+                'If NumUsers <> 0 Then NumUsers = NumUsers - 1
+                'Call aDos.RestarConexion(frmMain.Socket2(i).PeerAddress)
+                Call SendData(ToIndex, i, 0, "||Gracias por jugar Argentum Online" & FONTTYPE_INFO)
+                Call SendData(ToIndex, i, 0, "FINOK")
+                
+                Call CloseSocket(i)
+'                Call CloseUser(i)
+'                UserList(i).ConnID = -1: UserList(i).NumeroPaquetesPorMiliSec = 0
+'                frmMain.Socket2(i).Disconnect
+'                frmMain.Socket2(i).Cleanup
+'                'Unload frmMain.Socket2(i)
+'                Call ResetUserSlot(i)
+            Else
+                Call SendData(ToIndex, i, 0, "||En " & UserList(i).Counters.Salir & " segundos se cerrará el juego..." & FONTTYPE_INFO)
+            End If
+        End If
+    Next i
+End Sub
+ 
+Sub GuardarUsuarios()
+    haciendoBK = True
+    
+    Call SendData(ToAll, 0, 0, "BKW")
+    Call SendData(ToAll, 0, 0, "||%%%%%% GRABANDO PERSONAJES %%%%%%" & FONTTYPE_INFO)
+    
+    Dim i As Integer
+    For i = 1 To LastUser
+        If UserList(i).flags.UserLogged Then
+            Call SaveUser(i, CharPath & UCase$(UserList(i).Name) & ".chr")
+        End If
+    Next i
+    
+    Call SendData(ToAll, 0, 0, "||%%%%%% PERSONAJES GRABADOS %%%%%%" & FONTTYPE_INFO)
+    Call SendData(ToAll, 0, 0, "BKW")
+
+    haciendoBK = False
+End Sub
 
 
+Sub InicializaEstadisticas()
+Dim Ta As Long
+Ta = GetTickCount()
 
+Call EstadisticasWeb.Inicializa(frmMain.hWnd)
+Call EstadisticasWeb.Informar(CANTIDAD_MAPAS, NumMaps)
+Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
+Call EstadisticasWeb.Informar(UPTIME_SERVER, (Ta - tInicioServer) / 1000)
+Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
+
+End Sub

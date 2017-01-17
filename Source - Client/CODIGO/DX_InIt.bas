@@ -46,7 +46,11 @@ Public PrimarySurface As DirectDrawSurface7
 Public PrimaryClipper As DirectDrawClipper
 Public SecundaryClipper As DirectDrawClipper
 Public BackBufferSurface As DirectDrawSurface7
-Public SurfaceDB() As DirectDrawSurface7
+
+'Public SurfaceDB() As DirectDrawSurface7
+
+'### 08/04/03 ###
+Public SurfaceDB As New CBmpMan
 
 Public Perf As DirectMusicPerformance
 Public Seg As DirectMusicSegment
@@ -188,9 +192,8 @@ Set BackBufferSurface = Nothing
 
 LiberarDirectSound
 
-For loopc = 1 To Config_Inicio.NumeroDeBMPs
-    Set SurfaceDB(loopc) = Nothing
-Next loopc
+Call SurfaceDB.BorrarTodo
+
 Set DirectDraw = Nothing
 
 For loopc = 1 To NumSoundBuffers

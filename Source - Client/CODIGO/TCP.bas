@@ -59,7 +59,7 @@ End Function
 Sub HandleData(ByVal Rdata As String)
     On Error Resume Next
     
-    Dim retVal As Variant
+    Dim RetVal As Variant
     Dim X As Integer
     Dim Y As Integer
     Dim CharIndex As Integer
@@ -72,6 +72,8 @@ Sub HandleData(ByVal Rdata As String)
     
     Dim sData As String
     sData = UCase(Rdata)
+    
+    Debug.Print Rdata
     
     Select Case sData
         Case "LOGGED"            ' >>>>> LOGIN :: LOGGED
@@ -136,6 +138,17 @@ Sub HandleData(ByVal Rdata As String)
             Unload frmComerciar
             Comerciando = False
             Exit Sub
+        '[KEVIN]**************************************************************
+        '-----------------------------------------------------------------------------
+        Case "FINBANOK"          ' >>>>> Finaliza Banco :: FINBANOK
+            frmBancoObj.List1(0).Clear
+            frmBancoObj.List1(1).Clear
+            NPCInvDim = 0
+            Unload frmBancoObj
+            Comerciando = False
+            Exit Sub
+        '[/KEVIN]***********************************************************************
+        '------------------------------------------------------------------------------
         Case "INITCOM"           ' >>>>> Inicia Comerciar :: INITCOM
             i = 1
             Do While i <= UBound(UserInventory)
@@ -149,6 +162,58 @@ Sub HandleData(ByVal Rdata As String)
             Comerciando = True
             frmComerciar.Show
             Exit Sub
+        '[KEVIN]-----------------------------------------------
+        '**************************************************************
+        Case "INITBANCO"           ' >>>>> Inicia Comerciar :: INITBANCO
+            Dim ii As Integer
+            ii = 1
+            Do While ii <= UBound(UserInventory)
+                If UserInventory(ii).OBJIndex <> 0 Then
+                        frmBancoObj.List1(1).AddItem UserInventory(ii).Name
+                Else
+                        frmBancoObj.List1(1).AddItem "Nada"
+                End If
+                ii = ii + 1
+            Loop
+            
+            
+            i = 1
+            Do While i <= UBound(UserBancoInventory)
+                If UserBancoInventory(i).OBJIndex <> 0 Then
+                        frmBancoObj.List1(0).AddItem UserBancoInventory(i).Name
+                Else
+                        frmBancoObj.List1(0).AddItem "Nada"
+                End If
+                i = i + 1
+            Loop
+            Comerciando = True
+            frmBancoObj.Show
+            Exit Sub
+        '---------------------------------------------------------------
+        '[/KEVIN]******************
+        '[Alejo]
+        Case "INITCOMUSU"
+            If frmComerciarUsu.List1.ListCount > 0 Then frmComerciarUsu.List1.Clear
+            If frmComerciarUsu.List2.ListCount > 0 Then frmComerciarUsu.List2.Clear
+            
+            For i = 1 To UBound(UserInventory)
+                If UserInventory(i).OBJIndex <> 0 Then
+                        frmComerciarUsu.List1.AddItem UserInventory(i).Name
+                        frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = UserInventory(i).Amount
+                Else
+                        frmComerciarUsu.List1.AddItem "Nada"
+                        frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = 0
+                End If
+            Next i
+            Comerciando = True
+            frmComerciarUsu.Show
+        Case "FINCOMUSUOK"
+            frmComerciarUsu.List1.Clear
+            frmComerciarUsu.List2.Clear
+            
+            Unload frmComerciarUsu
+            Comerciando = False
+            '[/Alejo]
         Case "RECPASSOK"
             Call MsgBox("¡¡¡El password fue enviado con éxito!!!", vbApplicationModal + vbDefaultButton1 + vbInformation + vbOKOnly, "Envio de password")
             frmRecuperar.MousePointer = 0
@@ -305,6 +370,11 @@ Sub HandleData(ByVal Rdata As String)
             iuser = Val(ReadField(3, Rdata, 176))
             If iuser > 0 Then
                 Dialogos.CrearDialogo ReadField(2, Rdata, 176), iuser, Val(ReadField(1, Rdata, 176))
+                'i = 1
+                'Do While i <= iuser
+                '    Dialogos.CrearDialogo ReadField(2, Rdata, 176), i, Val(ReadField(1, Rdata, 176))
+                '    i = i + 1
+                'Loop
             Else
                   If PuedoQuitarFoco Then _
                     AddtoRichTextBox frmMain.RecTxt, ReadField(1, Rdata, 126), Val(ReadField(2, Rdata, 126)), Val(ReadField(3, Rdata, 126)), Val(ReadField(4, Rdata, 126)), Val(ReadField(5, Rdata, 126)), Val(ReadField(6, Rdata, 126))
@@ -334,7 +404,7 @@ Sub HandleData(ByVal Rdata As String)
             
             CharList(CharIndex).Fx = Val(ReadField(9, Rdata, 44))
             CharList(CharIndex).FxLoopTimes = Val(ReadField(10, Rdata, 44))
-            CharList(CharIndex).nombre = ReadField(12, Rdata, 44)
+            CharList(CharIndex).Nombre = ReadField(12, Rdata, 44)
             CharList(CharIndex).Criminal = Val(ReadField(13, Rdata, 44))
             
             Call MakeChar(CharIndex, ReadField(1, Rdata, 44), ReadField(2, Rdata, 44), ReadField(3, Rdata, 44), X, Y, Val(ReadField(7, Rdata, 44)), Val(ReadField(8, Rdata, 44)), Val(ReadField(11, Rdata, 44)))
@@ -434,12 +504,16 @@ Sub HandleData(ByVal Rdata As String)
     Select Case Left(sData, 3)
         Case "VAL"                  ' >>>>> Validar Cliente :: VAL
             Rdata = Right$(Rdata, Len(Rdata) - 3)
-            If frmBorrar.Visible Then
+            'If frmBorrar.Visible Then
+            bK = CLng(ReadField(1, Rdata, Asc(",")))
+            bO = 100 'CInt(ReadField(1, Rdata, Asc(",")))
+            bRK = ReadField(2, Rdata, Asc(","))
+            If EstadoLogin = BorrarPj Then
                 Call SendData("BORR" & frmBorrar.txtNombre.Text & "," & frmBorrar.txtPasswd.Text & "," & ValidarLoginMSG(CInt(Rdata)))
-            Else
-                bK = CLng(ReadField(1, Rdata, Asc(",")))
-                bO = 100 'CInt(ReadField(1, Rdata, Asc(",")))
-                Call Login(ValidarLoginMSG(CInt(ReadField(2, Rdata, Asc(",")))))
+            ElseIf EstadoLogin = Normal Or EstadoLogin = CrearNuevoPj Then
+                Call Login(ValidarLoginMSG(CInt(bRK)))
+            ElseIf EstadoLogin = Dados Then
+                frmCrearPersonaje.Show vbModal
             End If
             Exit Sub
         Case "BKW"                  ' >>>>> Pausa :: BKW
@@ -576,6 +650,33 @@ Sub HandleData(ByVal Rdata As String)
             bInvMod = True
             
             Exit Sub
+        '[KEVIN]-------------------------------------------------------
+        '**********************************************************************
+        Case "SBO"                 ' >>>>> Actualiza Inventario Banco :: SBO
+            Rdata = Right$(Rdata, Len(Rdata) - 3)
+            Slot = ReadField(1, Rdata, 44)
+            UserBancoInventory(Slot).OBJIndex = ReadField(2, Rdata, 44)
+            UserBancoInventory(Slot).Name = ReadField(3, Rdata, 44)
+            UserBancoInventory(Slot).Amount = ReadField(4, Rdata, 44)
+            UserBancoInventory(Slot).GrhIndex = Val(ReadField(5, Rdata, 44))
+            UserBancoInventory(Slot).ObjType = Val(ReadField(6, Rdata, 44))
+            UserBancoInventory(Slot).MaxHit = Val(ReadField(7, Rdata, 44))
+            UserBancoInventory(Slot).MinHit = Val(ReadField(8, Rdata, 44))
+            UserBancoInventory(Slot).Def = Val(ReadField(9, Rdata, 44))
+        
+            tempstr = ""
+            
+            If UserBancoInventory(Slot).Amount > 0 Then
+                tempstr = tempstr & "(" & UserBancoInventory(Slot).Amount & ") " & UserBancoInventory(Slot).Name
+            Else
+                tempstr = tempstr & UserBancoInventory(Slot).Name
+            End If
+            
+            bInvMod = True
+            
+            Exit Sub
+        '************************************************************************
+        '[/KEVIN]-------
         Case "SHS"                ' >>>>> Agrega hechizos a Lista Spells :: SHS
             Rdata = Right$(Rdata, Len(Rdata) - 3)
             Slot = ReadField(1, Rdata, 44)
@@ -762,6 +863,18 @@ Sub HandleData(ByVal Rdata As String)
     End Select
     
     Select Case Left(sData, 5)
+        Case "DADOS"
+            Rdata = Right$(Rdata, Len(Rdata) - 5)
+            With frmCrearPersonaje
+                If .Visible Then
+                    .lbFuerza.Caption = ReadField(1, Rdata, 44)
+                    .lbAgilidad.Caption = ReadField(2, Rdata, 44)
+                    .lbInteligencia.Caption = ReadField(3, Rdata, 44)
+                    .lbCarisma.Caption = ReadField(4, Rdata, 44)
+                    .lbConstitucion.Caption = ReadField(5, Rdata, 44)
+                End If
+            End With
+            Exit Sub
         Case "MEDOK"            ' >>>>> Meditar OK :: MEDOK
             UserMeditar = Not UserMeditar
             Exit Sub
@@ -852,7 +965,66 @@ Sub HandleData(ByVal Rdata As String)
                 End If
             End If
             Exit Sub
+        '[KEVIN]------------------------------------------------------------------
+        '*********************************************************************************
+        Case "BANCOOK"           ' Banco OK :: BANCOOK
+            If frmBancoObj.Visible Then
+                i = 1
+                Do While i <= UBound(UserInventory)
+                    If UserInventory(i).OBJIndex <> 0 Then
+                            frmBancoObj.List1(1).AddItem UserInventory(i).Name
+                    Else
+                            frmBancoObj.List1(1).AddItem "Nada"
+                    End If
+                    i = i + 1
+                Loop
+                
+                ii = 1
+                Do While ii <= UBound(UserBancoInventory)
+                    If UserBancoInventory(ii).OBJIndex <> 0 Then
+                            frmBancoObj.List1(0).AddItem UserBancoInventory(ii).Name
+                    Else
+                            frmBancoObj.List1(0).AddItem "Nada"
+                    End If
+                    ii = ii + 1
+                Loop
+                
+                Rdata = Right(Rdata, Len(Rdata) - 7)
+                
+                If ReadField(2, Rdata, 44) = "0" Then
+                        frmBancoObj.List1(0).ListIndex = frmBancoObj.LastIndex1
+                Else
+                        frmBancoObj.List1(1).ListIndex = frmBancoObj.LastIndex2
+                End If
+            End If
+            Exit Sub
+        '[/KEVIN]************************************************************************
+        '----------------------------------------------------------------------------------
     End Select
+    
+    '[Alejo]
+    Select Case UCase(Left(Rdata, 9))
+    Case "COMUSUINV"
+        Rdata = Right(Rdata, Len(Rdata) - 9)
+        OtroInventario(1).OBJIndex = ReadField(2, Rdata, 44)
+        OtroInventario(1).Name = ReadField(3, Rdata, 44)
+        OtroInventario(1).Amount = ReadField(4, Rdata, 44)
+        OtroInventario(1).Equipped = ReadField(5, Rdata, 44)
+        OtroInventario(1).GrhIndex = Val(ReadField(6, Rdata, 44))
+        OtroInventario(1).ObjType = Val(ReadField(7, Rdata, 44))
+        OtroInventario(1).MaxHit = Val(ReadField(8, Rdata, 44))
+        OtroInventario(1).MinHit = Val(ReadField(9, Rdata, 44))
+        OtroInventario(1).Def = Val(ReadField(10, Rdata, 44))
+        OtroInventario(1).Valor = Val(ReadField(11, Rdata, 44))
+        
+        frmComerciarUsu.List2.Clear
+        
+        frmComerciarUsu.List2.AddItem OtroInventario(1).Name
+        frmComerciarUsu.List2.ItemData(frmComerciarUsu.List2.NewIndex) = OtroInventario(1).Amount
+        
+        frmComerciarUsu.lblEstadoResp.Visible = False
+    End Select
+    
 End Sub
 
 Sub SendData(ByVal sdData As String)
@@ -860,6 +1032,8 @@ Dim retcode
 
 Dim AuxCmd As String
 AuxCmd = UCase(Left(sdData, 5))
+
+'Debug.Print ">> " & sdData
 
 bK = GenCrC(bK, sdData)
 
@@ -884,12 +1058,14 @@ End Sub
 Sub Login(ByVal valcode As Integer)
 
 'Personaje grabado
-If SendNewChar = False Then
-    SendData ("OLOGIN" & UserName & "," & UserPassword & "," & App.Major & "." & App.Minor & "." & App.Revision & "," & valcode)
-End If
+'If SendNewChar = False Then
+If EstadoLogin = Normal Then
+    SendData ("OLOGIN" & UserName & "," & UserPassword & "," & App.Major & "." & App.Minor & "." & App.Revision & "," & valcode & MD5HushYo)
+'End If
 
 'Crear personaje
-If SendNewChar = True Then
+'If SendNewChar = True Then
+ElseIf EstadoLogin = CrearNuevoPj Then
     SendData ("NLOGIN" & UserName & "," & UserPassword _
     & "," & 0 & "," & 0 & "," _
     & App.Major & "." & App.Minor & "." & App.Revision & _
@@ -907,7 +1083,7 @@ If SendNewChar = True Then
      & "," & UserSkills(17) & "," & UserSkills(18) _
      & "," & UserSkills(19) & "," & UserSkills(20) _
      & "," & UserSkills(21) & "," & UserEmail & "," _
-     & UserHogar & "," & valcode)
+     & UserHogar & "," & valcode & MD5HushYo)
 End If
 
 End Sub

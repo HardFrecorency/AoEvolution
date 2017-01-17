@@ -37,6 +37,7 @@ Option Explicit
 
 Public bO As Integer
 Public bK As Long
+Public bRK As Long
 
 Public iplst As String
 Public banners As String
@@ -54,6 +55,8 @@ Private lFrameLimiter As Long
 Public lFrameModLimiter As Long
 Public lFrameTimer As Long
 Public sHKeys() As String
+
+Public bFPS As Boolean
 
 Public Declare Function sndPlaySound Lib "winmm.dll" Alias "sndPlaySoundA" (ByVal lpszSoundName As String, ByVal uFlags As Long) As Long
 
@@ -197,23 +200,23 @@ Sub Addtostatus(RichTextBox As RichTextBox, Text As String, RED As Byte, GREEN A
 'apperance!
 '******************************************
 
-frmCargando.status.SelStart = Len(RichTextBox.Text)
-frmCargando.status.SelLength = 0
-frmCargando.status.SelColor = RGB(RED, GREEN, BLUE)
+frmCargando.Status.SelStart = Len(RichTextBox.Text)
+frmCargando.Status.SelLength = 0
+frmCargando.Status.SelColor = RGB(RED, GREEN, BLUE)
 
 If Bold Then
-    frmCargando.status.SelBold = True
+    frmCargando.Status.SelBold = True
 Else
-    frmCargando.status.SelBold = False
+    frmCargando.Status.SelBold = False
 End If
 
 If Italic Then
-    frmCargando.status.SelItalic = True
+    frmCargando.Status.SelItalic = True
 Else
-    frmCargando.status.SelItalic = False
+    frmCargando.Status.SelItalic = False
 End If
 
-frmCargando.status.SelText = Chr(13) & Chr(10) & Text
+frmCargando.Status.SelText = Chr(13) & Chr(10) & Text
 
 End Sub
 
@@ -825,6 +828,8 @@ End Function
 
 Public Sub InitServersList(ByVal Lst As String)
 
+On Error Resume Next
+
 Dim NumServers As Integer
 Dim i As Integer, Cont As Integer
 i = 1
@@ -888,16 +893,25 @@ On Error Resume Next
 
 Call WriteClientVer
 
-'If App.PrevInstance Then
-'    Call MsgBox("Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
-'    End
-'End If
+If App.PrevInstance Then
+    Call MsgBox("Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+    End
+End If
 
 Dim f As Boolean
+Dim ulttick As Long, esttick As Long
+Dim timers(1 To 5) As Integer
 
 ChDrive App.Path
 ChDir App.Path
 
+'Obtengo mi MD5 hash
+'Obtener el HushMD5
+Dim fMD5HushYo As String * 32
+fMD5HushYo = MD5File(App.Path & "\" & App.EXEName & ".exe")
+'fMD5HushYo = MD5File(App.Path & "\" & "Argentum.exe")
+
+MD5HushYo = txtOffset(hexMd52Asc(fMD5HushYo), 53)
 
 'Cargamos el archivo de configuracion inicial
 If FileExist(App.Path & "\init\Inicio.con", vbNormal) Then
@@ -936,8 +950,8 @@ frmCargando.Refresh
 
 UserParalizado = False
 
-frmConnect.version = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
-AddtoRichTextBox frmCargando.status, "Buscando servidores....", 0, 0, 0, 0, 0, 1
+frmConnect.Version = "v" & App.Major & "." & App.Minor & " Build: " & App.Revision
+AddtoRichTextBox frmCargando.Status, "Buscando servidores....", 0, 0, 0, 0, 0, 1
 
 frmMain.Inet1.URL = "http://www.argentum-online.com.ar/admin/iplist2.txt"
 RawServersList = frmMain.Inet1.OpenURL
@@ -946,13 +960,22 @@ If RawServersList = "" Then
     frmMain.Inet1.URL = "http://www.argentum-online.com.ar/admin/iplist2.txt"
 End If
 
+frmMain.Socket1.Startup
+
+If RawServersList = "" Then
+    ServersRecibidos = False
+    ReDim ServersLst(1)
+Else
+    ServersRecibidos = True
+End If
+
 Call InitServersList(RawServersList)
 
 'IPdelServidor =
 'PuertoDelServidor = 7666
 
-AddtoRichTextBox frmCargando.status, "Encontrado", , , , 1
-AddtoRichTextBox frmCargando.status, "Iniciando constantes...", 0, 0, 0, 0, 0, 1
+AddtoRichTextBox frmCargando.Status, "Encontrado", , , , 1
+AddtoRichTextBox frmCargando.Status, "Iniciando constantes...", 0, 0, 0, 0, 0, 1
 
 ReDim Ciudades(1 To NUMCIUDADES) As String
 Ciudades(1) = "Ullathorpe"
@@ -1027,12 +1050,12 @@ AtributosNames(5) = "Constitucion"
 frmOldPersonaje.NameTxt.Text = Config_Inicio.Name
 frmOldPersonaje.PasswordTxt.Text = ""
 
-AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
+AddtoRichTextBox frmCargando.Status, "Hecho", , , , 1
 
 IniciarObjetosDirectX
 
-AddtoRichTextBox frmCargando.status, "Cargando Sonidos....", 0, 0, 0, 0, 0, 1
-AddtoRichTextBox frmCargando.status, "Hecho", , , , 1
+AddtoRichTextBox frmCargando.Status, "Cargando Sonidos....", 0, 0, 0, 0, 0, 1
+AddtoRichTextBox frmCargando.Status, "Hecho", , , , 1
 
 Dim loopc As Integer
 
@@ -1045,7 +1068,7 @@ Call InitTileEngine(frmMain.hWnd, 152, 7, 32, 32, 13, 17, 9)
                                   
 
 'Call AddtoRichTextBox(frmCargando.Status, "Creando animaciones extras.", 2, 51, 223, 1, 1)
-Call AddtoRichTextBox(frmCargando.status, "Creando animaciones extra....")
+Call AddtoRichTextBox(frmCargando.Status, "Creando animaciones extra....")
 
 
 Call CargarAnimsExtra
@@ -1056,7 +1079,7 @@ Call CargarAnimArmas
 Call CargarAnimEscudos
 
 
-AddtoRichTextBox frmCargando.status, "                    ¡Bienvenido a Argentum Online!", , , , 1
+AddtoRichTextBox frmCargando.Status, "                    ¡Bienvenido a Argentum Online!", , , , 1
 
 
 Unload frmCargando
@@ -1202,16 +1225,43 @@ Do While prgRun
         
         'While DirectX.TickCount - lFrameLimiter < lFrameModLimiter: Wend
         
-        While DirectX.TickCount - lFrameLimiter < 55: Wend
+        '[Alejo]
+        'If bFPS = False Then
+            While DirectX.TickCount - lFrameLimiter < 55 '< 55
+                Sleep 5
+            Wend
+        'End If
+        '[/Alejo]
+        
+
         lFrameLimiter = DirectX.TickCount
     
     '[END]'
+    
+    'Sistema de timers renovado:
+    esttick = GetTickCount
+    For loopc = 1 To UBound(timers)
+        timers(loopc) = timers(loopc) + (esttick - ulttick)
+        'timer de trabajo
+        If timers(1) >= tUs Then
+            timers(1) = 0
+            NoPuedeUsar = False
+        End If
+        'timer de attaque (77)
+        If timers(2) >= tAt Then
+            timers(2) = 0
+            UserCanAttack = 1
+        End If
+    Next loopc
+    ulttick = GetTickCount
+    
+    
     DoEvents
 Loop
 
 EngineRun = False
 frmCargando.Show
-AddtoRichTextBox frmCargando.status, "Liberando recursos...", 0, 0, 0, 0, 0, 1
+AddtoRichTextBox frmCargando.Status, "Liberando recursos...", 0, 0, 0, 0, 0, 1
 LiberarObjetosDX
 
 

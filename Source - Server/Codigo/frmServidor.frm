@@ -2,19 +2,19 @@ VERSION 5.00
 Begin VB.Form frmServidor 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Servidor"
-   ClientHeight    =   4935
+   ClientHeight    =   5520
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   4500
+   ClientWidth     =   4575
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
-   ScaleHeight     =   4935
-   ScaleWidth      =   4500
+   ScaleHeight     =   5520
+   ScaleWidth      =   4575
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command15 
-      Caption         =   "Unban All"
+   Begin VB.CommandButton Command17 
+      Caption         =   "Actualizar npcs.dat"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -22,16 +22,118 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   225
-      Left            =   570
+      Height          =   255
+      Left            =   240
+      TabIndex        =   16
+      Top             =   3600
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command16 
+      Caption         =   "Reload Server.ini"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   15
+      Top             =   3360
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command14 
+      Caption         =   "Update MOTD"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   14
+      Top             =   3120
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command19 
+      Caption         =   "Unban All IPs"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   18
+      Top             =   2880
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command5 
+      Caption         =   "Cargar BackUp del mundo"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   1
+      Top             =   4740
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command18 
+      Caption         =   "Guardar todos los personajes"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   17
+      Top             =   4500
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command15 
+      Caption         =   "Unban All"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
       TabIndex        =   13
-      Top             =   3135
-      Width           =   3435
+      Top             =   2640
+      Width           =   4095
    End
    Begin VB.CommandButton Command13 
       Caption         =   "Debug listening socket"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -39,16 +141,16 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   225
-      Left            =   555
+      Height          =   255
+      Left            =   240
       TabIndex        =   12
-      Top             =   2850
-      Width           =   3435
+      Top             =   2400
+      Width           =   4095
    End
    Begin VB.CommandButton Command12 
       Caption         =   "Debug Npcs"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -56,17 +158,102 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   225
-      Left            =   555
+      Height          =   255
+      Left            =   240
       TabIndex        =   11
-      Top             =   2580
-      Width           =   3435
+      Top             =   2160
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command11 
+      Caption         =   "Stats de los slots"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   8
+      Top             =   1920
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command10 
+      Caption         =   "Trafico"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   7
+      Top             =   1680
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command9 
+      Caption         =   "Reload Lista Nombres Prohibidos"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   6
+      Top             =   1440
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command8 
+      Caption         =   "Actualizar hechizos"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   5
+      Top             =   1200
+      Width           =   4095
+   End
+   Begin VB.CommandButton Command7 
+      Caption         =   "Configurar intervalos"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   4
+      Top             =   960
+      Width           =   4095
    End
    Begin VB.CommandButton Command3 
       Caption         =   "Reiniciar"
       Enabled         =   0   'False
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -74,16 +261,16 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   225
-      Left            =   555
+      Height          =   255
+      Left            =   240
       TabIndex        =   10
-      Top             =   855
-      Width           =   3435
+      Top             =   720
+      Width           =   4095
    End
    Begin VB.CommandButton Command6 
       Caption         =   "ReSpawn Guardias en posiciones originales"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -91,101 +278,16 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   225
-      Left            =   555
+      Height          =   255
+      Left            =   240
       TabIndex        =   9
-      Top             =   570
-      Width           =   3435
-   End
-   Begin VB.CommandButton Command11 
-      Caption         =   "Stats de los slots"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   555
-      TabIndex        =   8
-      Top             =   2325
-      Width           =   3435
-   End
-   Begin VB.CommandButton Command10 
-      Caption         =   "Trafico"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   225
-      Left            =   555
-      TabIndex        =   7
-      Top             =   2025
-      Width           =   3435
-   End
-   Begin VB.CommandButton Command9 
-      Caption         =   "Reload Lista Nombres Prohibidos"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   225
-      Left            =   555
-      TabIndex        =   6
-      Top             =   1740
-      Width           =   3435
-   End
-   Begin VB.CommandButton Command8 
-      Caption         =   "Actualizar hechizos"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   225
-      Left            =   555
-      TabIndex        =   5
-      Top             =   1440
-      Width           =   3435
-   End
-   Begin VB.CommandButton Command7 
-      Caption         =   "Configurar intervalos"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   225
-      Left            =   555
-      TabIndex        =   4
-      Top             =   1155
-      Width           =   3435
+      Top             =   480
+      Width           =   4095
    End
    Begin VB.CommandButton Command1 
       Caption         =   "Actualizar objetos.dat"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -193,16 +295,16 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   225
-      Left            =   555
+      Height          =   255
+      Left            =   240
       TabIndex        =   3
-      Top             =   270
-      Width           =   3435
+      Top             =   240
+      Width           =   4095
    End
    Begin VB.CommandButton Command4 
       Caption         =   "Hacer un Backup del mundo"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -210,48 +312,48 @@ Begin VB.Form frmServidor
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   270
-      Left            =   555
+      Height          =   255
+      Left            =   240
       TabIndex        =   2
-      Top             =   3690
-      Width           =   3405
-   End
-   Begin VB.CommandButton Command5 
-      Caption         =   "Cargar BackUp del mundo"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   270
-      Left            =   555
-      TabIndex        =   1
-      Top             =   4050
-      Width           =   3405
+      Top             =   4260
+      Width           =   4095
    End
    Begin VB.CommandButton Command2 
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   255
-      Left            =   3390
+      Left            =   3480
       TabIndex        =   0
-      Top             =   4560
+      Top             =   5220
       Width           =   945
    End
+   Begin VB.CommandButton Command20 
+      Caption         =   "Reiniciar sockets"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   19
+      Top             =   5220
+      Width           =   3135
+   End
    Begin VB.Shape Shape3 
-      Height          =   3225
-      Left            =   90
-      Top             =   195
+      Height          =   3855
+      Left            =   120
+      Top             =   120
       Width           =   4335
    End
    Begin VB.Shape Shape2 
       Height          =   975
       Left            =   120
-      Top             =   3480
+      Top             =   4140
       Width           =   4335
    End
 End
@@ -260,11 +362,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -293,11 +392,11 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
-
 Option Explicit
 
 Private Sub Command1_Click()
-Call LoadOBJData
+Call LoadOBJData_Nuevo
+
 End Sub
 
 Private Sub Command10_Click()
@@ -316,25 +415,29 @@ Private Sub Command13_Click()
 frmDebugSocket.Visible = True
 End Sub
 
+Private Sub Command14_Click()
+Call LoadMotd
+End Sub
+
 Private Sub Command15_Click()
 On Error Resume Next
 
 Dim Fn As String
 Dim cad$
-Dim n As Integer, k As Integer
+Dim N As Integer, k As Integer
 
 Fn = App.Path & "\logs\GenteBanned.log"
 
 If FileExist(Fn, vbNormal) Then
-    n = FreeFile
-    Open Fn For Input Shared As #n
-    Do While Not EOF(n)
+    N = FreeFile
+    Open Fn For Input Shared As #N
+    Do While Not EOF(N)
         k = k + 1
-        Input #n, cad$
+        Input #N, cad$
         Call UnBan(cad$)
         
     Loop
-    Close #n
+    Close #N
     MsgBox "Se han habilitado " & k & " personajes."
     Kill Fn
 End If
@@ -344,8 +447,71 @@ End If
 
 End Sub
 
+Private Sub Command16_Click()
+Call LoadSini
+End Sub
+
+Private Sub Command17_Click()
+Call DescargaNpcsDat
+Call CargaNpcsDat
+
+End Sub
+
+Private Sub Command18_Click()
+Me.MousePointer = 11
+Call GuardarUsuarios
+Me.MousePointer = 0
+MsgBox "Grabado de personajes OK!"
+End Sub
+
+Private Sub Command19_Click()
+Dim i As Long, N As Long
+
+N = BanIps.Count
+For i = 1 To BanIps.Count
+    BanIps.Remove 1
+Next i
+
+MsgBox "Se han habilitado " & N & " ipes"
+
+End Sub
+
 Private Sub Command2_Click()
 frmServidor.Visible = False
+End Sub
+
+Private Sub Command20_Click()
+#If UsarAPI Then
+Dim i As Long
+
+If MsgBox("Esta seguro que desea reiniciar los sockets ? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+    'Cierra el socket de escucha
+    If SockListen >= 0 Then Call apiclosesocket(SockListen)
+    
+    'Cierra todas las conexiones
+    For i = 1 To MaxUsers
+        If UserList(i).ConnID <> -1 Then
+            Call CloseSocket(i)
+        End If
+    Next i
+    
+    'Inicia el socket de escucha
+    SockListen = ListenForConnect(Puerto, hWndMsg, "")
+    
+    'Comprueba si el proc de la ventana es el correcto
+    Dim TmpWProc As Long
+    TmpWProc = GetWindowLong(hWndMsg, GWL_WNDPROC)
+    If TmpWProc <> ActualWProc Then
+        MsgBox "Incorrecto proc de ventana (" & TmpWProc & " <> " & ActualWProc & ")"
+        Call LogApiSock("INCORRECTO PROC DE VENTANA")
+        OldWProc = TmpWProc
+        If OldWProc <> 0 Then
+            SetWindowLong frmMain.hWnd, GWL_WNDPROC, AddressOf WndProc
+            ActualWProc = GetWindowLong(frmMain.hWnd, GWL_WNDPROC)
+        End If
+    End If
+End If
+#End If
 End Sub
 
 Private Sub Command3_Click()
@@ -383,10 +549,14 @@ If FileExist(App.Path & "\logs\Asesinatos.log", vbNormal) Then Kill App.Path & "
 If FileExist(App.Path & "\logs\Resurrecciones.log", vbNormal) Then Kill App.Path & "\logs\Resurrecciones.log"
 If FileExist(App.Path & "\logs\Teleports.Log", vbNormal) Then Kill App.Path & "\logs\Teleports.Log"
 
-  
+
+#If UsarAPI Then
+Call apiclosesocket(SockListen)
+#Else
 frmMain.Socket1.Cleanup
 frmMain.Socket2(0).Cleanup
-  
+#End If
+
 Dim LoopC As Integer
 
 For LoopC = 1 To MaxUsers
@@ -397,30 +567,34 @@ Next
 LastUser = 0
 NumUsers = 0
 
-ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 
 Call LoadSini
 Call CargarBackUp
 Call LoadOBJData
 
+#If UsarAPI Then
+SockListen = ListenForConnect(Puerto, frmMain.hWnd, "")
 
+#Else
 frmMain.Socket1.AddressFamily = AF_INET
-frmMain.Socket1.Protocol = IPPROTO_IP
+frmMain.Socket1.protocol = IPPROTO_IP
 frmMain.Socket1.SocketType = SOCK_STREAM
 frmMain.Socket1.Binary = False
 frmMain.Socket1.Blocking = False
 frmMain.Socket1.BufferSize = 1024
 
 frmMain.Socket2(0).AddressFamily = AF_INET
-frmMain.Socket2(0).Protocol = IPPROTO_IP
+frmMain.Socket2(0).protocol = IPPROTO_IP
 frmMain.Socket2(0).SocketType = SOCK_STREAM
 frmMain.Socket2(0).Blocking = False
 frmMain.Socket2(0).BufferSize = 2048
 
 'Escucha
-frmMain.Socket1.LocalPort = puerto
-frmMain.Socket1.Listen
+frmMain.Socket1.LocalPort = Puerto
+frmMain.Socket1.listen
+#End If
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
 

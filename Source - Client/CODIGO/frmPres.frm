@@ -72,7 +72,7 @@ Static ticks As Long
 ticks = ticks + 1
 
 If ticks = 1 Then
-    Me.Picture = LoadPicture(App.Path & "\Graficos\towebs.jpg")
+    Me.Picture = LoadPicture(App.Path & "\Graficos\argentum.jpg")
 'ElseIf ticks = 2 Then
     'Me.Picture = LoadPicture(App.Path & "\Graficos\datafull.jpg")
 ElseIf ticks = 2 Then

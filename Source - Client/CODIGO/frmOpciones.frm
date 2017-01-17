@@ -27,34 +27,34 @@ Begin VB.Form frmOpciones
    Begin VB.CommandButton Command2 
       Caption         =   "Cerrar"
       Height          =   345
-      Left            =   1020
+      Left            =   960
       MouseIcon       =   "frmOpciones.frx":0152
       MousePointer    =   99  'Custom
       TabIndex        =   2
-      Top             =   2715
+      Top             =   2700
       Width           =   2790
    End
    Begin VB.CommandButton Command1 
       Caption         =   "FX Activados"
       Height          =   345
       Index           =   1
-      Left            =   975
+      Left            =   960
       MouseIcon       =   "frmOpciones.frx":02A4
       MousePointer    =   99  'Custom
       TabIndex        =   1
       Top             =   1200
-      Width           =   2745
+      Width           =   2790
    End
    Begin VB.CommandButton Command1 
       Caption         =   "Musica Activada"
       Height          =   345
       Index           =   0
-      Left            =   990
+      Left            =   960
       MouseIcon       =   "frmOpciones.frx":03F6
       MousePointer    =   99  'Custom
       TabIndex        =   0
       Top             =   780
-      Width           =   2745
+      Width           =   2790
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
@@ -149,12 +149,6 @@ End Select
 End Sub
 
 Private Sub Command2_Click()
-Me.Visible = False
-End Sub
-
-
-
-Private Sub Form_Deactivate()
 Me.Visible = False
 End Sub
 

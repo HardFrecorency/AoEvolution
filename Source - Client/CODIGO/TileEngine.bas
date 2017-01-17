@@ -166,7 +166,7 @@ Public Type Char
     FxLoopTimes As Integer
     Criminal As Byte
     
-    nombre As String
+    Nombre As String
     
     Moving As Byte
     MoveOffset As Position
@@ -619,7 +619,7 @@ CharList(CharIndex).FxLoopTimes = 0
 CharList(CharIndex).invisible = False
 CharList(CharIndex).Moving = 0
 CharList(CharIndex).muerto = False
-CharList(CharIndex).nombre = ""
+CharList(CharIndex).Nombre = ""
 CharList(CharIndex).pie = False
 CharList(CharIndex).POS.X = 0
 CharList(CharIndex).POS.Y = 0
@@ -1100,41 +1100,12 @@ InMapBounds = True
 
 End Function
 
-
-'[CODE 000]:MatuX'
-    'Sub DDrawGrhtoSurface(surface As DirectDrawSurface7, Grh As Grh, X As Integer, Y As Integer, Center As Byte, Animate As Byte)
-    Sub DDrawGrhtoSurface(surface As DirectDrawSurface7, Grh As Grh, ByVal X As Integer, ByVal Y As Integer, center As Byte, Animate As Byte)
-'[END]'
-'*****************************************************************
-'Draws a Grh at the X and Y positions
-'*****************************************************************
-'[CODE]:MatuX'
-'
-'  lo hice inline
-'
-'[END]'
+Sub DDrawGrhtoSurface(surface As DirectDrawSurface7, Grh As Grh, ByVal X As Integer, ByVal Y As Integer, center As Byte, Animate As Byte)
 
 Dim CurrentGrh As Grh
 Dim destRect As RECT
 Dim SourceRect As RECT
 Dim SurfaceDesc As DDSURFACEDESC2
-
-'Check to make sure it is legal
-'[CODE 000]:MatuX'
-'
-'   Comentado.. El hecho de que entrara
-' y saliera al toque de la función producía
-' mucho overhead, es preferible asegurarse
-' de que es valido desde afuera
-'
-'    If Grh.GrhIndex < 1 Then
-'        Exit Sub
-'    End If
-'    If GrhData(Grh.GrhIndex).NumFrames < 1 Then
-'        Exit Sub
-'    End If
-'
-'[END]'
 
 If Animate Then
     If Grh.Started = 1 Then
@@ -1150,10 +1121,8 @@ If Animate Then
         End If
     End If
 End If
-
 'Figure out what frame to draw (always 1 if not animated)
 CurrentGrh.GrhIndex = GrhData(Grh.GrhIndex).Frames(Grh.FrameCounter)
-
 'Center Grh over X,Y pos
 If center Then
     If GrhData(CurrentGrh.GrhIndex).TileWidth <> 1 Then
@@ -1163,61 +1132,20 @@ If center Then
         Y = Y - Int(GrhData(CurrentGrh.GrhIndex).TileHeight * 32) + 32 'hard coded for speed
     End If
 End If
-
-'With destRect
-'    .Left = X
-'    .Top = Y
-'    .Right = .Left + GrhData(CurrentGrh.GrhIndex).pixelWidth
-'    .Bottom = .Top + GrhData(CurrentGrh.GrhIndex).pixelHeight
-'End With
-
-'Draw
-'Call Surface.GetSurfaceDesc(SurfaceDesc)
-'If Not ((X >= 0) And _
-        (Y >= 0) And _
-        (X + GrhData(CurrentGrh.GrhIndex).pixelWidth) <= SurfaceDesc.lWidth And _
-        (Y + GrhData(CurrentGrh.GrhIndex).pixelHeight) <= SurfaceDesc.lHeight) Then: _
-    Exit Sub
-
-'If destRect.Left >= 0 And destRect.Top >= 0 And destRect.Right <= SurfaceDesc.lWidth And destRect.Bottom <= SurfaceDesc.lHeight Then
-    
-    With SourceRect
+With SourceRect
         .Left = GrhData(CurrentGrh.GrhIndex).sX
         .Top = GrhData(CurrentGrh.GrhIndex).sY
         .Right = .Left + GrhData(CurrentGrh.GrhIndex).pixelWidth
         .Bottom = .Top + GrhData(CurrentGrh.GrhIndex).pixelHeight
-    End With
-
-    surface.BltFast X, Y, SurfaceDB(GrhData(CurrentGrh.GrhIndex).FileNum), SourceRect, DDBLTFAST_WAIT
-
-'End If
-
+End With
+surface.BltFast X, Y, SurfaceDB(GrhData(CurrentGrh.GrhIndex).FileNum), SourceRect, DDBLTFAST_WAIT
 End Sub
 
-'Sub DDrawTransGrhIndextoSurface(surface As DirectDrawSurface7, Grh As Integer, ByVal X As Integer, ByVal Y As Integer, Center As Byte, Animate As Byte)
-'[CODE 000]:MatuX
-    Sub DDrawTransGrhIndextoSurface(surface As DirectDrawSurface7, Grh As Integer, ByVal X As Integer, ByVal Y As Integer, center As Byte, Animate As Byte)
-'[END]'
-
+Sub DDrawTransGrhIndextoSurface(surface As DirectDrawSurface7, Grh As Integer, ByVal X As Integer, ByVal Y As Integer, center As Byte, Animate As Byte)
 Dim CurrentGrh As Grh
 Dim destRect As RECT
 Dim SourceRect As RECT
 Dim SurfaceDesc As DDSURFACEDESC2
-
-'Check to make sure it is legal
-'[CODE 000]:MatuX'
-'
-'   Comentado.. El hecho de que entrara
-' y saliera al toque de la función producía
-' mucho overhead, es preferible asegurarse
-' de que es valido desde afuera
-'
-'If Grh < 1 Then
-'    Exit Sub
-'End If
-'
-'[END]'
-
 
 With destRect
     .Left = X
@@ -1237,7 +1165,7 @@ If destRect.Left >= 0 And destRect.Top >= 0 And destRect.Right <= SurfaceDesc.lW
         .Bottom = .Top + GrhData(Grh).pixelHeight
     End With
     
-    surface.BltFast destRect.Left, destRect.Top, SurfaceDB(GrhData(Grh).FileNum), SourceRect, DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT
+    surface.BltFast destRect.Left, destRect.Top, SurfaceDB.GetBMP(GrhData(Grh).FileNum), SourceRect, DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT
 End If
 
 End Sub
@@ -1304,47 +1232,19 @@ If center Then
     End If
 End If
 
-'With destRect
-'    .Left = X
-'    .Top = Y
-'    .Right = .Left + GrhData(iGrhIndex).pixelWidth
-'    .Bottom = .Top + GrhData(iGrhIndex).pixelHeight
-'End With
-'
-'surface.GetSurfaceDesc SurfaceDesc
+With SourceRect
+    .Left = GrhData(iGrhIndex).sX
+    .Top = GrhData(iGrhIndex).sY
+    .Right = .Left + GrhData(iGrhIndex).pixelWidth
+    .Bottom = .Top + GrhData(iGrhIndex).pixelHeight
+End With
 
-'Draw
-'If destRect.Left >= 0 And destRect.Top >= 0 And destRect.Right <= SurfaceDesc.lWidth And destRect.Bottom <= SurfaceDesc.lHeight Then
-    With SourceRect
-        .Left = GrhData(iGrhIndex).sX
-        .Top = GrhData(iGrhIndex).sY
-        .Right = .Left + GrhData(iGrhIndex).pixelWidth
-        .Bottom = .Top + GrhData(iGrhIndex).pixelHeight
-    End With
-    
-    'surface.BltFast destRect.Left, destRect.Top, SurfaceDB(GrhData(CurrentGrh.GrhIndex).FileNum), SourceRect, DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT
-    surface.BltFast X, Y, SurfaceDB(GrhData(iGrhIndex).FileNum), SourceRect, DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT
-'End If
+surface.BltFast X, Y, SurfaceDB.GetBMP(GrhData(iGrhIndex).FileNum), SourceRect, DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT
 
 End Sub
 
 Sub DrawBackBufferSurface()
-
-'[CODE 000]:MatuX
-'
-'   Seguí intentando usar el BltFast en el PrimarySurface
-' hasta que descubrí que no se podía porque el BltFast no
-' anda con surfaces que tienen un Clipper attacheado.
-' Ahora el código es el mismo de antes.
-'
-'[END]'
-
-'*****************************************************************
-'Copies backbuffer to primarysurface
-'*****************************************************************
-
 PrimarySurface.Blt MainViewRect, BackBufferSurface, MainDestRect, DDBLT_WAIT
-
 End Sub
 
 Function GetBitmapDimensions(BmpFile As String, ByRef bmWidth As Long, ByRef bmHeight As Long)
@@ -1368,9 +1268,8 @@ Sub DrawGrhtoHdc(hWnd As Long, Hdc As Long, Grh As Integer, SourceRect As RECT, 
 If Grh <= 0 Then Exit Sub
 
 SecundaryClipper.SetHWnd hWnd
-SurfaceDB(GrhData(Grh).FileNum).BltToDC Hdc, SourceRect, destRect
+SurfaceDB.GetBMP(GrhData(Grh).FileNum).BltToDC Hdc, SourceRect, destRect
 End Sub
-
 
 
 Sub PlayWaveAPI(File As String)
@@ -1449,7 +1348,7 @@ For Y = (minY + 8) + RenderMod.iImageSize To (maxY - 8) - RenderMod.iImageSize
         Call BackBufferSurface.BltFast( _
                 ((32 * ScreenX) - 32) + PixelOffsetX, _
                 ((32 * ScreenY) - 32) + PixelOffsetY, _
-                SurfaceDB(GrhData(iGrhIndex).FileNum), _
+                SurfaceDB.GetBMP(GrhData(iGrhIndex).FileNum), _
                 rSourceRect, _
                 DDBLTFAST_WAIT)
         '******************************************
@@ -1581,25 +1480,25 @@ For Y = (minY + 8) + RenderMod.iImageSize To (maxY - 1) - RenderMod.iImageSize
                 
                 If Nombres Then
                     If TempChar.invisible = False Then
-                        If TempChar.nombre <> "" Then
-                                Dim lCenter As Long:
-                                lCenter = Len(TempChar.nombre) \ 2
-                                If InStr(TempChar.nombre, "<") > 0 And InStr(TempChar.nombre, ">") > 0 Then
-                                    Dim sClan As String: sClan = Mid(TempChar.nombre, InStr(TempChar.nombre, "<"))
+                        If TempChar.Nombre <> "" Then
+                                Dim lCenter As Long
+                                lCenter = Len(TempChar.Nombre) \ 2
+                                If InStr(TempChar.Nombre, "<") > 0 And InStr(TempChar.Nombre, ">") > 0 Then
+                                    Dim sClan As String: sClan = Mid(TempChar.Nombre, InStr(TempChar.Nombre, "<"))
                                     If TempChar.Criminal Then
-                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, Left(TempChar.nombre, InStr(TempChar.nombre, "<") - 1), RGB(255, 0, 0))
+                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, Left(TempChar.Nombre, InStr(TempChar.Nombre, "<") - 1), RGB(255, 0, 0))
                                         lCenter = Len(sClan) \ 2
                                         Call Dialogos.DrawText(iPPx - lCenter, iPPy + 45, sClan, RGB(255, 0, 0))
                                     Else
-                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, Left(TempChar.nombre, InStr(TempChar.nombre, "<") - 1), RGB(0, 128, 255))
+                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, Left(TempChar.Nombre, InStr(TempChar.Nombre, "<") - 1), RGB(0, 128, 255))
                                         lCenter = Len(sClan) * 2
                                         Call Dialogos.DrawText(iPPx - lCenter, iPPy + 45, sClan, RGB(0, 128, 255))
                                     End If
                                 Else
                                     If TempChar.Criminal Then
-                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, TempChar.nombre, RGB(255, 0, 0))
+                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, TempChar.Nombre, RGB(255, 0, 0))
                                     Else
-                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, TempChar.nombre, RGB(0, 128, 255))
+                                        Call Dialogos.DrawText(iPPx - lCenter, iPPy + 30, TempChar.Nombre, RGB(0, 128, 255))
                                     End If
                                 End If
                         End If
@@ -1689,7 +1588,7 @@ If bLluvia(UserMap) = 1 Then
     
                 For Y = 0 To 4
                     For X = 0 To 4
-                        Call BackBufferSurface.BltFast(LTLluvia(Y), LTLluvia(X), SurfaceDB(Config_Inicio.NumeroDeBMPs + 1), RLluvia(iFrameIndex), DDBLTFAST_SRCCOLORKEY + DDBLTFAST_WAIT)
+                        Call BackBufferSurface.BltFast(LTLluvia(Y), LTLluvia(X), SurfaceDB.GetBMP(5556), RLluvia(iFrameIndex), DDBLTFAST_SRCCOLORKEY + DDBLTFAST_WAIT)
                     Next X
                 Next Y
     End If
@@ -1724,7 +1623,6 @@ End If
 '            End If
 '[END]'
 End Sub
-
 Public Function RenderSounds()
 '[CODE 001]:MatuX'
     If bLluvia(UserMap) = 1 Then
@@ -1777,130 +1675,37 @@ PixelPos = (TilePixelWidth * X) - TilePixelWidth
 
 End Function
 
-'[CODE 000]:MatuX
-    Public Sub LoadXUGraphics()
-        'Carga las mascaras y otros graficos en formato .XU
-'        Dim SurfaceDesc As DDSURFACEDESC2
-'        Dim ddck As DDCOLORKEY
-'        Dim ddsd As DDSURFACEDESC2
-'
-'        Call DeXUFile(DirGraficos & "bbmask1.xu", 555640)
-'        Call DeXUFile(DirGraficos & "bbmask2.xu", 555584)
-'
-'        ReDim SurfaceXU(1 To 2)
-'
-'        With ddsd
-'            .lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
-'            If RenderMod.bUseVideo Then
-'                .ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
-'            Else
-'                .ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN Or DDSCAPS_SYSTEMMEMORY
-'            End If
-'        End With
-'
-'        Call GetBitmapDimensions(DirGraficos & "bbmask1.bmp", ddsd.lWidth, ddsd.lHeight)
-'        Set SurfaceXU(1) = DirectDraw.CreateSurfaceFromFile(DirGraficos & "bbmask1.bmp", ddsd)
-'        SurfaceXU(1).SetColorKey DDCKEY_SRCBLT, ddck
-'
-'        Call GetBitmapDimensions(DirGraficos & "bbmask2.bmp", ddsd.lWidth, ddsd.lHeight)
-'        Set SurfaceXU(2) = DirectDraw.CreateSurfaceFromFile(DirGraficos & "bbmask1.bmp", ddsd)
-'        SurfaceXU(2).SetColorKey DDCKEY_SRCBLT, ddck
-'
-'        Kill DirGraficos & "bbmask1.bmp"
-'        Kill DirGraficos & "bbmask2.bmp"
-    End Sub
-'[END]'
 
-'[CODE]:MatuX'
-    Sub LoadGraphics()
-        '*****************************************************************
-        'Loads all the sprites and tiles from the gif or bmp files
-        '*****************************************************************
+Sub LoadGraphics()
         Dim loopc As Integer
         Dim SurfaceDesc As DDSURFACEDESC2
         Dim ddck As DDCOLORKEY
         Dim ddsd As DDSURFACEDESC2
         Dim iLoopUpdate As Integer
 
-        ReDim SurfaceDB(1 To Config_Inicio.NumeroDeBMPs + 1) '+ 1 por la lluvia
+        SurfaceDB.MaxEntries = 150
+        SurfaceDB.lpDirectDraw7 = DirectDraw
+        SurfaceDB.Path = DirGraficos
+        Call SurfaceDB.Init
         
-        With ddsd
-            .lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
-            If RenderMod.bUseVideo Then
-                .ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
-            Else
-                .ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN Or DDSCAPS_SYSTEMMEMORY
-            End If
-        End With
-        ddck.high = 0: ddck.low = 0 'Negro
 
-        'Load the GRHx.bmps into memory
-        iLoopUpdate = 1
-        For loopc = 1 To Config_Inicio.NumeroDeBMPs
-            '[CODE 000]:MatuX'
-                If FileExist(DirGraficos & loopc & ".bmp", vbNormal) Then
-                '
-                '  descomprimimos el .XU a un .BMP usando el .DAT
-                ' para la información que necesitamos
-                'If FileExist(DirGraficos & loopc & ".xu", vbNormal) Then
-                '    Open DirGraficos & loopc & ".dat" For Binary As #51
-                '        Dim isize As Long
-                '        Seek #51, 4
-                '        Get #51, , isize
-                '    Close
-                '    Call DeXUFile(DirGraficos & loopc & ".xu", isize)
-            '[END]'
-                
-                Call GetBitmapDimensions(DirGraficos & loopc & ".bmp", ddsd.lWidth, ddsd.lHeight)
+        'Bmp de la lluvia
+        Call GetBitmapDimensions(DirGraficos & "5556.bmp", ddsd.lWidth, ddsd.lHeight)
+              
+        RLluvia(0).Top = 0:      RLluvia(1).Top = 0:      RLluvia(2).Top = 0:      RLluvia(3).Top = 0
+        RLluvia(0).Left = 0:     RLluvia(1).Left = 128:   RLluvia(2).Left = 256:   RLluvia(3).Left = 384
+        RLluvia(0).Right = 128:  RLluvia(1).Right = 256:  RLluvia(2).Right = 384:  RLluvia(3).Right = 512
+        RLluvia(0).Bottom = 128: RLluvia(1).Bottom = 128: RLluvia(2).Bottom = 128: RLluvia(3).Bottom = 128
+    
+        RLluvia(4).Top = 128:    RLluvia(5).Top = 128:    RLluvia(6).Top = 128:    RLluvia(7).Top = 128
+        RLluvia(4).Left = 0:     RLluvia(5).Left = 128:   RLluvia(6).Left = 256:   RLluvia(7).Left = 384
+        RLluvia(4).Right = 128:  RLluvia(5).Right = 256:  RLluvia(6).Right = 384:  RLluvia(7).Right = 512
+        RLluvia(4).Bottom = 256: RLluvia(5).Bottom = 256: RLluvia(6).Bottom = 256: RLluvia(7).Bottom = 256
+        AddtoRichTextBox frmCargando.Status, "Hecho.", , , , 1, , False
+End Sub
 
-                Set SurfaceDB(loopc) = DirectDraw.CreateSurfaceFromFile(DirGraficos & loopc & ".bmp", ddsd)
-                'Set color key
-                SurfaceDB(loopc).SetColorKey DDCKEY_SRCBLT, ddck
-            
-            '[CODE 000]:MatuX
-                ' borramos el .BMP porque ya no lo utilizamos
-                'Kill DirGraficos & loopc & ".bmp"
-            '[END]'
-            
-                If loopc > (iLoopUpdate + 10) Then
-                    AddtoRichTextBox frmCargando.status, ".", , , , , , True
-                    iLoopUpdate = loopc
-                End If
-            End If
-        Next loopc
 
-        '[CODE 000]:MatuX'
-            '[DO]:Cargar la lluvia'
-                'Open DirGraficos & "lluvia.dat" For Binary As #51
-                '    Seek #51, 4
-                '    Get #51, , isize
-                'Close
-                'Call DeXUFile(DirGraficos & "lluvia.xu", isize)
-                
-                Call GetBitmapDimensions(DirGraficos & "lluvia.bmp", ddsd.lWidth, ddsd.lHeight)
-                Set SurfaceDB(Config_Inicio.NumeroDeBMPs + 1) = DirectDraw.CreateSurfaceFromFile(DirGraficos & "lluvia.bmp", ddsd)
-                Call SurfaceDB(Config_Inicio.NumeroDeBMPs + 1).SetColorKey(DDCKEY_SRCBLT, ddck)
-                
-                'Kill DirGraficos & "lluvia.bmp"
-                
-                RLluvia(0).Top = 0:      RLluvia(1).Top = 0:      RLluvia(2).Top = 0:      RLluvia(3).Top = 0
-                RLluvia(0).Left = 0:     RLluvia(1).Left = 128:   RLluvia(2).Left = 256:   RLluvia(3).Left = 384
-                RLluvia(0).Right = 128:  RLluvia(1).Right = 256:  RLluvia(2).Right = 384:  RLluvia(3).Right = 512
-                RLluvia(0).Bottom = 128: RLluvia(1).Bottom = 128: RLluvia(2).Bottom = 128: RLluvia(3).Bottom = 128
-            
-                RLluvia(4).Top = 128:    RLluvia(5).Top = 128:    RLluvia(6).Top = 128:    RLluvia(7).Top = 128
-                RLluvia(4).Left = 0:     RLluvia(5).Left = 128:   RLluvia(6).Left = 256:   RLluvia(7).Left = 384
-                RLluvia(4).Right = 128:  RLluvia(5).Right = 256:  RLluvia(6).Right = 384:  RLluvia(7).Right = 512
-                RLluvia(4).Bottom = 256: RLluvia(5).Bottom = 256: RLluvia(6).Bottom = 256: RLluvia(7).Bottom = 256
-            '[END]'
-
-            Call LoadXUGraphics
-        '[END]'
-
-        AddtoRichTextBox frmCargando.status, "Hecho.", , , , 1, , False
-    End Sub
 '[END]'
-
 Function InitTileEngine(ByRef setDisplayFormhWnd As Long, setMainViewTop As Integer, setMainViewLeft As Integer, setTilePixelHeight As Integer, setTilePixelWidth As Integer, setWindowTileHeight As Integer, setWindowTileWidth As Integer, setTileBufferSize As Integer) As Boolean
 '*****************************************************************
 'InitEngine
@@ -1989,13 +1794,6 @@ ddck.high = 0
 BackBufferSurface.SetColorKey DDCKEY_SRCBLT, ddck
 
 
-'ddsd4.lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
-'ddsd4.ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
-'Set ddsAlphaPicture = DirectDraw.CreateSurfaceFromFile(App.Path & "\Graficos\night2.bmp", ddsd4)
-'
-'ddsd5.lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
-'ddsd5.ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
-'Set ddsSpotLight = DirectDraw.CreateSurfaceFromFile(App.Path & "\Graficos\spot4.bmp", ddsd5)
 
 Call LoadGrhData
 Call CargarCuerpos
@@ -2003,38 +1801,17 @@ Call CargarCabezas
 Call CargarCascos
 Call CargarFxs
 
-'AddtoRichTextBox frmCargando.Status, "Cargando mapas.", 2, 51, 223, 1, 1
-'AddtoRichTextBox frmCargando.Status, "Cargando graficos.", 2, 51, 223, 1, 1
-'Call LoadGraphics
-'AddtoRichTextBox frmCargando.Status, "¡¡¡Iniciando Argentum Online!!!.", 2, 51, 223, 1, 1
 
-'[CODE 000]:MatuX'
-'   Iniciamos la LookUp Table de la lluvia
-' con esto nos salvamos de hacer la ecuación
-' (X * 128) + 224
-    LTLluvia(0) = 224
-    LTLluvia(1) = 352
-    LTLluvia(2) = 480
-    LTLluvia(3) = 608
-    LTLluvia(4) = 736
-'[END]'
+LTLluvia(0) = 224
+LTLluvia(1) = 352
+LTLluvia(2) = 480
+LTLluvia(3) = 608
+LTLluvia(4) = 736
 
-AddtoRichTextBox frmCargando.status, "Cargando Gráficos....", 0, 0, 0, , , True
+AddtoRichTextBox frmCargando.Status, "Cargando Gráficos....", 0, 0, 0, , , True
 Call LoadGraphics
 
 InitTileEngine = True
-
-'[CODE 002]:MatuX
-'
-'  Engine is not running!
-'
-'  Causaba fallos si se desconectaba
-' repentinamente, y otros fallos raros
-' con el sonido
-'
-    'EngineRun = True
-'
-'[END]
 
 End Function
 

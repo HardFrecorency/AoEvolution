@@ -184,6 +184,7 @@ Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
 'Ojo
+EstadoLogin = RecuperarPass
 frmMain.Socket1.HostName = CurServerIp
 frmMain.Socket1.RemotePort = CurServerPasRecPort
 frmMain.Socket1.Connect

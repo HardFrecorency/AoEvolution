@@ -1,9 +1,6 @@
 Attribute VB_Name = "modHechizos"
-'Argentum Online 0.9.0.4
-'
+'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -31,12 +28,14 @@ Attribute VB_Name = "modHechizos"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
+
 Option Explicit
 
 Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
 
 If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
-If UserList(UserIndex).Flags.Invisible = 1 Then Exit Sub
+If UserList(UserIndex).flags.Invisible = 1 Then Exit Sub
 
 Npclist(NpcIndex).CanAttack = 0
 Dim daño As Integer
@@ -58,7 +57,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
     Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(Spell).WAV)
     Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
 
-    If UserList(UserIndex).Flags.Privilegios = 0 Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
+    If UserList(UserIndex).flags.Privilegios = 0 Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
     
     Call SendData(ToIndex, UserIndex, 0, "||" & Npclist(NpcIndex).Name & " te ha quitado " & daño & " puntos de vida." & FONTTYPE_FIGHT)
     
@@ -71,8 +70,8 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
 End If
 
 If Hechizos(Spell).Paraliza = 1 Then
-     If UserList(UserIndex).Flags.Paralizado = 0 Then
-          UserList(UserIndex).Flags.Paralizado = 1
+     If UserList(UserIndex).flags.Paralizado = 0 Then
+          UserList(UserIndex).flags.Paralizado = 1
           UserList(UserIndex).Counters.Paralisis = IntervaloParalizado
           Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(Spell).WAV)
           Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
@@ -83,13 +82,13 @@ End If
 
 End Sub
 
-Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneHechizo(ByVal I As Integer, ByVal UserIndex As Integer) As Boolean
 
 On Error GoTo errhandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
-        If UserList(UserIndex).Stats.UserHechizos(j) = i Then
+        If UserList(UserIndex).Stats.UserHechizos(j) = I Then
             TieneHechizo = True
             Exit Function
         End If
@@ -125,28 +124,28 @@ End If
 
 End Sub
             
-Sub DecirPalabrasMagicas(ByVal s As String, ByVal UserIndex As Integer)
+Sub DecirPalabrasMagicas(ByVal S As String, ByVal UserIndex As Integer)
 On Error Resume Next
 
     Dim ind As String
     ind = UserList(UserIndex).Char.CharIndex
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbCyan & "°" & s & "°" & ind)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbCyan & "°" & S & "°" & ind)
     Exit Sub
 End Sub
 Function PuedeLanzar(ByVal UserIndex As Integer, ByVal HechizoIndex As Integer) As Boolean
 
 
-If UserList(UserIndex).Flags.Muerto = 0 Then
+If UserList(UserIndex).flags.Muerto = 0 Then
     Dim wp2 As WorldPos
-    wp2.Map = UserList(UserIndex).Flags.TargetMap
-    wp2.X = UserList(UserIndex).Flags.TargetX
-    wp2.Y = UserList(UserIndex).Flags.TargetY
+    wp2.Map = UserList(UserIndex).flags.TargetMap
+    wp2.X = UserList(UserIndex).flags.TargetX
+    wp2.Y = UserList(UserIndex).flags.TargetY
     
     If Distancia(UserList(UserIndex).Pos, wp2) > 18 Then
             'UserList(UserIndex).Flags.AdministrativeBan = 1
             'Call SendData(ToAll, 0, 0, "||Los Dioses han desterrado a " & UserList(UserIndex).Name & FONTTYPE_INFO)
-            Call LogHackAttemp(UserList(UserIndex).Name & " IP:" & UserList(UserIndex).ip & " trato de lanzar un spell desde otro mapa.")
-            Call CloseSocket(UserIndex)
+            'Call LogHackAttemp(UserList(UserIndex).Name & " IP:" & UserList(UserIndex).ip & " trato de lanzar un spell desde otro mapa.")
+            'Call Cerrar_Usuario(UserIndex)
             Exit Function
     End If
     
@@ -171,19 +170,20 @@ End Function
 Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 
 'Call LogTarea("HechizoInvocacion")
+If UserList(UserIndex).NroMacotas >= MAXMASCOTAS Then Exit Sub
 
 Dim H As Integer, j As Integer, ind As Integer, Index As Integer
 Dim TargetPos As WorldPos
 
 
-TargetPos.Map = UserList(UserIndex).Flags.TargetMap
-TargetPos.X = UserList(UserIndex).Flags.TargetX
-TargetPos.Y = UserList(UserIndex).Flags.TargetY
+TargetPos.Map = UserList(UserIndex).flags.TargetMap
+TargetPos.X = UserList(UserIndex).flags.TargetX
+TargetPos.Y = UserList(UserIndex).flags.TargetY
 
-H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).Flags.Hechizo)
+H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).cant
+For j = 1 To Hechizos(H).Cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
@@ -251,8 +251,8 @@ If b Then
     UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido
     If UserList(UserIndex).Stats.MinMAN < 0 Then UserList(UserIndex).Stats.MinMAN = 0
     Call SendUserStatsBox(UserIndex)
-    Call SendUserStatsBox(UserList(UserIndex).Flags.TargetUser)
-    UserList(UserIndex).Flags.TargetUser = 0
+    Call SendUserStatsBox(UserList(UserIndex).flags.TargetUser)
+    UserList(UserIndex).flags.TargetUser = 0
 End If
 
 End Sub
@@ -265,14 +265,14 @@ Dim b As Boolean
 
 Select Case Hechizos(uh).Tipo
     Case uEstado ' Afectan estados (por ejem : Envenenamiento)
-       Call HechizoEstadoNPC(UserList(UserIndex).Flags.TargetNpc, uh, b, UserIndex)
+       Call HechizoEstadoNPC(UserList(UserIndex).flags.TargetNpc, uh, b, UserIndex)
     Case uPropiedades ' Afectan HP,MANA,STAMINA,ETC
-       Call HechizoPropNPC(uh, UserList(UserIndex).Flags.TargetNpc, UserIndex, b)
+       Call HechizoPropNPC(uh, UserList(UserIndex).flags.TargetNpc, UserIndex, b)
 End Select
 
 If b Then
     Call SubirSkill(UserIndex, Magia)
-    UserList(UserIndex).Flags.TargetNpc = 0
+    UserList(UserIndex).flags.TargetNpc = 0
     UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido
     If UserList(UserIndex).Stats.MinMAN < 0 Then UserList(UserIndex).Stats.MinMAN = 0
     Call SendUserStatsBox(UserIndex)
@@ -292,21 +292,21 @@ If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
         
         Case uUsuarios
-            If UserList(UserIndex).Flags.TargetUser > 0 Then
+            If UserList(UserIndex).flags.TargetUser > 0 Then
                 Call HandleHechizoUsuario(UserIndex, uh)
             Else
                 Call SendData(ToIndex, UserIndex, 0, "||Este hechizo actua solo sobre usuarios." & FONTTYPE_INFO)
             End If
         Case uNPC
-            If UserList(UserIndex).Flags.TargetNpc > 0 Then
+            If UserList(UserIndex).flags.TargetNpc > 0 Then
                 Call HandleHechizoNPC(UserIndex, uh)
             Else
                 Call SendData(ToIndex, UserIndex, 0, "||Este hechizo solo afecta a los npcs." & FONTTYPE_INFO)
             End If
         Case uUsuariosYnpc
-            If UserList(UserIndex).Flags.TargetUser > 0 Then
+            If UserList(UserIndex).flags.TargetUser > 0 Then
                 Call HandleHechizoUsuario(UserIndex, uh)
-            ElseIf UserList(UserIndex).Flags.TargetNpc > 0 Then
+            ElseIf UserList(UserIndex).flags.TargetNpc > 0 Then
                 Call HandleHechizoNPC(UserIndex, uh)
             Else
                 Call SendData(ToIndex, UserIndex, 0, "||Target invalido." & FONTTYPE_INFO)
@@ -324,11 +324,11 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 
 
 Dim H As Integer, TU As Integer
-H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).Flags.Hechizo)
-TU = UserList(UserIndex).Flags.TargetUser
+H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+TU = UserList(UserIndex).flags.TargetUser
 
 If Hechizos(H).Invisibilidad = 1 Then
-   UserList(TU).Flags.Invisible = 1
+   UserList(TU).flags.Invisible = 1
    Call SendData(ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
    Call InfoHechizo(UserIndex)
    b = True
@@ -339,13 +339,13 @@ If Hechizos(H).Envenena = 1 Then
         If UserIndex <> TU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, TU)
         End If
-        UserList(TU).Flags.Envenenado = 1
+        UserList(TU).flags.Envenenado = 1
         Call InfoHechizo(UserIndex)
         b = True
 End If
 
 If Hechizos(H).CuraVeneno = 1 Then
-        UserList(TU).Flags.Envenenado = 0
+        UserList(TU).flags.Envenenado = 0
         Call InfoHechizo(UserIndex)
         b = True
 End If
@@ -355,32 +355,32 @@ If Hechizos(H).Maldicion = 1 Then
         If UserIndex <> TU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, TU)
         End If
-        UserList(TU).Flags.Maldicion = 1
+        UserList(TU).flags.Maldicion = 1
         Call InfoHechizo(UserIndex)
         b = True
 End If
 
 If Hechizos(H).RemoverMaldicion = 1 Then
-        UserList(TU).Flags.Maldicion = 0
+        UserList(TU).flags.Maldicion = 0
         Call InfoHechizo(UserIndex)
         b = True
 End If
 
 If Hechizos(H).Bendicion = 1 Then
-        UserList(TU).Flags.Bendicion = 1
+        UserList(TU).flags.Bendicion = 1
         Call InfoHechizo(UserIndex)
         b = True
 End If
 
 If Hechizos(H).Paraliza = 1 Then
-     If UserList(TU).Flags.Paralizado = 0 Then
+     If UserList(TU).flags.Paralizado = 0 Then
             If Not PuedeAtacar(UserIndex, TU) Then Exit Sub
             
             If UserIndex <> TU Then
                 Call UsuarioAtacadoPorUsuario(UserIndex, TU)
             End If
             
-            UserList(TU).Flags.Paralizado = 1
+            UserList(TU).flags.Paralizado = 1
             UserList(TU).Counters.Paralisis = IntervaloParalizado
             Call SendData(ToIndex, TU, 0, "PARADOK")
             Call InfoHechizo(UserIndex)
@@ -389,8 +389,8 @@ If Hechizos(H).Paraliza = 1 Then
 End If
 
 If Hechizos(H).RemoverParalisis = 1 Then
-    If UserList(TU).Flags.Paralizado = 1 Then
-                UserList(TU).Flags.Paralizado = 0
+    If UserList(TU).flags.Paralizado = 1 Then
+                UserList(TU).flags.Paralizado = 0
                 Call SendData(ToIndex, TU, 0, "PARADOK")
                 Call InfoHechizo(UserIndex)
                 b = True
@@ -398,7 +398,7 @@ If Hechizos(H).RemoverParalisis = 1 Then
 End If
 
 If Hechizos(H).Revivir = 1 Then
-    If UserList(TU).Flags.Muerto = 1 Then
+    If UserList(TU).flags.Muerto = 1 Then
         If Not Criminal(TU) Then
                 If TU <> UserIndex Then
                     Call AddtoVar(UserList(UserIndex).Reputacion.NobleRep, 500, MAXREP)
@@ -417,7 +417,7 @@ If Hechizos(H).Ceguera = 1 Then
         If UserIndex <> TU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, TU)
         End If
-        UserList(TU).Flags.Ceguera = 1
+        UserList(TU).flags.Ceguera = 1
         UserList(TU).Counters.Ceguera = IntervaloParalizado
         Call SendData(ToIndex, TU, 0, "CEGU")
         Call InfoHechizo(UserIndex)
@@ -429,7 +429,7 @@ If Hechizos(H).Estupidez = 1 Then
         If UserIndex <> TU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, TU)
         End If
-        UserList(TU).Flags.Estupidez = 1
+        UserList(TU).flags.Estupidez = 1
         UserList(TU).Counters.Ceguera = IntervaloParalizado
         Call SendData(ToIndex, TU, 0, "DUMB")
         Call InfoHechizo(UserIndex)
@@ -443,7 +443,7 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, ByVal hIndex As Integer, ByRef b
 
 If Hechizos(hIndex).Invisibilidad = 1 Then
    Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).Flags.Invisible = 1
+   Npclist(NpcIndex).flags.Invisible = 1
    b = True
 End If
 
@@ -453,13 +453,13 @@ If Hechizos(hIndex).Envenena = 1 Then
         Exit Sub
    End If
    Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).Flags.Envenenado = 1
+   Npclist(NpcIndex).flags.Envenenado = 1
    b = True
 End If
 
 If Hechizos(hIndex).CuraVeneno = 1 Then
    Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).Flags.Envenenado = 0
+   Npclist(NpcIndex).flags.Envenenado = 0
    b = True
 End If
 
@@ -469,27 +469,27 @@ If Hechizos(hIndex).Maldicion = 1 Then
         Exit Sub
    End If
    Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).Flags.Maldicion = 1
+   Npclist(NpcIndex).flags.Maldicion = 1
    b = True
 End If
 
 If Hechizos(hIndex).RemoverMaldicion = 1 Then
    Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).Flags.Maldicion = 0
+   Npclist(NpcIndex).flags.Maldicion = 0
    b = True
 End If
 
 If Hechizos(hIndex).Bendicion = 1 Then
    Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).Flags.Bendicion = 1
+   Npclist(NpcIndex).flags.Bendicion = 1
    b = True
 End If
 
 If Hechizos(hIndex).Paraliza = 1 Then
-   If Npclist(NpcIndex).Flags.AfectaParalisis = 0 Then
+   If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
             Call InfoHechizo(UserIndex)
-            Npclist(NpcIndex).Flags.Paralizado = 1
-            Npclist(NpcIndex).Contadores.Paralisis = IntervaloParalizado * 2
+            Npclist(NpcIndex).flags.Paralizado = 1
+            Npclist(NpcIndex).Contadores.Paralisis = IntervaloParalizado
             b = True
    Else
       Call SendData(ToIndex, UserIndex, 0, "||El npc es inmune a este hechizo." & FONTTYPE_FIGHT)
@@ -497,9 +497,9 @@ If Hechizos(hIndex).Paraliza = 1 Then
 End If
 
 If Hechizos(hIndex).RemoverParalisis = 1 Then
-   If Npclist(NpcIndex).Flags.Paralizado = 1 Then
+   If Npclist(NpcIndex).flags.Paralizado = 1 Then
             Call InfoHechizo(UserIndex)
-            Npclist(NpcIndex).Flags.Paralizado = 0
+            Npclist(NpcIndex).flags.Paralizado = 0
             Npclist(NpcIndex).Contadores.Paralisis = 0
             b = True
    Else
@@ -539,7 +539,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
     Call InfoHechizo(UserIndex)
     b = True
     Call NpcAtacado(NpcIndex, UserIndex)
-    If Npclist(NpcIndex).Flags.Snd2 > 0 Then Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Npclist(NpcIndex).Flags.Snd2)
+    If Npclist(NpcIndex).flags.Snd2 > 0 Then Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Npclist(NpcIndex).flags.Snd2)
     
     Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MinHP - _
     daño
@@ -555,26 +555,26 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
 
 
     Dim H As Integer
-    H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).Flags.Hechizo)
+    H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
     Call DecirPalabrasMagicas(Hechizos(H).PalabrasMagicas, UserIndex)
     Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(H).WAV)
     
-    If UserList(UserIndex).Flags.TargetUser > 0 Then
-        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserList(UserIndex).Flags.TargetUser).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
-    ElseIf UserList(UserIndex).Flags.TargetNpc > 0 Then
-        Call SendData(ToPCArea, UserIndex, Npclist(UserList(UserIndex).Flags.TargetNpc).Pos.Map, "CFX" & Npclist(UserList(UserIndex).Flags.TargetNpc).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
+    If UserList(UserIndex).flags.TargetUser > 0 Then
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserList(UserIndex).flags.TargetUser).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
+    ElseIf UserList(UserIndex).flags.TargetNpc > 0 Then
+        Call SendData(ToPCArea, UserIndex, Npclist(UserList(UserIndex).flags.TargetNpc).Pos.Map, "CFX" & Npclist(UserList(UserIndex).flags.TargetNpc).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
     End If
     
-    If UserList(UserIndex).Flags.TargetUser > 0 Then
-        If UserIndex <> UserList(UserIndex).Flags.TargetUser Then
-            Call SendData(ToIndex, UserIndex, 0, "||" & Hechizos(H).HechizeroMsg & " " & UserList(UserList(UserIndex).Flags.TargetUser).Name & FONTTYPE_FIGHT)
-            Call SendData(ToIndex, UserList(UserIndex).Flags.TargetUser, 0, "||" & UserList(UserIndex).Name & " " & Hechizos(H).TargetMsg & FONTTYPE_FIGHT)
+    If UserList(UserIndex).flags.TargetUser > 0 Then
+        If UserIndex <> UserList(UserIndex).flags.TargetUser Then
+            Call SendData(ToIndex, UserIndex, 0, "||" & Hechizos(H).HechizeroMsg & " " & UserList(UserList(UserIndex).flags.TargetUser).Name & FONTTYPE_FIGHT)
+            Call SendData(ToIndex, UserList(UserIndex).flags.TargetUser, 0, "||" & UserList(UserIndex).Name & " " & Hechizos(H).TargetMsg & FONTTYPE_FIGHT)
         Else
             Call SendData(ToIndex, UserIndex, 0, "||" & Hechizos(H).PropioMsg & FONTTYPE_FIGHT)
         End If
-    ElseIf UserList(UserIndex).Flags.TargetNpc > 0 Then
+    ElseIf UserList(UserIndex).flags.TargetNpc > 0 Then
         Call SendData(ToIndex, UserIndex, 0, "||" & Hechizos(H).HechizeroMsg & " " & "la criatura." & FONTTYPE_FIGHT)
     End If
     
@@ -586,8 +586,8 @@ Dim H As Integer
 Dim daño As Integer
 Dim tempChr As Integer
     
-H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).Flags.Hechizo)
-tempChr = UserList(UserIndex).Flags.TargetUser
+H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+tempChr = UserList(UserIndex).flags.TargetUser
       
 'Hambre
 If Hechizos(H).SubeHam = 1 Then
@@ -637,7 +637,7 @@ ElseIf Hechizos(H).SubeHam = 2 Then
     
     If UserList(tempChr).Stats.MinHam < 1 Then
         UserList(tempChr).Stats.MinHam = 0
-        UserList(tempChr).Flags.Hambre = 1
+        UserList(tempChr).flags.Hambre = 1
     End If
     
 End If
@@ -680,7 +680,7 @@ ElseIf Hechizos(H).SubeSed = 2 Then
     
     If UserList(tempChr).Stats.MinAGU < 1 Then
             UserList(tempChr).Stats.MinAGU = 0
-            UserList(tempChr).Flags.Sed = 1
+            UserList(tempChr).flags.Sed = 1
     End If
     
     b = True
@@ -692,9 +692,9 @@ If Hechizos(H).SubeAgilidad = 1 Then
     Call InfoHechizo(UserIndex)
     daño = RandomNumber(Hechizos(H).MinAgilidad, Hechizos(H).MaxAgilidad)
     
-    UserList(tempChr).Flags.DuracionEfecto = 96
+    UserList(tempChr).flags.DuracionEfecto = 1200
     Call AddtoVar(UserList(tempChr).Stats.UserAtributos(Agilidad), daño, MAXATRIBUTOS)
-    UserList(tempChr).Flags.TomoPocion = True
+    UserList(tempChr).flags.TomoPocion = True
     b = True
     
 ElseIf Hechizos(H).SubeAgilidad = 2 Then
@@ -707,9 +707,9 @@ ElseIf Hechizos(H).SubeAgilidad = 2 Then
     
     Call InfoHechizo(UserIndex)
     
-    UserList(tempChr).Flags.TomoPocion = True
+    UserList(tempChr).flags.TomoPocion = True
     daño = RandomNumber(Hechizos(H).MinAgilidad, Hechizos(H).MaxAgilidad)
-    UserList(tempChr).Flags.DuracionEfecto = 56
+    UserList(tempChr).flags.DuracionEfecto = 700
     UserList(tempChr).Stats.UserAtributos(Agilidad) = UserList(tempChr).Stats.UserAtributos(Agilidad) - daño
     If UserList(tempChr).Stats.UserAtributos(Agilidad) < MINATRIBUTOS Then UserList(tempChr).Stats.UserAtributos(Agilidad) = MINATRIBUTOS
     b = True
@@ -722,10 +722,10 @@ If Hechizos(H).SubeFuerza = 1 Then
     Call InfoHechizo(UserIndex)
     daño = RandomNumber(Hechizos(H).MinFuerza, Hechizos(H).MaxFuerza)
     
-    UserList(tempChr).Flags.DuracionEfecto = 96
+    UserList(tempChr).flags.DuracionEfecto = 1200
     
     Call AddtoVar(UserList(tempChr).Stats.UserAtributos(Fuerza), daño, MAXATRIBUTOS)
-    UserList(tempChr).Flags.TomoPocion = True
+    UserList(tempChr).flags.TomoPocion = True
     b = True
     
 ElseIf Hechizos(H).SubeFuerza = 2 Then
@@ -738,10 +738,10 @@ ElseIf Hechizos(H).SubeFuerza = 2 Then
     
     Call InfoHechizo(UserIndex)
     
-    UserList(tempChr).Flags.TomoPocion = True
+    UserList(tempChr).flags.TomoPocion = True
     
     daño = RandomNumber(Hechizos(H).MinFuerza, Hechizos(H).MaxFuerza)
-    UserList(tempChr).Flags.DuracionEfecto = 56
+    UserList(tempChr).flags.DuracionEfecto = 700
     UserList(tempChr).Stats.UserAtributos(Fuerza) = UserList(tempChr).Stats.UserAtributos(Fuerza) - daño
     If UserList(tempChr).Stats.UserAtributos(Fuerza) < MINATRIBUTOS Then UserList(tempChr).Stats.UserAtributos(Fuerza) = MINATRIBUTOS
     b = True

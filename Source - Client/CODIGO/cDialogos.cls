@@ -75,12 +75,16 @@ Public CantidadDialogos As Integer
 
 Private Function PrimerIndiceVacio() As Integer
 On Error Resume Next
-Dim i As Integer
+Dim i As Integer, j As Integer
 Dim flag As Boolean
 
 i = 1
+j = 1
 
 Do While i <= MAX_DIALOGOS And Not flag
+     If (Dialogos(i).Vida < Dialogos(j).Vida) Then
+         j = i
+     End If
     flag = (Dialogos(i).Vida = 0)
     If Not flag Then i = i + 1
 Loop
@@ -88,7 +92,7 @@ Loop
 If flag Then
     PrimerIndiceVacio = i
 Else
-    PrimerIndiceVacio = 1
+    PrimerIndiceVacio = j
 End If
 
 End Function
@@ -134,7 +138,7 @@ On Error Resume Next
                 i = 0
                 Call DarFormato(Dialogos(Dialgi).Texto, i, k, anti, Dialgi)
                 i = 0
-                Do While Dialogos(Dialgi).Formato(i) <> ""
+                Do While Dialogos(Dialgi).Formato(i) <> "" And i < UBound(Dialogos(Dialgi).Formato)
                  i = i + 1
                 Loop
                 ReDim Preserve Dialogos(Dialgi).Formato(0 To i - 1)
@@ -248,7 +252,9 @@ End Sub
 Public Sub MostrarTexto()
 On Error Resume Next
 Dim i As Integer
-For i = 1 To CantidadDialogos
+'For i = 1 To CantidadDialogos
+i = 1
+Do While i <= CantidadDialogos And i <= MAX_DIALOGOS
     If Dialogos(i).Vida > 0 Then
         If Dialogos(i).Formateado Then
             Dim j As Integer, desp As Integer
@@ -266,7 +272,9 @@ For i = 1 To CantidadDialogos
       Dialogos(i).Formateado = False
       Dialogos(i).Delay = 0
     End If
-Next
+    i = i + 1
+Loop
+'Next
 End Sub
 
 Public Sub QuitarDialogo(ByVal CharIndex As Integer)
