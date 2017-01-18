@@ -1,5 +1,7 @@
 Attribute VB_Name = "Matematicas"
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -12,122 +14,76 @@ Attribute VB_Name = "Matematicas"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 Option Explicit
+Public Function Porcentaje(Total As Variant, Porc As Variant) As Long
 
-Sub AddtoVar(ByRef Var As Variant, ByVal Addon As Variant, ByVal max As Variant)
-'Le suma un valor a una variable respetando el maximo valor
+Porcentaje = Total * (Porc / 100)
 
-If Var >= max Then
-    Var = max
-Else
-    Var = Var + Addon
-    If Var > max Then
-        Var = max
-    End If
-End If
+End Function
+Sub RestVar(Var As Variant, Take As Variant, MIN As Variant)
+
+Var = Maximo(Var - Take, MIN)
 
 End Sub
+Sub AddtoVar(Var As Variant, Addon As Variant, MAX As Variant)
 
+Var = Minimo(Var + Addon, MAX)
 
-Public Function Porcentaje(ByVal Total As Long, ByVal Porc As Long) As Long
-Porcentaje = (Total * Porc) / 100
-End Function
+End Sub
+Function Distancia(wp1 As WorldPos, wp2 As WorldPos)
 
-Public Function SD(ByVal n As Integer) As Integer
-'Call LogTarea("Function SD n:" & n)
-'Suma digitos
-Dim auxint As Integer
-Dim digit As Integer
-Dim suma As Integer
-
-auxint = n
-
-Do
-    
-    digit = (auxint Mod 10)
-    suma = suma + digit
-    auxint = auxint \ 10
-    
-Loop While (auxint > 0)
-
-SD = suma
+Distancia = (Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.Map - wp2.Map) * 100))
 
 End Function
+Function TipoClase(UserIndex As Integer) As Byte
 
-Public Function SDM(ByVal n As Integer) As Integer
-'Call LogTarea("Function SDM n:" & n)
-'Suma digitos cada digito menos dos
-Dim auxint As Integer
-Dim digit As Integer
-Dim suma As Integer
-
-auxint = n
-'If auxint < 0 Then auxint = Abs(auxint)
-
-Do
-    
-    digit = (auxint Mod 10)
-    digit = digit - 1
-    suma = suma + digit
-    auxint = auxint \ 10
-    
-   
-Loop While (auxint > 0)
-
-SDM = suma
+Select Case UserList(UserIndex).Clase
+    Case PALADIN, ASESINO, CAZADOR
+        TipoClase = 2
+    Case CLERIGO, BARDO, LADRON
+        TipoClase = 3
+    Case MAGO, NIGROMANTE, DRUIDA
+        TipoClase = 4
+    Case Else
+        TipoClase = 1
+End Select
 
 End Function
+Public Function TipoRaza(UserIndex As Integer) As Byte
 
-Public Function Complex(ByVal n As Integer) As Integer
-'Call LogTarea("Complex")
-
-If n Mod 2 <> 0 Then
-    Complex = n * SD(n)
-Else
-    Complex = n * SDM(n)
+If UserList(UserIndex).Raza = ENANO Or UserList(UserIndex).Raza = GNOMO Then
+    TipoRaza = 2
+Else: TipoRaza = 1
 End If
 
 End Function
+Public Function RazaBaja(UserIndex As Integer) As Boolean
 
-Function Distancia(wp1 As WorldPos, wp2 As WorldPos)
-
-'Encuentra la distancia entre dos WorldPos
-
-Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.Map - wp2.Map) * 100)
+RazaBaja = (UserList(UserIndex).Raza = ENANO Or UserList(UserIndex).Raza = GNOMO)
 
 End Function
-
-Function Distance(X1 As Variant, Y1 As Variant, X2 As Variant, Y2 As Variant) As Double
-
-'Encuentra la distancia entre dos puntos
+Function Distance(X1 As Integer, Y1 As Integer, X2 As Integer, Y2 As Integer) As Double
 
 Distance = Sqr(((Y1 - Y2) ^ 2 + (X1 - X2) ^ 2))
 
 End Function
-
-Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
-
-Randomize Timer
-
-RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
-If RandomNumber > UpperBound Then RandomNumber = UpperBound
-
-End Function
-

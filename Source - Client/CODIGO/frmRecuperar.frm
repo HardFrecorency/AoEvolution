@@ -1,145 +1,85 @@
 VERSION 5.00
 Begin VB.Form frmRecuperar 
-   BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   3000
-   ClientLeft      =   45
-   ClientTop       =   45
-   ClientWidth     =   4635
+   BorderStyle     =   0  'None
+   Caption         =   "Recuperación de Clave"
+   ClientHeight    =   4650
+   ClientLeft      =   0
+   ClientTop       =   -105
+   ClientWidth     =   5250
    ControlBox      =   0   'False
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   8.25
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   Icon            =   "frmRecuperar.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   3000
-   ScaleWidth      =   4635
+   Palette         =   "frmRecuperar.frx":000C
+   ScaleHeight     =   4650
+   ScaleWidth      =   5250
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Txtcorreo 
-      BorderStyle     =   0  'None
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00FFFFFF&
       Height          =   300
-      Left            =   360
-      TabIndex        =   3
-      Top             =   1830
-      Width           =   3750
-   End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Cancelar"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   465
-      Left            =   330
-      MouseIcon       =   "frmRecuperar.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   5
-      Top             =   2340
-      Width           =   1095
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Recuperar"
-      Default         =   -1  'True
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   465
-      Left            =   3180
-      MouseIcon       =   "frmRecuperar.frx":0152
-      MousePointer    =   99  'Custom
-      TabIndex        =   4
-      Top             =   2340
-      Width           =   1095
+      Left            =   1080
+      TabIndex        =   1
+      Top             =   2400
+      Width           =   3135
    End
    Begin VB.TextBox txtNombre 
-      BorderStyle     =   0  'None
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00FFFFFF&
       Height          =   300
-      Left            =   405
-      TabIndex        =   2
-      Top             =   1080
-      Width           =   3750
-   End
-   Begin VB.Label Label3 
-      Alignment       =   2  'Center
-      Caption         =   "Dirección de correo:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   300
-      Left            =   375
-      TabIndex        =   6
-      Top             =   1560
-      Width           =   3735
-   End
-   Begin VB.Label Label2 
-      Alignment       =   2  'Center
-      Caption         =   "Nombre del personaje:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   300
-      Left            =   420
-      TabIndex        =   1
-      Top             =   810
-      Width           =   3735
-   End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      Caption         =   $"frmRecuperar.frx":02A4
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   690
-      Left            =   60
+      Left            =   1080
+      MaxLength       =   15
       TabIndex        =   0
-      Top             =   75
-      Width           =   4500
+      Top             =   1320
+      Width           =   3135
+   End
+   Begin VB.Image command1 
+      Height          =   375
+      Left            =   1080
+      MouseIcon       =   "frmRecuperar.frx":1C9BE
+      MousePointer    =   99  'Custom
+      Top             =   3120
+      Width           =   3135
+   End
+   Begin VB.Image Image1 
+      Height          =   255
+      Left            =   0
+      MouseIcon       =   "frmRecuperar.frx":1CCC8
+      MousePointer    =   99  'Custom
+      Top             =   4320
+      Width           =   975
    End
 End
 Attribute VB_Name = "frmRecuperar"
@@ -182,16 +122,42 @@ Attribute VB_Exposed = False
 'Pablo Ignacio Márquez
 
 
-Private Sub Command1_Click()
-'Ojo
-EstadoLogin = RecuperarPass
-frmMain.Socket1.HostName = CurServerIp
-frmMain.Socket1.RemotePort = CurServerPasRecPort
-frmMain.Socket1.Connect
+Private Sub command1_Click()
+EstadoLogin = RecuperarPAss
+frmMain.Socket1.HostName = IPdelServidor
+frmMain.Socket1.RemotePort = PuertoDelServidor
 Me.MousePointer = 11
+frmMain.Socket1.Connect
 End Sub
-
 Private Sub Command2_Click()
 Unload Me
 End Sub
+Private Sub Form_Load()
 
+Me.Picture = LoadPicture(DirGraficos & "RecuperarPass.gif")
+
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+   DX = X
+   dy = Y
+   bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
+End Sub
+
+Private Sub Image1_Click()
+Me.Hide
+
+End Sub

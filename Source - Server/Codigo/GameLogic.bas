@@ -1,5 +1,7 @@
 Attribute VB_Name = "Extra"
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -12,153 +14,95 @@ Attribute VB_Name = "Extra"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 Option Explicit
+Public Function EsNewbie(UserIndex As Integer) As Boolean
 
-Public Function EsNewbie(ByVal UserIndex As Integer) As Boolean
-EsNewbie = UserList(UserIndex).Stats.ELV <= LimiteNewbie
+EsNewbie = (UserList(UserIndex).Stats.ELV <= LimiteNewbie)
+
 End Function
-
-
-
-Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
-
+Public Sub DoTileEvents(UserIndex As Integer)
 On Error GoTo errhandler
+Dim Map As Integer, X As Integer, Y As Integer
+Dim nPos As WorldPos, mPos As WorldPos
 
-Dim nPos As WorldPos
-Dim FxFlag As Boolean
-'Controla las salidas
-If InMapBounds(Map, X, Y) Then
-    
-    If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-        FxFlag = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).ObjType = OBJTYPE_TELEPORT
+Map = UserList(UserIndex).POS.Map
+X = UserList(UserIndex).POS.X
+Y = UserList(UserIndex).POS.Y
+
+mPos = MapData(Map, X, Y).TileExit
+If Not MapaValido(mPos.Map) Or Not InMapBounds(mPos.X, mPos.Y) Then Exit Sub
+
+If MapInfo(mPos.Map).Restringir And Not EsNewbie(UserIndex) Then
+    Call SendData(ToIndex, UserIndex, 0, "1J")
+ElseIf UserList(UserIndex).Stats.ELV < MapInfo(mPos.Map).Nivel And Not (UserList(UserIndex).Clase = PIRATA And UserList(UserIndex).Recompensas(1) = 2) Then
+    Call SendData(ToIndex, UserIndex, 0, "%/" & MapInfo(mPos.Map).Nivel)
+Else
+    If LegalPos(mPos.Map, mPos.X, mPos.Y, PuedeAtravesarAgua(UserIndex)) Then
+        If mPos.X <> 0 And mPos.Y <> 0 Then Call WarpUserChar(UserIndex, mPos.Map, mPos.X, mPos.Y, ObjData(MapData(Map, X, Y).OBJInfo.OBJIndex).ObjType = OBJTYPE_TELEPORT)
+    Else
+        Call ClosestStablePos(mPos, nPos)
+        If nPos.X <> 0 And nPos.Y Then Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, ObjData(MapData(Map, X, Y).OBJInfo.OBJIndex).ObjType = OBJTYPE_TELEPORT)
     End If
-    
-    If MapData(Map, X, Y).TileExit.Map > 0 Then
-        '¿Es mapa de newbies?
-        If UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "SI" Then
-            '¿El usuario es un newbie?
-            If EsNewbie(UserIndex) Then
-                If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
-                    If FxFlag Then '¿FX?
-                        Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
-                    Else
-                        Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y)
-                    End If
-                Else
-                    Call ClosestLegalPos(MapData(Map, X, Y).TileExit, nPos)
-                    If nPos.X <> 0 And nPos.Y <> 0 Then
-                        If FxFlag Then
-                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, True)
-                        Else
-                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
-                        End If
-                    End If
-                End If
-            Else 'No es newbie
-                Call SendData(ToIndex, UserIndex, 0, "||Mapa exclusivo para newbies." & FONTTYPE_INFO)
-                
-                Call ClosestLegalPos(UserList(UserIndex).Pos, nPos)
-                If nPos.X <> 0 And nPos.Y <> 0 Then
-                        Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
-                End If
-            End If
-        Else 'No es un mapa de newbies
-            If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
-                If FxFlag Then
-                    Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
-                Else
-                    Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y)
-                End If
-            Else
-                Call ClosestLegalPos(MapData(Map, X, Y).TileExit, nPos)
-                If nPos.X <> 0 And nPos.Y <> 0 Then
-                    If FxFlag Then
-                        Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, True)
-                    Else
-                        Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
-                    End If
-                End If
-            End If
-        End If
-    End If
-    
+    Exit Sub
 End If
+
+Call ClosestStablePos(UserList(UserIndex).POS, nPos)
+If nPos.X <> 0 And nPos.Y Then Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, ObjData(MapData(Map, X, Y).OBJInfo.OBJIndex).ObjType = OBJTYPE_TELEPORT)
 
 Exit Sub
 
 errhandler:
-    Call LogError("Error en DotileEvents")
+    Call LogError("Error en DoTileEvents-" & nPos.Map & "-" & nPos.X & "-" & nPos.Y)
 
 End Sub
+Function InMapBounds(X As Integer, Y As Integer) As Boolean
 
-Function InRangoVision(ByVal UserIndex As Integer, X As Integer, Y As Integer) As Boolean
-
-If X > UserList(UserIndex).Pos.X - MinXBorder And X < UserList(UserIndex).Pos.X + MinXBorder Then
-    If Y > UserList(UserIndex).Pos.Y - MinYBorder And Y < UserList(UserIndex).Pos.Y + MinYBorder Then
-        InRangoVision = True
-        Exit Function
-    End If
-End If
-InRangoVision = False
+InMapBounds = (X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder)
 
 End Function
-
-Function InMapBounds(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
-
-If X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder Then
-    InMapBounds = False
-Else
-    InMapBounds = True
-End If
-
-End Function
-
-Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos)
-'*****************************************************************
-'Encuentra la posicion legal mas cercana y la guarda en nPos
-'*****************************************************************
-
+Sub ClosestStablePos(POS As WorldPos, ByRef nPos As WorldPos)
 Dim Notfound As Boolean
 Dim LoopC As Integer
 Dim tX As Integer
 Dim tY As Integer
 
-nPos.Map = Pos.Map
+nPos.Map = POS.Map
 
-Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y)
+Do While Not LegalPos(POS.Map, nPos.X, nPos.Y)
     If LoopC > 12 Then
         Notfound = True
         Exit Do
     End If
     
-    For tY = Pos.Y - LoopC To Pos.Y + LoopC
-        For tX = Pos.X - LoopC To Pos.X + LoopC
+    For tY = POS.Y - LoopC To POS.Y + LoopC
+        For tX = POS.X - LoopC To POS.X + LoopC
             
-            If LegalPos(nPos.Map, tX, tY) Then
+            If LegalPos(nPos.Map, tX, tY) And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
                 nPos.X = tX
                 nPos.Y = tY
-                '¿Hay objeto?
-                
-                tX = Pos.X + LoopC
-                tY = Pos.Y + LoopC
+
+                tX = POS.X + LoopC
+                tY = POS.Y + LoopC
   
             End If
         
@@ -175,98 +119,121 @@ If Notfound = True Then
 End If
 
 End Sub
+Sub ClosestLegalPos(POS As WorldPos, nPos As WorldPos, Optional AguaValida As Boolean)
+Dim Notfound As Boolean
+Dim LoopC As Integer
+Dim tX As Integer
+Dim tY As Integer
 
+nPos.Map = POS.Map
+
+Do While Not LegalPos(POS.Map, nPos.X, nPos.Y, AguaValida)
+    If LoopC > 12 Then
+        Notfound = True
+        Exit Do
+    End If
+    
+    For tY = POS.Y - LoopC To POS.Y + LoopC
+        For tX = POS.X - LoopC To POS.X + LoopC
+            
+            If LegalPos(nPos.Map, tX, tY, AguaValida) Then
+                nPos.X = tX
+                nPos.Y = tY
+                
+                
+                tX = POS.X + LoopC
+                tY = POS.Y + LoopC
+  
+            End If
+        
+        Next
+    Next
+    
+    LoopC = LoopC + 1
+    
+Loop
+
+If Notfound Then
+    nPos.X = 0
+    nPos.Y = 0
+End If
+
+End Sub
+Function ClaseIndex(ByVal Clase As String) As Integer
+Dim i As Integer
+
+For i = 1 To UBound(ListaClases)
+    If UCase$(ListaClases(i)) = UCase$(Clase) Then
+        ClaseIndex = i
+        Exit Function
+    End If
+Next
+
+End Function
 Function NameIndex(ByVal Name As String) As Integer
+Dim UserIndex As Integer, i As Integer
 
-Dim UserIndex As Integer
-'¿Nombre valido?
-If Name = "" Then
+Name = Replace$(Name, "+", " ")
+
+If Len(Name) = 0 Then
     NameIndex = 0
     Exit Function
 End If
   
 UserIndex = 1
-Do Until UCase$(Left$(UserList(UserIndex).Name, Len(Name))) = UCase$(Name)
-    
-    UserIndex = UserIndex + 1
-    
-    If UserIndex > MaxUsers Then
-        UserIndex = 0
-        Exit Do
-    End If
-    
-Loop
-NameIndex = UserIndex
-End Function
 
-
-Function IP_Index(ByVal inIP As String) As Integer
-On Error GoTo local_errHand
-
-Dim UserIndex As Integer
-'¿Nombre valido?
-If inIP = "" Then
-    IP_Index = 0
-    Exit Function
+If Right$(Name, 1) = "*" Then
+    Name = Left$(Name, Len(Name) - 1)
+    For i = 1 To LastUser
+        If UCase$(UserList(i).Name) = UCase$(Name) Then
+            NameIndex = i
+            Exit Function
+        End If
+    Next
+Else
+    For i = 1 To LastUser
+        If UCase$(Left$(UserList(i).Name, Len(Name))) = UCase$(Name) Then
+            NameIndex = i
+            Exit Function
+        End If
+    Next
 End If
-  
-UserIndex = 1
-Do Until UserList(UserIndex).ip = inIP
-    
-    UserIndex = UserIndex + 1
-    
-    If UserIndex > MaxUsers Then
-        IP_Index = 0
-        Exit Do
-    End If
-    
-Loop
-
-local_errHand:
-    
-    IP_Index = UserIndex
 
 End Function
-
-Function CheckForSameIP(ByVal UserIndex As Integer, ByVal UserIP As String) As Boolean
+Function CheckForSameIP(UserIndex As Integer, ByVal UserIP As String) As Boolean
 Dim LoopC As Integer
+
 For LoopC = 1 To MaxUsers
-    If UserList(LoopC).flags.UserLogged = True Then
+    If UserList(LoopC).flags.UserLogged Then
         If UserList(LoopC).ip = UserIP And UserIndex <> LoopC Then
             CheckForSameIP = True
             Exit Function
         End If
     End If
-Next LoopC
-CheckForSameIP = False
-End Function
+Next
 
-Function CheckForSameName(ByVal UserIndex As Integer, ByVal Name As String) As Boolean
-'Controlo que no existan usuarios con el mismo nombre
+End Function
+Function CheckForSameName(UserIndex As Integer, ByVal Name As String) As Boolean
 Dim LoopC As Integer
-For LoopC = 1 To MaxUsers
+
+For LoopC = 1 To LastUser
     If UserList(LoopC).flags.UserLogged Then
-        If UCase$(UserList(LoopC).Name) = UCase$(Name) And UserList(LoopC).ConnID <> -1 Then
+        If UCase$(UserList(LoopC).Name) = UCase$(Name) Then
             CheckForSameName = True
             Exit Function
         End If
     End If
-Next LoopC
-CheckForSameName = False
-End Function
+Next
 
-Sub HeadtoPos(Head As Byte, ByRef Pos As WorldPos)
-'*****************************************************************
-'Toma una posicion y se mueve hacia donde esta perfilado
-'*****************************************************************
+End Function
+Sub HeadtoPos(Head As Byte, POS As WorldPos)
 Dim X As Integer
 Dim Y As Integer
-Dim tempVar As Single
 Dim nX As Integer
 Dim nY As Integer
 
-X = Pos.X
-Y = Pos.Y
+X = POS.X
+Y = POS.Y
 
 If Head = NORTH Then
     nX = X
@@ -288,223 +255,250 @@ If Head = WEST Then
     nY = Y
 End If
 
-'Devuelve valores
-Pos.X = nX
-Pos.Y = nY
+POS.X = nX
+POS.Y = nY
 
 End Sub
+Function LegalPos(Map As Integer, X As Integer, Y As Integer, Optional PuedeAgua As Boolean) As Boolean
 
-Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua = False) As Boolean
+If Not MapaValido(Map) Or Not InMapBounds(X, Y) Then Exit Function
 
-'¿Es un mapa valido?
-If (Map <= 0 Or Map > NumMaps) Or _
-   (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
-            LegalPos = False
-Else
-  
-  If Not PuedeAgua Then
-        LegalPos = (MapData(Map, X, Y).Blocked <> 1) And _
-                   (MapData(Map, X, Y).UserIndex = 0) And _
-                   (MapData(Map, X, Y).NpcIndex = 0) And _
-                   (Not HayAgua(Map, X, Y))
-  Else
-        LegalPos = (MapData(Map, X, Y).Blocked <> 1) And _
-                   (MapData(Map, X, Y).UserIndex = 0) And _
-                   (MapData(Map, X, Y).NpcIndex = 0) And _
-                   (HayAgua(Map, X, Y))
-  End If
-   
-End If
+LegalPos = (MapData(Map, X, Y).Blocked = 0) And _
+           (MapData(Map, X, Y).UserIndex = 0) And _
+           (MapData(Map, X, Y).NpcIndex = 0) And _
+           (MapData(Map, X, Y).Agua = Buleano(PuedeAgua))
 
 End Function
+Function LegalPosNPC(Map As Integer, X As Integer, Y As Integer, AguaValida As Boolean) As Boolean
 
+If Not InMapBounds(X, Y) Then Exit Function
 
-
-Function LegalPosNPC(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal AguaValida As Byte) As Boolean
-
-If (Map <= 0 Or Map > NumMaps) Or _
-   (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
-    LegalPosNPC = False
-Else
-
- If AguaValida = 0 Then
-   LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
+LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
      (MapData(Map, X, Y).UserIndex = 0) And _
      (MapData(Map, X, Y).NpcIndex = 0) And _
      (MapData(Map, X, Y).trigger <> POSINVALIDA) _
-     And Not HayAgua(Map, X, Y)
- Else
-   LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
-     (MapData(Map, X, Y).UserIndex = 0) And _
-     (MapData(Map, X, Y).NpcIndex = 0) And _
-     (MapData(Map, X, Y).trigger <> POSINVALIDA)
- End If
- 
-End If
-
-
+     And Buleano(AguaValida) = MapData(Map, X, Y).Agua
+     
 End Function
+Public Sub SendNPC(UserIndex As Integer, NpcIndex As Integer)
+Dim Info As String
+Dim CRI As Byte
 
-Sub SendHelp(ByVal Index As Integer)
-Dim NumHelpLines As Integer
-Dim LoopC As Integer
+Select Case UserList(UserIndex).Stats.UserSkills(Supervivencia)
+    Case Is <= 20
+        If Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MaxHP Then
+            CRI = 5
+        Else: CRI = 1
+        End If
+    Case Is < 40
+        Select Case 100 * Npclist(NpcIndex).Stats.MinHP / Npclist(NpcIndex).Stats.MaxHP
+            Case 100
+                CRI = 5
+            Case Is >= 50
+                CRI = 2
+            Case Else
+                CRI = 3
+        End Select
+    Case Is < 60
+        Select Case 100 * Npclist(NpcIndex).Stats.MinHP / Npclist(NpcIndex).Stats.MaxHP
+            Case 100
+                CRI = 5
+            Case Is > 66
+                CRI = 2
+            Case Is > 33
+                CRI = 3
+            Case Else
+                CRI = 4
+        End Select
+    Case Is < 100
+        CRI = 5 + Fix(10 * (1 - (Npclist(NpcIndex).Stats.MinHP / Npclist(NpcIndex).Stats.MaxHP)))
+    Case Else
+        Info = "||" & Npclist(NpcIndex).Name & " [" & Npclist(NpcIndex).Stats.MinHP & "/" & Npclist(NpcIndex).Stats.MaxHP & "]"
+        If Npclist(NpcIndex).flags.Paralizado Then Info = Info & " - PARALIZADO"
+        Call SendData(ToIndex, UserIndex, 0, Info & FONTTYPE_INFO)
+        Exit Sub
+End Select
 
-NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
-
-For LoopC = 1 To NumHelpLines
-    Call SendData(ToIndex, Index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
-Next LoopC
+Info = "9Q" & Npclist(NpcIndex).Name & "," & CRI
+Call SendData(ToIndex, UserIndex, 0, Info)
+                
 End Sub
-Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+Public Sub Expresar(NpcIndex As Integer, UserIndex As Integer)
 
-If Npclist(NpcIndex).NroExpresiones > 0 Then
+If Npclist(NpcIndex).NroExpresiones Then
     Dim randomi
     randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).POS.Map, "3Q" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex)
 End If
                     
 End Sub
-Sub LookatTile(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub LookatTile(UserIndex As Integer, Map As Integer, X As Integer, Y As Integer)
 
-'Responde al click del usuario sobre el mapa
 Dim FoundChar As Byte
 Dim FoundSomething As Byte
 Dim TempCharIndex As Integer
 Dim Stat As String
+Dim NPMUERTO As String
+Dim Info As String
 
-'¿Posicion valida?
-If InMapBounds(Map, X, Y) Then
+
+If InMapBounds(X, Y) Then
     UserList(UserIndex).flags.TargetMap = Map
     UserList(UserIndex).flags.TargetX = X
     UserList(UserIndex).flags.TargetY = Y
-    '¿Es un obj?
-    If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-        'Informa el nombre
-        Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
+    
+    If MapData(Map, X, Y).OBJInfo.OBJIndex Then
+        
+        If MapData(Map, X, Y).OBJInfo.Amount = 1 Then
+            Call SendData(ToIndex, UserIndex, 0, "4Q" & ObjData(MapData(Map, X, Y).OBJInfo.OBJIndex).Name)
+        Else
+            Call SendData(ToIndex, UserIndex, 0, "5Q" & ObjData(MapData(Map, X, Y).OBJInfo.OBJIndex).Name & "," & MapData(Map, X, Y).OBJInfo.Amount)
+        End If
+        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.OBJIndex
         UserList(UserIndex).flags.TargetObjMap = Map
         UserList(UserIndex).flags.TargetObjX = X
         UserList(UserIndex).flags.TargetObjY = Y
         FoundSomething = 1
-    ElseIf MapData(Map, X + 1, Y).OBJInfo.ObjIndex > 0 Then
-        'Informa el nombre
-        If ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).ObjType = OBJTYPE_PUERTAS Then
-            Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-            UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).OBJInfo.ObjIndex
+    ElseIf MapData(Map, X + 1, Y).OBJInfo.OBJIndex Then
+        
+        If ObjData(MapData(Map, X + 1, Y).OBJInfo.OBJIndex).ObjType = OBJTYPE_PUERTAS Then
+            Call SendData(ToIndex, UserIndex, 0, "6Q" & ObjData(MapData(Map, X + 1, Y).OBJInfo.OBJIndex).Name)
+            UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).OBJInfo.OBJIndex
             UserList(UserIndex).flags.TargetObjMap = Map
             UserList(UserIndex).flags.TargetObjX = X + 1
             UserList(UserIndex).flags.TargetObjY = Y
             FoundSomething = 1
         End If
-    ElseIf MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex > 0 Then
-        If ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).ObjType = OBJTYPE_PUERTAS Then
-            'Informa el nombre
-            Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-            UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex
+    ElseIf MapData(Map, X + 1, Y + 1).OBJInfo.OBJIndex Then
+        If ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.OBJIndex).ObjType = OBJTYPE_PUERTAS Then
+            
+            Call SendData(ToIndex, UserIndex, 0, "6Q" & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.OBJIndex).Name)
+            UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).OBJInfo.OBJIndex
             UserList(UserIndex).flags.TargetObjMap = Map
             UserList(UserIndex).flags.TargetObjX = X + 1
             UserList(UserIndex).flags.TargetObjY = Y + 1
             FoundSomething = 1
         End If
-    ElseIf MapData(Map, X, Y + 1).OBJInfo.ObjIndex > 0 Then
-        If ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).ObjType = OBJTYPE_PUERTAS Then
-            'Informa el nombre
-            Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).Name & FONTTYPE_INFO)
-            UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
+    ElseIf MapData(Map, X, Y + 1).OBJInfo.OBJIndex Then
+        If ObjData(MapData(Map, X, Y + 1).OBJInfo.OBJIndex).ObjType = OBJTYPE_PUERTAS Then
+            
+            Call SendData(ToIndex, UserIndex, 0, "6Q" & ObjData(MapData(Map, X, Y + 1).OBJInfo.OBJIndex).Name)
+            UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.OBJIndex
             UserList(UserIndex).flags.TargetObjMap = Map
             UserList(UserIndex).flags.TargetObjX = X
             UserList(UserIndex).flags.TargetObjY = Y + 1
             FoundSomething = 1
         End If
     End If
-    '¿Es un personaje?
+    
     If Y + 1 <= YMaxMapSize Then
-        If MapData(Map, X, Y + 1).UserIndex > 0 Then
+        If MapData(Map, X, Y + 1).UserIndex Then
             TempCharIndex = MapData(Map, X, Y + 1).UserIndex
             FoundChar = 1
         End If
-        If MapData(Map, X, Y + 1).NpcIndex > 0 Then
+        If MapData(Map, X, Y + 1).NpcIndex Then
             TempCharIndex = MapData(Map, X, Y + 1).NpcIndex
             FoundChar = 2
         End If
     End If
-    '¿Es un personaje?
+    
     If FoundChar = 0 Then
-        If MapData(Map, X, Y).UserIndex > 0 Then
+        If MapData(Map, X, Y).UserIndex Then
             TempCharIndex = MapData(Map, X, Y).UserIndex
             FoundChar = 1
         End If
-        If MapData(Map, X, Y).NpcIndex > 0 Then
+        If MapData(Map, X, Y).NpcIndex Then
             TempCharIndex = MapData(Map, X, Y).NpcIndex
             FoundChar = 2
         End If
     End If
     
     
-    'Reaccion al personaje
-    If FoundChar = 1 Then '  ¿Encontro un Usuario?
+    
+    If FoundChar = 1 Then
             
-       If UserList(TempCharIndex).flags.AdminInvisible = 0 Then
-            
-            If EsNewbie(TempCharIndex) Then
-                Stat = " <NEWBIE>"
-            End If
-
-            If UserList(TempCharIndex).Faccion.ArmadaReal = 1 Then
-                Stat = Stat & " <Ejercito real> " & "<" & TituloReal(TempCharIndex) & ">"
-            ElseIf UserList(TempCharIndex).Faccion.FuerzasCaos = 1 Then
-                Stat = Stat & " <Fuerzas del caos> " & "<" & TituloCaos(TempCharIndex) & ">"
-            End If
-            
-            If UserList(TempCharIndex).GuildInfo.GuildName <> "" Then
-                Stat = Stat & " <" & UserList(TempCharIndex).GuildInfo.GuildName & ">"
-            End If
-            
-            If Len(UserList(TempCharIndex).Desc) > 1 Then
-                Stat = "||Ves a " & UserList(TempCharIndex).Name & Stat & " - " & UserList(TempCharIndex).Desc
+        If UserList(TempCharIndex).flags.AdminInvisible Then Exit Sub
+        
+        If UserList(TempCharIndex).Faccion.Bando Then
+            If UserList(TempCharIndex).Faccion.BandoOriginal <> UserList(TempCharIndex).Faccion.Bando Then
+                Stat = Stat & " <" & ListaBandos(UserList(TempCharIndex).Faccion.Bando) & "> <Mercenario>"
+            ElseIf UserList(TempCharIndex).Faccion.Jerarquia Then
+                Stat = Stat & " <" & ListaBandos(UserList(TempCharIndex).Faccion.Bando) & "> <" & Titulo(TempCharIndex) & ">"
             Else
-                'Call SendData(ToIndex, UserIndex, 0, "||Ves a " & UserList(TempCharIndex).Name & Stat)
-                Stat = "||Ves a " & UserList(TempCharIndex).Name & Stat
+                Stat = Stat & " <" & Titulo(TempCharIndex) & ">"
             End If
-            
-            If UserList(TempCharIndex).flags.Privilegios > 0 Then
-                Stat = Stat & " <GAME MASTER> ~0~185~0~1~0"
-            ElseIf Criminal(TempCharIndex) Then
-                Stat = Stat & " <CRIMINAL> ~255~0~0~1~0"
+        End If
+        
+        If Len(UserList(TempCharIndex).GuildInfo.GuildName) > 0 Then
+            Stat = Stat & " <" & UserList(TempCharIndex).GuildInfo.GuildName & ">"
+        End If
+        
+        If Len(UserList(TempCharIndex).Desc) > 0 Then
+            Stat = UserList(TempCharIndex).Name & Stat & " - " & UserList(TempCharIndex).Desc
+        Else
+            Stat = UserList(TempCharIndex).Name & Stat
+        End If
+        
+        If UserList(TempCharIndex).flags.Privilegios Then
+            Stat = "9J" & Stat
+        Else
+            If UserList(TempCharIndex).flags.Muerto Then
+                Stat = "2K" & UserList(TempCharIndex).Name
+            ElseIf UserList(TempCharIndex).Faccion.Bando = Real Then
+                Stat = "3K" & Stat
+            ElseIf UserList(TempCharIndex).Faccion.Bando = Caos Then
+                Stat = "4K" & Stat
+            ElseIf EsNewbie(TempCharIndex) Then
+                Stat = "H0" & Stat
             Else
-                Stat = Stat & " <CIUDADANO> ~0~0~200~1~0"
+                Stat = "1&" & Stat
             End If
+        End If
+        
+        Call SendData(ToIndex, UserIndex, 0, Stat)
             
-            Call SendData(ToIndex, UserIndex, 0, Stat)
-                
-            
-            FoundSomething = 1
-            UserList(UserIndex).flags.TargetUser = TempCharIndex
-            UserList(UserIndex).flags.TargetNpc = 0
-            UserList(UserIndex).flags.TargetNpcTipo = 0
+        
+        FoundSomething = 1
+        UserList(UserIndex).flags.TargetUser = TempCharIndex
+        UserList(UserIndex).flags.TargetNpc = 0
+        UserList(UserIndex).flags.TargetNpcTipo = 0
        
-       End If
        
-    End If
-    If FoundChar = 2 Then '¿Encontro un NPC?
+    ElseIf FoundChar = 2 Then
             
-            If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex & FONTTYPE_INFO)
-            Else
+            Dim wPos As WorldPos
+            wPos.Map = Map
+            wPos.X = X
+            wPos.Y = Y
+            If Distancia(Npclist(TempCharIndex).POS, wPos) > 1 Then
+                MapData(Map, X, Y).NpcIndex = 0
+                Exit Sub
+            End If
                 
-                If Npclist(TempCharIndex).MaestroUser > 0 Then
-                    Call SendData(ToIndex, UserIndex, 0, "|| " & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & FONTTYPE_INFO)
+            If Npclist(TempCharIndex).flags.TiendaUser Then
+                If UserIndex = Npclist(TempCharIndex).flags.TiendaUser Then
+                    If UserList(UserIndex).Tienda.Gold Then
+                        Call SendData(ToIndex, UserIndex, 0, "/O" & UserList(UserIndex).Tienda.Gold & "," & Npclist(TempCharIndex).Char.CharIndex)
+                    Else
+                        Call SendData(ToIndex, UserIndex, 0, "/P" & Npclist(TempCharIndex).Char.CharIndex)
+                    End If
                 Else
-                    Call SendData(ToIndex, UserIndex, 0, "|| " & Npclist(TempCharIndex).Name & "." & FONTTYPE_INFO)
+                    Call SendData(ToIndex, UserIndex, 0, "/Q" & UserList(Npclist(TempCharIndex).flags.TiendaUser).Name & "," & Npclist(TempCharIndex).Char.CharIndex)
                 End If
-                
+            ElseIf Len(Npclist(TempCharIndex).Desc) > 1 Then
+                Call SendData(ToIndex, UserIndex, 0, "3Q" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex)
+            ElseIf Npclist(TempCharIndex).MaestroUser Then
+                Call SendData(ToIndex, UserIndex, 0, "7Q" & Npclist(TempCharIndex).Name & "," & UserList(Npclist(TempCharIndex).MaestroUser).Name)
+            ElseIf Npclist(TempCharIndex).AutoCurar = 1 Then
+                Call SendData(ToIndex, UserIndex, 0, "8Q" & Npclist(TempCharIndex).Name)
+            Else
+                Call SendNPC(UserIndex, TempCharIndex)
             End If
             FoundSomething = 1
             UserList(UserIndex).flags.TargetNpcTipo = Npclist(TempCharIndex).NPCtype
             UserList(UserIndex).flags.TargetNpc = TempCharIndex
             UserList(UserIndex).flags.TargetUser = 0
             UserList(UserIndex).flags.TargetObj = 0
-        
     End If
     
     If FoundChar = 0 Then
@@ -513,7 +507,6 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetUser = 0
     End If
     
-    '*** NO ENCOTRO NADA ***
     If FoundSomething = 0 Then
         UserList(UserIndex).flags.TargetNpc = 0
         UserList(UserIndex).flags.TargetNpcTipo = 0
@@ -522,7 +515,6 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
 
 Else
@@ -534,79 +526,65 @@ Else
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
 End If
 
-
 End Sub
+Function FindDirection(POS As WorldPos, Target As WorldPos) As Byte
+Dim X As Integer, Y As Integer
 
-Function FindDirection(Pos As WorldPos, Target As WorldPos) As Byte
-'*****************************************************************
-'Devuelve la direccion en la cual el target se encuentra
-'desde pos, 0 si la direc es igual
-'*****************************************************************
-Dim X As Integer
-Dim Y As Integer
+X = POS.X - Target.X
+Y = POS.Y - Target.Y
 
-X = Pos.X - Target.X
-Y = Pos.Y - Target.Y
-
-'NE
 If Sgn(X) = -1 And Sgn(Y) = 1 Then
     FindDirection = NORTH
     Exit Function
 End If
 
-'NW
 If Sgn(X) = 1 And Sgn(Y) = 1 Then
     FindDirection = WEST
     Exit Function
 End If
 
-'SW
 If Sgn(X) = 1 And Sgn(Y) = -1 Then
     FindDirection = WEST
     Exit Function
 End If
 
-'SE
 If Sgn(X) = -1 And Sgn(Y) = -1 Then
     FindDirection = SOUTH
     Exit Function
 End If
 
-'Sur
 If Sgn(X) = 0 And Sgn(Y) = -1 Then
     FindDirection = SOUTH
     Exit Function
 End If
 
-'norte
 If Sgn(X) = 0 And Sgn(Y) = 1 Then
     FindDirection = NORTH
     Exit Function
 End If
 
-'oeste
 If Sgn(X) = 1 And Sgn(Y) = 0 Then
     FindDirection = WEST
     Exit Function
 End If
 
-'este
 If Sgn(X) = -1 And Sgn(Y) = 0 Then
     FindDirection = EAST
     Exit Function
 End If
 
-'misma
 If Sgn(X) = 0 And Sgn(Y) = 0 Then
     FindDirection = 0
     Exit Function
 End If
 
 End Function
+Public Function ItemEsDeMapa(ByVal Map As Integer, X As Integer, Y As Integer) As Boolean
 
+ItemEsDeMapa = ObjData(MapData(Map, X, Y).OBJInfo.OBJIndex).Agarrable Or MapData(Map, X, Y).Blocked
 
+End Function
 

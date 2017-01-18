@@ -1,10 +1,8 @@
 Attribute VB_Name = "Carteles"
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -16,29 +14,31 @@ Attribute VB_Name = "Carteles"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Option Explicit
 Const XPosCartel = 360
 Const YPosCartel = 335
 Const MAXLONG = 40
 
-'Carteles
+
 Public Cartel As Boolean
 Public Leyenda As String
 Public LeyendaFormateada() As String
@@ -72,7 +72,7 @@ End Sub
 Private Function DarFormato(s As String, i As Integer, k As Integer, anti As Integer)
 If anti + i <= Len(s) + 1 Then
     If ((i >= MAXLONG) And Mid$(s, anti + i, 1) = " ") Or (anti + i = Len(s)) Then
-        LeyendaFormateada(k) = Mid(s, anti, i + 1)
+        LeyendaFormateada(k) = Mid$(s, anti, i + 1)
         k = k + 1
         anti = anti + i + 1
         i = 0

@@ -2,11 +2,11 @@ VERSION 5.00
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
 Begin VB.Form frmCargando 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   0  'None
-   Caption         =   "Argentum"
+   BorderStyle     =   4  'Fixed ToolWindow
+   Caption         =   "Servidor Fénix AO"
    ClientHeight    =   3105
-   ClientLeft      =   1410
-   ClientTop       =   3000
+   ClientLeft      =   1455
+   ClientTop       =   3345
    ClientWidth     =   6450
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
@@ -42,23 +42,23 @@ Begin VB.Form frmCargando
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "Cargando, por favor espere..."
+         Caption         =   "Cargando Servidor Fenix AO ..."
          BeginProperty Font 
-            Name            =   "Bookman Old Style"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
-            Weight          =   300
+            Weight          =   700
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H000000FF&
-         Height          =   225
+         Height          =   195
          Index           =   3
-         Left            =   2280
+         Left            =   2220
          TabIndex        =   2
          Top             =   2040
-         Width           =   2445
+         Width           =   2565
       End
    End
    Begin VB.Label Label1 
@@ -89,7 +89,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -102,26 +104,29 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 
 Private Sub Form_Load()
-'Label1(1).Caption = Label1(1).Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
+
 Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
 End Sub
 

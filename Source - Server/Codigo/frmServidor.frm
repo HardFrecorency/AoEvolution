@@ -2,15 +2,15 @@ VERSION 5.00
 Begin VB.Form frmServidor 
    BackColor       =   &H00C0C0C0&
    Caption         =   "Servidor"
-   ClientHeight    =   5520
+   ClientHeight    =   5370
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   4575
+   ClientWidth     =   4545
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5520
-   ScaleWidth      =   4575
-   StartUpPosition =   3  'Windows Default
+   ScaleHeight     =   5370
+   ScaleWidth      =   4545
+   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command17 
       Caption         =   "Actualizar npcs.dat"
       BeginProperty Font 
@@ -93,7 +93,7 @@ Begin VB.Form frmServidor
       Height          =   255
       Left            =   240
       TabIndex        =   1
-      Top             =   4740
+      Top             =   4620
       Width           =   4095
    End
    Begin VB.CommandButton Command18 
@@ -110,7 +110,7 @@ Begin VB.Form frmServidor
       Height          =   255
       Left            =   240
       TabIndex        =   17
-      Top             =   4500
+      Top             =   4380
       Width           =   4095
    End
    Begin VB.CommandButton Command15 
@@ -315,16 +315,16 @@ Begin VB.Form frmServidor
       Height          =   255
       Left            =   240
       TabIndex        =   2
-      Top             =   4260
+      Top             =   4140
       Width           =   4095
    End
    Begin VB.CommandButton Command2 
-      Caption         =   "OK"
+      Caption         =   "Aceptar"
       Default         =   -1  'True
       Height          =   255
       Left            =   3480
       TabIndex        =   0
-      Top             =   5220
+      Top             =   5040
       Width           =   945
    End
    Begin VB.CommandButton Command20 
@@ -339,10 +339,10 @@ Begin VB.Form frmServidor
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   120
       TabIndex        =   19
-      Top             =   5220
-      Width           =   3135
+      Top             =   5040
+      Width           =   3255
    End
    Begin VB.Shape Shape3 
       Height          =   3855
@@ -351,9 +351,9 @@ Begin VB.Form frmServidor
       Width           =   4335
    End
    Begin VB.Shape Shape2 
-      Height          =   975
+      Height          =   855
       Left            =   120
-      Top             =   4140
+      Top             =   4080
       Width           =   4335
    End
 End
@@ -362,7 +362,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -375,28 +377,28 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Option Explicit
-
 Private Sub Command1_Click()
-Call LoadOBJData_Nuevo
-
+Call LoadOBJData
 End Sub
 
 Private Sub Command10_Click()
@@ -411,10 +413,6 @@ Private Sub Command12_Click()
 frmDebugNpc.Show
 End Sub
 
-Private Sub Command13_Click()
-frmDebugSocket.Visible = True
-End Sub
-
 Private Sub Command14_Click()
 Call LoadMotd
 End Sub
@@ -423,7 +421,7 @@ Private Sub Command15_Click()
 On Error Resume Next
 
 Dim Fn As String
-Dim cad$
+Dim cad As String
 Dim N As Integer, k As Integer
 
 Fn = App.Path & "\logs\GenteBanned.log"
@@ -433,8 +431,8 @@ If FileExist(Fn, vbNormal) Then
     Open Fn For Input Shared As #N
     Do While Not EOF(N)
         k = k + 1
-        Input #N, cad$
-        Call UnBan(cad$)
+        Input #N, cad
+        Call ChangeBan(cad, 0)
         
     Loop
     Close #N
@@ -456,12 +454,13 @@ Call DescargaNpcsDat
 Call CargaNpcsDat
 
 End Sub
-
 Private Sub Command18_Click()
+
 Me.MousePointer = 11
 Call GuardarUsuarios
 Me.MousePointer = 0
 MsgBox "Grabado de personajes OK!"
+
 End Sub
 
 Private Sub Command19_Click()
@@ -470,7 +469,7 @@ Dim i As Long, N As Long
 N = BanIps.Count
 For i = 1 To BanIps.Count
     BanIps.Remove 1
-Next i
+Next
 
 MsgBox "Se han habilitado " & N & " ipes"
 
@@ -479,49 +478,16 @@ End Sub
 Private Sub Command2_Click()
 frmServidor.Visible = False
 End Sub
-
-Private Sub Command20_Click()
-#If UsarAPI Then
-Dim i As Long
-
-If MsgBox("Esta seguro que desea reiniciar los sockets ? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
-    'Cierra el socket de escucha
-    If SockListen >= 0 Then Call apiclosesocket(SockListen)
-    
-    'Cierra todas las conexiones
-    For i = 1 To MaxUsers
-        If UserList(i).ConnID <> -1 Then
-            Call CloseSocket(i)
-        End If
-    Next i
-    
-    'Inicia el socket de escucha
-    SockListen = ListenForConnect(Puerto, hWndMsg, "")
-    
-    'Comprueba si el proc de la ventana es el correcto
-    Dim TmpWProc As Long
-    TmpWProc = GetWindowLong(hWndMsg, GWL_WNDPROC)
-    If TmpWProc <> ActualWProc Then
-        MsgBox "Incorrecto proc de ventana (" & TmpWProc & " <> " & ActualWProc & ")"
-        Call LogApiSock("INCORRECTO PROC DE VENTANA")
-        OldWProc = TmpWProc
-        If OldWProc <> 0 Then
-            SetWindowLong frmMain.hWnd, GWL_WNDPROC, AddressOf WndProc
-            ActualWProc = GetWindowLong(frmMain.hWnd, GWL_WNDPROC)
-        End If
-    End If
-End If
-#End If
-End Sub
-
 Private Sub Command3_Click()
+
 If MsgBox("¡¡Atencion!! Si reinicia el servidor puede provocar la perdida de datos de los usarios. ¿Desea reiniciar el servidor de todas maneras?", vbYesNo) = vbYes Then
     Me.Visible = False
     Call Restart
 End If
-End Sub
 
+End Sub
 Private Sub Command4_Click()
+
 On Error GoTo eh
     Me.MousePointer = 11
     FrmStat.Show
@@ -529,13 +495,14 @@ On Error GoTo eh
     Me.MousePointer = 0
     MsgBox "WORLDSAVE OK!!"
 Exit Sub
+
 eh:
 Call LogError("Error en WORLDSAVE")
 End Sub
 
 Private Sub Command5_Click()
 
-'Se asegura de que los sockets estan cerrados e ignora cualquier err
+
 On Error Resume Next
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
@@ -543,58 +510,28 @@ If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
 FrmStat.Show
 
 If FileExist(App.Path & "\logs\errores.log", vbNormal) Then Kill App.Path & "\logs\errores.log"
-If FileExist(App.Path & "\logs\connect.log", vbNormal) Then Kill App.Path & "\logs\Connect.log"
 If FileExist(App.Path & "\logs\HackAttemps.log", vbNormal) Then Kill App.Path & "\logs\HackAttemps.log"
-If FileExist(App.Path & "\logs\Asesinatos.log", vbNormal) Then Kill App.Path & "\logs\Asesinatos.log"
-If FileExist(App.Path & "\logs\Resurrecciones.log", vbNormal) Then Kill App.Path & "\logs\Resurrecciones.log"
-If FileExist(App.Path & "\logs\Teleports.Log", vbNormal) Then Kill App.Path & "\logs\Teleports.Log"
 
 
-#If UsarAPI Then
-Call apiclosesocket(SockListen)
-#Else
-frmMain.Socket1.Cleanup
-frmMain.Socket2(0).Cleanup
-#End If
 
 Dim LoopC As Integer
 
 For LoopC = 1 To MaxUsers
     Call CloseSocket(LoopC)
 Next
-  
 
 LastUser = 0
 NumUsers = 0
+NumNoGMs = 0
 
-ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As Npc
 ReDim CharList(1 To MAXCHARS) As Integer
 
 Call LoadSini
 Call CargarBackUp
 Call LoadOBJData
 
-#If UsarAPI Then
-SockListen = ListenForConnect(Puerto, frmMain.hWnd, "")
 
-#Else
-frmMain.Socket1.AddressFamily = AF_INET
-frmMain.Socket1.protocol = IPPROTO_IP
-frmMain.Socket1.SocketType = SOCK_STREAM
-frmMain.Socket1.Binary = False
-frmMain.Socket1.Blocking = False
-frmMain.Socket1.BufferSize = 1024
-
-frmMain.Socket2(0).AddressFamily = AF_INET
-frmMain.Socket2(0).protocol = IPPROTO_IP
-frmMain.Socket2(0).SocketType = SOCK_STREAM
-frmMain.Socket2(0).Blocking = False
-frmMain.Socket2(0).BufferSize = 2048
-
-'Escucha
-frmMain.Socket1.LocalPort = Puerto
-frmMain.Socket1.listen
-#End If
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
 
@@ -610,6 +547,7 @@ End Sub
 
 Private Sub Command8_Click()
 Call CargarHechizos
+
 End Sub
 
 Private Sub Command9_Click()

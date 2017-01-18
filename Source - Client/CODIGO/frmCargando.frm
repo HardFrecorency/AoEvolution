@@ -17,33 +17,24 @@ Begin VB.Form frmCargando
    ScaleWidth      =   642
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.FileListBox MP3Files 
-      Height          =   480
-      Left            =   180
-      Pattern         =   "*.mp3"
-      TabIndex        =   2
-      Top             =   240
-      Visible         =   0   'False
-      Width           =   1215
-   End
    Begin RichTextLib.RichTextBox Status 
-      Height          =   2400
-      Left            =   2340
+      Height          =   2340
+      Left            =   2460
       TabIndex        =   1
       TabStop         =   0   'False
       ToolTipText     =   "Mensajes del servidor"
-      Top             =   2940
-      Width           =   5160
-      _ExtentX        =   9102
-      _ExtentY        =   4233
+      Top             =   3045
+      Width           =   5100
+      _ExtentX        =   8996
+      _ExtentY        =   4128
       _Version        =   393217
-      BackColor       =   8421376
-      Enabled         =   -1  'True
+      BackColor       =   0
       ReadOnly        =   -1  'True
       ScrollBars      =   2
+      Appearance      =   0
       TextRTF         =   $"frmCargando.frx":0000
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -53,8 +44,10 @@ Begin VB.Form frmCargando
       EndProperty
    End
    Begin VB.PictureBox LOGO 
-      BackColor       =   &H00000000&
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000005&
       BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
       Height          =   7200
       Left            =   45
       ScaleHeight     =   480
@@ -70,12 +63,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -87,26 +78,36 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
+Private Sub command1_Click()
 
+ddsd4.lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
+ddsd4.ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
+Set ddsAlphaPicture = DirectDraw.CreateSurfaceFromFile("C:\Windows\Escritorio\Noche.bmp", ddsd4)
 
+End Sub
 Private Sub Form_Load()
-LOGO.Picture = LoadPicture(DirGraficos & "cargando.jpg")
+
+LOGO.Picture = LoadPicture(App.Path & "\graficos\Cargando.gif")
+
 End Sub
 

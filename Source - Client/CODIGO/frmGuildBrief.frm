@@ -1,12 +1,13 @@
 VERSION 5.00
 Begin VB.Form frmGuildBrief 
-   BorderStyle     =   1  'Fixed Single
+   BorderStyle     =   0  'None
    Caption         =   "Detalles del Clan"
-   ClientHeight    =   7260
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   7530
+   ClientHeight    =   7650
+   ClientLeft      =   0
+   ClientTop       =   -105
+   ClientWidth     =   7635
    ControlBox      =   0   'False
+   FillColor       =   &H00FFFFFF&
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -19,263 +20,235 @@ Begin VB.Form frmGuildBrief
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7260
-   ScaleWidth      =   7530
+   ScaleHeight     =   7650
+   ScaleWidth      =   7635
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton Command3 
-      Caption         =   "Ofrecer Paz"
-      Height          =   375
-      Left            =   1680
+   Begin VB.TextBox Desc 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   855
+      Left            =   600
+      Locked          =   -1  'True
+      MultiLine       =   -1  'True
+      TabIndex        =   17
+      Top             =   6000
+      Width           =   6495
+   End
+   Begin VB.Image aliado 
+      Height          =   255
+      Left            =   2760
       MouseIcon       =   "frmGuildBrief.frx":0000
       MousePointer    =   99  'Custom
-      TabIndex        =   26
-      Top             =   6840
-      Width           =   1335
+      Top             =   6960
+      Visible         =   0   'False
+      Width           =   2055
    End
-   Begin VB.CommandButton aliado 
-      Caption         =   "Declarar Aliado"
-      Height          =   375
-      Left            =   3120
-      MouseIcon       =   "frmGuildBrief.frx":0152
+   Begin VB.Image command3 
+      Height          =   255
+      Left            =   4920
+      MouseIcon       =   "frmGuildBrief.frx":030A
       MousePointer    =   99  'Custom
-      TabIndex        =   25
-      Top             =   6840
-      Width           =   1335
+      Top             =   6960
+      Visible         =   0   'False
+      Width           =   2055
    End
-   Begin VB.CommandButton Guerra 
-      Caption         =   "Declarar Guerra"
-      Height          =   375
-      Left            =   4560
-      MouseIcon       =   "frmGuildBrief.frx":02A4
+   Begin VB.Image guerra 
+      Height          =   255
+      Left            =   600
+      MouseIcon       =   "frmGuildBrief.frx":0614
       MousePointer    =   99  'Custom
-      TabIndex        =   24
-      Top             =   6840
-      Width           =   1335
+      Top             =   6960
+      Visible         =   0   'False
+      Width           =   1935
    End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Solicitar Ingreso"
+   Begin VB.Image command1 
       Height          =   375
-      Left            =   6000
-      MouseIcon       =   "frmGuildBrief.frx":03F6
+      Left            =   0
+      MouseIcon       =   "frmGuildBrief.frx":091E
       MousePointer    =   99  'Custom
-      TabIndex        =   20
-      Top             =   6840
-      Width           =   1335
+      Top             =   7320
+      Width           =   855
    End
-   Begin VB.CommandButton Command1 
-      Cancel          =   -1  'True
-      Caption         =   "Cerrar"
-      Height          =   375
-      Left            =   120
-      MouseIcon       =   "frmGuildBrief.frx":0548
+   Begin VB.Image command2 
+      Height          =   255
+      Left            =   4920
+      MouseIcon       =   "frmGuildBrief.frx":0C28
       MousePointer    =   99  'Custom
-      TabIndex        =   19
-      Top             =   6840
-      Width           =   1455
+      Top             =   6960
+      Visible         =   0   'False
+      Width           =   2055
    End
-   Begin VB.Frame Frame3 
-      Caption         =   "Descripción"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1335
-      Left            =   120
-      TabIndex        =   18
-      Top             =   5400
-      Width           =   7215
-      Begin VB.TextBox Desc 
-         Height          =   975
-         Left            =   120
-         Locked          =   -1  'True
-         MultiLine       =   -1  'True
-         TabIndex        =   23
-         Top             =   240
-         Width           =   6975
-      End
+   Begin VB.Label nombre 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nombre:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   1560
+      TabIndex        =   16
+      Top             =   720
+      Width           =   5535
    End
-   Begin VB.Frame Frame2 
-      Caption         =   "Codex"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   2415
-      Left            =   120
+   Begin VB.Label fundador 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Fundador:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   1680
+      TabIndex        =   15
+      Top             =   960
+      Width           =   5415
+   End
+   Begin VB.Label creacion 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Fecha de creacion:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   2760
+      TabIndex        =   14
+      Top             =   1220
+      Width           =   4335
+   End
+   Begin VB.Label lider 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Lider:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   1320
+      TabIndex        =   13
+      Top             =   1470
+      Width           =   5745
+   End
+   Begin VB.Label web 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Web site:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   1800
+      TabIndex        =   12
+      Top             =   1725
+      Width           =   5265
+   End
+   Begin VB.Label Miembros 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Miembros:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   1680
+      TabIndex        =   11
+      Top             =   1980
+      Width           =   5355
+   End
+   Begin VB.Label eleccion 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Dias para proxima eleccion de lider:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   4080
+      TabIndex        =   10
+      Top             =   2230
+      Width           =   3015
+   End
+   Begin VB.Label Enemigos 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Clanes Enemigos:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   2280
       TabIndex        =   9
-      Top             =   2880
-      Width           =   7215
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   7
-         Left            =   240
-         TabIndex        =   17
-         Top             =   2040
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   6
-         Left            =   240
-         TabIndex        =   16
-         Top             =   1800
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   5
-         Left            =   240
-         TabIndex        =   15
-         Top             =   1560
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   4
-         Left            =   240
-         TabIndex        =   14
-         Top             =   1320
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   3
-         Left            =   240
-         TabIndex        =   13
-         Top             =   1080
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   2
-         Left            =   240
-         TabIndex        =   12
-         Top             =   840
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   1
-         Left            =   240
-         TabIndex        =   11
-         Top             =   600
-         Width           =   6735
-      End
-      Begin VB.Label Codex 
-         Height          =   255
-         Index           =   0
-         Left            =   240
-         TabIndex        =   10
-         Top             =   360
-         Width           =   6735
-      End
+      Top             =   2475
+      Width           =   4875
    End
-   Begin VB.Frame Frame1 
-      Caption         =   "Info del clan"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   2775
-      Left            =   120
+   Begin VB.Label Aliados 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Clanes Aliados:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   2145
+      TabIndex        =   8
+      Top             =   2730
+      Width           =   4950
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   0
+      Left            =   600
+      TabIndex        =   7
+      Top             =   3480
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   1
+      Left            =   600
+      TabIndex        =   6
+      Top             =   3720
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   2
+      Left            =   600
+      TabIndex        =   5
+      Top             =   3960
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   3
+      Left            =   600
+      TabIndex        =   4
+      Top             =   4200
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   4
+      Left            =   600
+      TabIndex        =   3
+      Top             =   4440
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   5
+      Left            =   600
+      TabIndex        =   2
+      Top             =   4680
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   6
+      Left            =   600
+      TabIndex        =   1
+      Top             =   4920
+      Width           =   6495
+   End
+   Begin VB.Label Codex 
+      BackColor       =   &H80000012&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   7
+      Left            =   600
       TabIndex        =   0
-      Top             =   120
-      Width           =   7215
-      Begin VB.Label Aliados 
-         Caption         =   "Clanes Aliados:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   22
-         Top             =   2400
-         Width           =   6975
-      End
-      Begin VB.Label Enemigos 
-         Caption         =   "Clanes Enemigos:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   21
-         Top             =   2160
-         Width           =   6975
-      End
-      Begin VB.Label Oro 
-         Caption         =   "Oro:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   8
-         Top             =   1920
-         Width           =   6975
-      End
-      Begin VB.Label eleccion 
-         Caption         =   "Dias para proxima eleccion de lider:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   7
-         Top             =   1680
-         Width           =   6975
-      End
-      Begin VB.Label Miembros 
-         Caption         =   "Miembros:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   6
-         Top             =   1440
-         Width           =   6975
-      End
-      Begin VB.Label web 
-         Caption         =   "Web site:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   5
-         Top             =   1200
-         Width           =   6975
-      End
-      Begin VB.Label lider 
-         Caption         =   "Lider:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   4
-         Top             =   960
-         Width           =   6975
-      End
-      Begin VB.Label creacion 
-         Caption         =   "Fecha de creacion:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   3
-         Top             =   720
-         Width           =   6975
-      End
-      Begin VB.Label fundador 
-         Caption         =   "Fundador:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   2
-         Top             =   480
-         Width           =   6975
-      End
-      Begin VB.Label nombre 
-         Caption         =   "Nombre:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   1
-         Top             =   240
-         Width           =   6975
-      End
+      Top             =   5160
+      Width           =   6495
    End
 End
 Attribute VB_Name = "frmGuildBrief"
@@ -283,12 +256,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -300,60 +271,75 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Public EsLeader As Boolean
+Public Sub ParseGuildInfo(ByVal buffer As String)
+Dim BandoClan As Byte, BandoMio As Byte
 
-
-Public Sub ParseGuildInfo(ByVal Buffer As String)
+BandoClan = Val(ReadField(8, buffer, Asc("¬")))
+BandoMio = Val(ReadField(11, buffer, Asc("¬")))
 
 If Not EsLeader Then
+    Me.Picture = LoadPicture(DirGraficos & "DetallesDeClan.gif")
     guerra.Visible = False
     aliado.Visible = False
-    Command3.Visible = False
+    command3.Visible = False
+    command2.Visible = (BandoMio = BandoClan)
 Else
-    guerra.Visible = True
+    Me.Picture = LoadPicture(DirGraficos & "DetallesDeClanGuildMaster.gif")
     aliado.Visible = True
-    Command3.Visible = True
+    guerra.Visible = True
+    command3.Visible = True
+    command2.Visible = False
 End If
 
-Nombre.Caption = "Nombre:" & ReadField(1, Buffer, Asc("¬"))
-fundador.Caption = "Fundador:" & ReadField(2, Buffer, Asc("¬"))
-creacion.Caption = "Fecha de creacion:" & ReadField(3, Buffer, Asc("¬"))
-lider.Caption = "Lider:" & ReadField(4, Buffer, Asc("¬"))
-web.Caption = "Web site:" & ReadField(5, Buffer, Asc("¬"))
-Miembros.Caption = "Miembros:" & ReadField(6, Buffer, Asc("¬"))
-eleccion.Caption = "Dias para proxima eleccion de lider:" & ReadField(7, Buffer, Asc("¬"))
-Oro.Caption = "Oro:" & ReadField(8, Buffer, Asc("¬"))
-Enemigos.Caption = "Clanes enemigos:" & ReadField(9, Buffer, Asc("¬"))
-aliados.Caption = "Clanes aliados:" & ReadField(10, Buffer, Asc("¬"))
+Select Case BandoClan
+    Case 1
+        Nombre.ForeColor = &HFF0000
+    Case 2
+        Nombre.ForeColor = &HFF&
+    Case Else
+        Nombre.ForeColor = &HE0E0E0
+End Select
 
-Dim t%, k%
-k% = Val(ReadField(11, Buffer, Asc("¬")))
+Nombre.Caption = ReadField(1, buffer, Asc("¬"))
+fundador.Caption = ReadField(2, buffer, Asc("¬"))
+creacion.Caption = ReadField(3, buffer, Asc("¬"))
+lider.Caption = ReadField(4, buffer, Asc("¬"))
+web.Caption = ReadField(5, buffer, Asc("¬"))
+Miembros.Caption = ReadField(6, buffer, Asc("¬"))
+Eleccion.Caption = ReadField(7, buffer, Asc("¬"))
+Enemigos.Caption = ReadField(9, buffer, Asc("¬"))
+Aliados.Caption = ReadField(10, buffer, Asc("¬"))
 
-For t% = 1 To k%
-    Codex(t% - 1).Caption = ReadField(11 + t%, Buffer, Asc("¬"))
-Next t%
+Dim T%, k%
+k% = Val(ReadField(12, buffer, Asc("¬")))
 
-
+For T% = 1 To k%
+    Codex(T% - 1).Caption = ReadField(12 + T%, buffer, Asc("¬"))
+Next T%
 Dim des$
 
-des$ = ReadField(11 + t%, Buffer, Asc("¬"))
+
+des$ = ReadField(12 + T%, buffer, Asc("¬"))
 
 desc = Replace(des$, "º", vbCrLf)
 
@@ -362,29 +348,47 @@ Me.Show vbModeless, frmMain
 End Sub
 
 Private Sub aliado_Click()
-Call SendData("DECALIAD" & Right(Nombre, Len(Nombre) - 7))
+Call SendData("DECALIAD" & Right$(Nombre, Len(Nombre.Caption)))
 Unload Me
 End Sub
-
-Private Sub Command1_Click()
+Private Sub command1_Click()
 Unload Me
 End Sub
 
 Private Sub Command2_Click()
 
-Call frmGuildSol.RecieveSolicitud(Right$(Nombre, Len(Nombre) - 7))
+Call frmGuildSol.RecieveSolicitud(Right$(Nombre, Len(Nombre.Caption)))
 Call frmGuildSol.Show(vbModeless, frmGuildBrief)
-'Unload Me
+
 
 End Sub
 
 Private Sub Command3_Click()
-frmCommet.Nombre = Right(Nombre.Caption, Len(Nombre.Caption) - 7)
+frmCommet.Nombre = Right$(Nombre.Caption, Len(Nombre.Caption))
 Call frmCommet.Show(vbModeless, frmGuildBrief)
-'Unload Me
+
 End Sub
 
-Private Sub Guerra_Click()
-Call SendData("DECGUERR" & Right(Nombre.Caption, Len(Nombre.Caption) - 7))
+Private Sub guerra_Click()
+Call SendData("DECGUERR" & Right$(Nombre.Caption, Len(Nombre.Caption)))
 Unload Me
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+    DX = X
+    dy = Y
+    bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
 End Sub

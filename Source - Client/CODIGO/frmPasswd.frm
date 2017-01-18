@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin VB.Form frmPasswd 
    BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   4050
+   ClientHeight    =   4590
    ClientLeft      =   45
    ClientTop       =   45
-   ClientWidth     =   5010
+   ClientWidth     =   4845
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -19,147 +19,223 @@ Begin VB.Form frmPasswd
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   4050
-   ScaleWidth      =   5010
+   ScaleHeight     =   4590
+   ScaleWidth      =   4845
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton Command2 
-      Caption         =   "Volver"
-      Height          =   420
-      Left            =   105
-      MouseIcon       =   "frmPasswd.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   9
-      Top             =   3495
-      Width           =   1080
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Aceptar"
-      Height          =   420
-      Left            =   3885
-      MouseIcon       =   "frmPasswd.frx":0152
-      MousePointer    =   99  'Custom
-      TabIndex        =   8
-      Top             =   3540
-      Width           =   1080
-   End
-   Begin VB.TextBox txtPasswdCheck 
-      BorderStyle     =   0  'None
-      Height          =   255
-      Left            =   765
-      TabIndex        =   7
-      Top             =   2910
-      Width           =   3510
-   End
-   Begin VB.TextBox txtPasswd 
-      BorderStyle     =   0  'None
-      Height          =   255
-      Left            =   765
+   Begin VB.Frame Frame1 
+      Height          =   4335
+      Left            =   120
       TabIndex        =   5
-      Top             =   2295
-      Width           =   3510
-   End
-   Begin VB.TextBox txtCorreo 
-      BorderStyle     =   0  'None
-      Height          =   255
-      Left            =   765
-      TabIndex        =   3
-      Top             =   1710
-      Width           =   3510
-   End
-   Begin VB.Label Label5 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      Caption         =   "Verifiación del password:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   750
-      TabIndex        =   6
-      Top             =   2670
-      Width           =   3555
-   End
-   Begin VB.Label Label4 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      Caption         =   "Password:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   750
-      TabIndex        =   4
-      Top             =   2040
-      Width           =   3555
-   End
-   Begin VB.Label Label3 
-      Alignment       =   2  'Center
-      Caption         =   "Dirección de correo electronico:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   315
-      Left            =   750
-      TabIndex        =   2
-      Top             =   1455
-      Width           =   3555
-   End
-   Begin VB.Label Label2 
-      Alignment       =   2  'Center
-      Caption         =   $"frmPasswd.frx":02A4
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   810
-      Left            =   60
-      TabIndex        =   1
-      Top             =   405
-      Width           =   4890
-   End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      Caption         =   "¡¡¡¡CUIDADO!!!!"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000000C0&
-      Height          =   240
-      Left            =   30
-      TabIndex        =   0
-      Top             =   105
-      Width           =   4905
+      Top             =   120
+      Width           =   4575
+      Begin VB.CommandButton Command2 
+         Caption         =   "&Volver"
+         Height          =   375
+         Left            =   120
+         TabIndex        =   4
+         Top             =   3840
+         Width           =   1095
+      End
+      Begin VB.Frame Frame2 
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   -1  'True
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   2175
+         Left            =   120
+         TabIndex        =   8
+         Top             =   1560
+         Width           =   4335
+         Begin VB.TextBox txtCorreo 
+            Height          =   300
+            Left            =   135
+            TabIndex        =   0
+            Top             =   495
+            Width           =   3750
+         End
+         Begin VB.TextBox txtPasswd 
+            Height          =   315
+            IMEMode         =   3  'DISABLE
+            Left            =   120
+            PasswordChar    =   "*"
+            TabIndex        =   1
+            Top             =   1080
+            Width           =   3750
+         End
+         Begin VB.TextBox txtPasswdCheck 
+            Height          =   315
+            IMEMode         =   3  'DISABLE
+            Left            =   135
+            PasswordChar    =   "*"
+            TabIndex        =   2
+            Top             =   1680
+            Width           =   3750
+         End
+         Begin VB.Label lblPassOK 
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "O"
+            BeginProperty Font 
+               Name            =   "Wingdings 2"
+               Size            =   24
+               Charset         =   2
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H000000C0&
+            Height          =   510
+            Left            =   3915
+            TabIndex        =   13
+            Top             =   1590
+            Width           =   345
+         End
+         Begin VB.Label lblMailOK 
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "O"
+            BeginProperty Font 
+               Name            =   "Wingdings 2"
+               Size            =   24
+               Charset         =   2
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H000000C0&
+            Height          =   510
+            Left            =   3915
+            TabIndex        =   12
+            Top             =   390
+            Width           =   345
+         End
+         Begin VB.Label Label3 
+            Alignment       =   2  'Center
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "Dirección de correo electronico:"
+            BeginProperty Font 
+               Name            =   "Tahoma"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   120
+            TabIndex        =   11
+            Top             =   240
+            Width           =   2685
+         End
+         Begin VB.Label Label4 
+            Alignment       =   2  'Center
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "Password:"
+            BeginProperty Font 
+               Name            =   "Tahoma"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   120
+            TabIndex        =   10
+            Top             =   825
+            Width           =   885
+         End
+         Begin VB.Label Label5 
+            Alignment       =   2  'Center
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "Verifiación del password:"
+            BeginProperty Font 
+               Name            =   "Tahoma"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   195
+            Left            =   120
+            TabIndex        =   9
+            Top             =   1455
+            Width           =   2115
+         End
+      End
+      Begin VB.CommandButton Command1 
+         Caption         =   "¡Crear Personaje!"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   2520
+         MouseIcon       =   "frmPasswd.frx":0000
+         MousePointer    =   99  'Custom
+         TabIndex        =   3
+         Top             =   3840
+         Width           =   1935
+      End
+      Begin VB.Label Label1 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         Caption         =   "Advertencia:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   -1  'True
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   240
+         Left            =   1770
+         TabIndex        =   7
+         Top             =   240
+         Width           =   1305
+      End
+      Begin VB.Label Label2 
+         Alignment       =   2  'Center
+         Caption         =   $"frmPasswd.frx":0152
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000000&
+         Height          =   1050
+         Left            =   120
+         TabIndex        =   6
+         Top             =   480
+         Width           =   4365
+      End
    End
 End
 Attribute VB_Name = "frmPasswd"
@@ -207,40 +283,41 @@ Option Explicit
 Function CheckDatos() As Boolean
 
 If txtPasswd.Text <> txtPasswdCheck.Text Then
-    MsgBox "Los passwords que tipeo no coinciden, por favor vuelva a ingresarlos."
+    MsgBox "Las contraseñas que ingresaste no coinciden." & vbCrLf & vbCrLf & "Por favor volvé a ingresarlos.", vbInformation, "Fenix AO"
+    txtPasswdCheck = ""
+    txtPasswdCheck.SetFocus
     Exit Function
 End If
 
 CheckDatos = True
 
 End Function
-Private Sub Command1_Click()
+Private Sub command1_Click()
 
 If CheckDatos() Then
     UserPassword = MD5String(txtPasswd.Text)
     UserEmail = txtCorreo.Text
     
     If Not CheckMailString(UserEmail) Then
-            MsgBox "Direccion de mail invalida."
+            MsgBox "Direccion de mail invalida.", vbExclamation, "Fenix AO"
             Exit Sub
     End If
     
-    frmMain.Socket1.HostName = CurServerIp
-    frmMain.Socket1.RemotePort = CurServerPort
+    If Trim(txtPasswd) = "" Or Trim(txtPasswdCheck) = "" Then
+        MsgBox "Tenés que ingresar una contraseña, no se aceptan espacios en blanco.", vbInformation, "Fenix AO"
+        txtPasswd = ""
+        txtPasswdCheck = ""
+        txtPasswd.SetFocus
+        Exit Sub
+    End If
+    
+    frmMain.Socket1.HostName = IPdelServidor
+    frmMain.Socket1.RemotePort = PuertoDelServidor
     
     'SendNewChar = True
-    EstadoLogin = CrearNuevoPj
-    
     Me.MousePointer = 11
-    
-'    If Not frmMain.Socket1.Connected Then
-'        frmMain.Socket1.Connect
-'    Else
-'        Call SendData("gIvEmEvAlcOde")
-'    End If
-
     EstadoLogin = CrearNuevoPj
-
+    
     If Not frmMain.Socket1.Connected Then
         MsgBox "Error: Se ha perdido la conexion con el server."
         Unload Me
@@ -248,11 +325,63 @@ If CheckDatos() Then
     Else
         Call Login(ValidarLoginMSG(CInt(bRK)))
     End If
+    
 End If
 
 End Sub
+Private Sub Command3_Click()
 
-Private Sub Command2_Click()
-Unload Me
+If CheckDatos() Then
+    UserPassword = MD5String(txtPasswd.Text)
+    UserEmail = txtCorreo.Text
+    
+    If Not CheckMailString(UserEmail) Then
+            MsgBox "Direccion de mail invalida.", vbExclamation, "Fenix AO"
+            Exit Sub
+    End If
+    
+    If Trim(txtPasswd) = "" Or Trim(txtPasswdCheck) = "" Then
+        MsgBox "Tenés que ingresar una contraseña, no se aceptan espacios en blanco.", vbInformation, "Fenix AO"
+        txtPasswd = ""
+        txtPasswdCheck = ""
+        txtPasswd.SetFocus
+        Exit Sub
+    End If
+    Me.MousePointer = 11
+    If Not frmMain.Socket1.Connected Then
+        MsgBox "Error: Se ha perdido la conexion con el server."
+        Unload Me
+    Else
+        Call Login(ValidarLoginMSG(CInt(bRK)))
+    End If
+End If
+
 End Sub
+Private Sub txtCorreo_Change()
 
+If Not CheckMailString(txtCorreo) Then
+    lblMailOK = "O"
+    lblMailOK.ForeColor = &HC0&
+Else
+    lblMailOK = "P"
+    lblMailOK.ForeColor = &H8000&
+    Beep
+End If
+
+End Sub
+Private Sub txtPasswdCheck_Change()
+
+If Trim(txtPasswdCheck) = "" And Trim(txtPasswdCheck) = "" Then
+    lblPassOK = "O"
+    lblPassOK.ForeColor = &HC0&
+Else
+    If txtPasswdCheck = txtPasswd Then
+        lblPassOK = "P"
+        lblPassOK.ForeColor = &H8000&
+        Beep
+    Else
+        lblPassOK = "O"
+        lblPassOK.ForeColor = &HC0&
+    End If
+End If
+End Sub

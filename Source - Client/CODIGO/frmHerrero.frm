@@ -1,107 +1,130 @@
 VERSION 5.00
 Begin VB.Form frmHerrero 
-   BorderStyle     =   1  'Fixed Single
+   AutoRedraw      =   -1  'True
+   BorderStyle     =   0  'None
    Caption         =   "Herrero"
-   ClientHeight    =   3585
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   4470
+   ClientHeight    =   5700
+   ClientLeft      =   0
+   ClientTop       =   360
+   ClientWidth     =   5250
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3585
-   ScaleWidth      =   4470
-   StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton Command4 
-      Caption         =   "Salir"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   435
-      Left            =   120
-      MouseIcon       =   "frmHerrero.frx":0000
-      MousePointer    =   99  'Custom
+   ScaleHeight     =   5700
+   ScaleWidth      =   5250
+   ShowInTaskbar   =   0   'False
+   StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox txtCantidad 
+      Alignment       =   1  'Right Justify
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   285
+      Left            =   840
       TabIndex        =   4
-      Top             =   3015
-      Width           =   1710
+      Text            =   "1"
+      Top             =   3545
+      Width           =   1695
    End
-   Begin VB.CommandButton Command3 
-      Caption         =   "Construir"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   435
-      Left            =   2520
-      MouseIcon       =   "frmHerrero.frx":0152
-      MousePointer    =   99  'Custom
+   Begin VB.ListBox lstCascos 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   2370
+      ItemData        =   "frmHerrero.frx":0000
+      Left            =   600
+      List            =   "frmHerrero.frx":0002
       TabIndex        =   3
-      Top             =   3015
-      Width           =   1710
+      Top             =   960
+      Visible         =   0   'False
+      Width           =   4080
+   End
+   Begin VB.ListBox lstEscudos 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   2370
+      ItemData        =   "frmHerrero.frx":0004
+      Left            =   600
+      List            =   "frmHerrero.frx":0006
+      TabIndex        =   2
+      Top             =   960
+      Visible         =   0   'False
+      Width           =   4080
    End
    Begin VB.ListBox lstArmas 
-      Height          =   2010
-      Left            =   150
-      TabIndex        =   2
-      Top             =   810
-      Width           =   4080
-   End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Armaduras"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   435
-      Left            =   2370
-      MouseIcon       =   "frmHerrero.frx":02A4
-      MousePointer    =   99  'Custom
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   2370
+      ItemData        =   "frmHerrero.frx":0008
+      Left            =   600
+      List            =   "frmHerrero.frx":000A
       TabIndex        =   1
-      Top             =   210
-      Width           =   1710
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Armas"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   435
-      Left            =   210
-      MouseIcon       =   "frmHerrero.frx":03F6
-      MousePointer    =   99  'Custom
-      TabIndex        =   0
-      Top             =   210
-      Width           =   1710
+      Top             =   960
+      Width           =   4080
    End
    Begin VB.ListBox lstArmaduras 
-      Height          =   2010
-      Left            =   135
-      TabIndex        =   5
-      Top             =   825
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   2370
+      ItemData        =   "frmHerrero.frx":000C
+      Left            =   590
+      List            =   "frmHerrero.frx":000E
+      TabIndex        =   0
+      Top             =   960
+      Visible         =   0   'False
       Width           =   4080
+   End
+   Begin VB.Image command7 
+      Height          =   615
+      Left            =   3840
+      MouseIcon       =   "frmHerrero.frx":0010
+      MousePointer    =   99  'Custom
+      Top             =   4080
+      Width           =   615
+   End
+   Begin VB.Image command6 
+      Height          =   615
+      Left            =   1800
+      MouseIcon       =   "frmHerrero.frx":031A
+      MousePointer    =   99  'Custom
+      Top             =   4080
+      Width           =   615
+   End
+   Begin VB.Image command4 
+      Height          =   375
+      Left            =   0
+      MouseIcon       =   "frmHerrero.frx":0624
+      MousePointer    =   99  'Custom
+      Top             =   5400
+      Width           =   855
+   End
+   Begin VB.Image command3 
+      Height          =   375
+      Left            =   3000
+      MouseIcon       =   "frmHerrero.frx":092E
+      MousePointer    =   99  'Custom
+      Top             =   3480
+      Width           =   1455
+   End
+   Begin VB.Image command2 
+      Height          =   615
+      Left            =   720
+      MouseIcon       =   "frmHerrero.frx":0C38
+      MousePointer    =   99  'Custom
+      Top             =   4080
+      Width           =   615
+   End
+   Begin VB.Image command1 
+      Height          =   615
+      Left            =   2880
+      MouseIcon       =   "frmHerrero.frx":0F42
+      MousePointer    =   99  'Custom
+      Top             =   4080
+      Width           =   615
    End
 End
 Attribute VB_Name = "frmHerrero"
@@ -109,12 +132,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -126,42 +147,55 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
+Private Sub command1_Click()
 
-
-Private Sub Command1_Click()
 lstArmaduras.Visible = False
 lstArmas.Visible = True
+lstEscudos.Visible = False
+lstCascos.Visible = False
 End Sub
 
 Private Sub Command2_Click()
+
 lstArmaduras.Visible = True
 lstArmas.Visible = False
+lstEscudos.Visible = False
+lstCascos.Visible = False
 End Sub
 
 Private Sub Command3_Click()
 
 On Error Resume Next
+Dim stxtCantBuffer As String
+stxtCantBuffer = txtCantidad.Text
 
 If lstArmas.Visible Then
- Call SendData("CNS" & ArmasHerrero(lstArmas.ListIndex))
-Else
- Call SendData("CNS" & ArmadurasHerrero(lstArmaduras.ListIndex))
+ Call SendData("CNS" & ArmasHerrero(lstArmas.ListIndex) & " " & stxtCantBuffer)
+ElseIf lstArmaduras.Visible Then
+ Call SendData("CNS" & ArmadurasHerrero(lstArmaduras.ListIndex) & " " & stxtCantBuffer)
+ ElseIf lstEscudos.Visible Then
+ Call SendData("CNS" & EscudosHerrero(lstEscudos.ListIndex) & " " & stxtCantBuffer)
+ ElseIf lstCascos.Visible Then
+ Call SendData("CNS" & CascosHerrero(lstCascos.ListIndex) & " " & stxtCantBuffer)
 End If
 
 Unload Me
@@ -172,7 +206,49 @@ Private Sub Command4_Click()
 Unload Me
 End Sub
 
+Private Sub Command6_Click()
+lstArmaduras.Visible = False
+lstArmas.Visible = False
+lstEscudos.Visible = True
+lstCascos.Visible = False
+End Sub
+
+Private Sub Command7_Click()
+lstArmaduras.Visible = False
+lstArmas.Visible = False
+lstEscudos.Visible = False
+lstCascos.Visible = True
+End Sub
+
 Private Sub Form_Deactivate()
 Me.SetFocus
 End Sub
+Private Sub Form_Load()
 
+Me.Picture = LoadPicture(DirGraficos & "Herreria.gif")
+
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+    DX = X
+    dy = Y
+    bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
+End Sub
+Private Sub txtCantidad_Change()
+
+If Not IsNumeric(txtCantidad.Text) Then txtCantidad.Text = "1"
+
+End Sub

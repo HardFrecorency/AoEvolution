@@ -1,68 +1,72 @@
 VERSION 5.00
 Begin VB.Form FrmInterv 
-   Caption         =   "Intervalos"
-   ClientHeight    =   4710
-   ClientLeft      =   60
-   ClientTop       =   345
-   ClientWidth     =   7695
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "Intervalos ~ Servidor Fenix AO ~"
+   ClientHeight    =   4890
+   ClientLeft      =   45
+   ClientTop       =   330
+   ClientWidth     =   7050
+   Icon            =   "FrmInterv.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   4710
-   ScaleWidth      =   7695
-   StartUpPosition =   3  'Windows Default
+   MaxButton       =   0   'False
+   ScaleHeight     =   4890
+   ScaleWidth      =   7050
+   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
       Caption         =   "Guardar Intervalos"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Name            =   "Tahoma"
+         Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   255
-      Left            =   4200
-      TabIndex        =   36
-      Top             =   4320
-      Width           =   3255
+      Height          =   375
+      Left            =   1800
+      TabIndex        =   21
+      Top             =   4440
+      Width           =   2055
    End
    Begin VB.CommandButton Command1 
       Caption         =   "Aplicar"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Name            =   "Tahoma"
+         Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   255
-      Left            =   2160
-      TabIndex        =   0
-      Top             =   4320
-      Width           =   2055
+      Height          =   375
+      Left            =   120
+      TabIndex        =   20
+      Top             =   4440
+      Width           =   1575
    End
    Begin VB.Frame Frame11 
       Caption         =   "NPCs"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Tahoma"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
-         Underline       =   0   'False
+         Underline       =   -1  'True
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00C00000&
       Height          =   2055
-      Left            =   2880
-      TabIndex        =   49
-      Top             =   2160
-      Width           =   1695
+      Left            =   2640
+      TabIndex        =   51
+      Top             =   2280
+      Width           =   1665
       Begin VB.Frame Frame4 
-         Caption         =   "A.I"
+         Caption         =   "A.I.:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
@@ -70,25 +74,26 @@ Begin VB.Form FrmInterv
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   1575
+         ForeColor       =   &H000000FF&
+         Height          =   1650
          Left            =   150
-         TabIndex        =   50
-         Top             =   240
+         TabIndex        =   52
+         Top             =   270
          Width           =   1365
          Begin VB.TextBox txtAI 
             Height          =   285
             Left            =   150
-            TabIndex        =   52
+            TabIndex        =   15
             Text            =   "0"
-            Top             =   1080
+            Top             =   1200
             Width           =   1050
          End
          Begin VB.TextBox txtNPCPuedeAtacar 
             Height          =   285
             Left            =   135
-            TabIndex        =   51
+            TabIndex        =   14
             Text            =   "0"
-            Top             =   510
+            Top             =   630
             Width           =   1050
          End
          Begin VB.Label Label7 
@@ -97,7 +102,7 @@ Begin VB.Form FrmInterv
             Height          =   195
             Left            =   165
             TabIndex        =   54
-            Top             =   840
+            Top             =   960
             Width           =   150
          End
          Begin VB.Label Label9 
@@ -106,31 +111,32 @@ Begin VB.Form FrmInterv
             Height          =   195
             Left            =   150
             TabIndex        =   53
-            Top             =   255
+            Top             =   375
             Width           =   960
          End
       End
    End
    Begin VB.Frame Frame12 
-      Caption         =   "Clima && Ambiente"
+      Caption         =   "Clima / Ambiente"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Tahoma"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
-         Underline       =   0   'False
+         Underline       =   -1  'True
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00C00000&
       Height          =   2055
-      Left            =   4680
-      TabIndex        =   39
-      Top             =   2160
-      Width           =   2865
+      Left            =   4440
+      TabIndex        =   45
+      Top             =   2280
+      Width           =   2505
       Begin VB.Frame Frame7 
-         Caption         =   "Frio y Fx Ambientales"
+         Caption         =   "Frio y Fx Ambientales:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
@@ -138,77 +144,78 @@ Begin VB.Form FrmInterv
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
+         ForeColor       =   &H000000FF&
          Height          =   1650
          Left            =   165
-         TabIndex        =   40
+         TabIndex        =   46
          Top             =   300
-         Width           =   2580
+         Width           =   2220
          Begin VB.TextBox txtCmdExec 
             Height          =   285
-            Left            =   1320
-            TabIndex        =   44
+            Left            =   1080
+            TabIndex        =   19
             Text            =   "0"
-            Top             =   1110
+            Top             =   1200
             Width           =   915
          End
          Begin VB.TextBox txtIntervaloPerdidaStaminaLluvia 
             Height          =   300
-            Left            =   1320
-            TabIndex        =   43
+            Left            =   1080
+            TabIndex        =   17
             Text            =   "0"
-            Top             =   480
+            Top             =   630
             Width           =   930
          End
          Begin VB.TextBox txtIntervaloWAVFX 
             Height          =   300
-            Left            =   150
-            TabIndex        =   42
+            Left            =   120
+            TabIndex        =   16
             Text            =   "0"
-            Top             =   480
-            Width           =   930
+            Top             =   630
+            Width           =   810
          End
          Begin VB.TextBox txtIntervaloFrio 
             Height          =   285
-            Left            =   180
-            TabIndex        =   41
+            Left            =   120
+            TabIndex        =   18
             Text            =   "0"
-            Top             =   1080
-            Width           =   915
+            Top             =   1200
+            Width           =   795
          End
          Begin VB.Label Label20 
             AutoSize        =   -1  'True
             Caption         =   "TimerExec"
             Height          =   195
-            Left            =   1320
-            TabIndex        =   48
-            Top             =   840
+            Left            =   1080
+            TabIndex        =   50
+            Top             =   960
             Width           =   750
          End
          Begin VB.Label Label19 
             AutoSize        =   -1  'True
-            Caption         =   "Stamina Lluvia"
+            Caption         =   "Sta. Lluvia"
             Height          =   195
-            Left            =   1350
-            TabIndex        =   47
-            Top             =   270
-            Width           =   1035
+            Left            =   1080
+            TabIndex        =   49
+            Top             =   375
+            Width           =   750
          End
          Begin VB.Label Label13 
             AutoSize        =   -1  'True
             Caption         =   "FxS"
             Height          =   195
-            Left            =   180
-            TabIndex        =   46
-            Top             =   270
+            Left            =   120
+            TabIndex        =   48
+            Top             =   375
             Width           =   270
          End
          Begin VB.Label Label12 
             AutoSize        =   -1  'True
             Caption         =   "Frio"
             Height          =   195
-            Left            =   195
-            TabIndex        =   45
-            Top             =   810
+            Left            =   120
+            TabIndex        =   47
+            Top             =   960
             Width           =   255
          End
       End
@@ -216,47 +223,49 @@ Begin VB.Form FrmInterv
    Begin VB.Frame Frame6 
       Caption         =   "Usuarios"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Tahoma"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
-         Underline       =   0   'False
+         Underline       =   -1  'True
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00C00000&
       Height          =   2055
       Left            =   120
-      TabIndex        =   3
-      Top             =   0
-      Width           =   7455
+      TabIndex        =   24
+      Top             =   120
+      Width           =   6830
       Begin VB.Frame Frame9 
-         Caption         =   "Otros"
+         Caption         =   "Otros:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
-            Underline       =   0   'False
+            Underline       =   -1  'True
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   1710
-         Left            =   90
-         TabIndex        =   24
-         Top             =   210
-         Width           =   1410
+         ForeColor       =   &H000000FF&
+         Height          =   1575
+         Left            =   120
+         TabIndex        =   37
+         Top             =   330
+         Width           =   1290
          Begin VB.TextBox txtIntervaloParaConexion 
             Height          =   300
-            Left            =   45
-            TabIndex        =   26
+            Left            =   120
+            TabIndex        =   0
             Text            =   "0"
             Top             =   495
             Width           =   930
          End
          Begin VB.TextBox txtTrabajo 
             Height          =   300
-            Left            =   60
-            TabIndex        =   25
+            Left            =   120
+            TabIndex        =   1
             Text            =   "0"
             Top             =   1140
             Width           =   930
@@ -266,7 +275,7 @@ Begin VB.Form FrmInterv
             Caption         =   "IntervaloCon"
             Height          =   195
             Left            =   120
-            TabIndex        =   28
+            TabIndex        =   39
             Top             =   270
             Width           =   900
          End
@@ -274,40 +283,41 @@ Begin VB.Form FrmInterv
             AutoSize        =   -1  'True
             Caption         =   "Trabajo"
             Height          =   195
-            Left            =   165
-            TabIndex        =   27
+            Left            =   120
+            TabIndex        =   38
             Top             =   900
             Width           =   540
          End
       End
       Begin VB.Frame Frame8 
-         Caption         =   "Combate"
+         Caption         =   "Combate:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
-            Underline       =   0   'False
+            Underline       =   -1  'True
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   1710
-         Left            =   1545
-         TabIndex        =   19
-         Top             =   210
-         Width           =   1410
+         ForeColor       =   &H000000FF&
+         Height          =   1575
+         Left            =   1440
+         TabIndex        =   34
+         Top             =   330
+         Width           =   1290
          Begin VB.TextBox txtPuedeAtacar 
             Height          =   300
             Left            =   135
-            TabIndex        =   22
+            TabIndex        =   3
             Text            =   "0"
-            Top             =   1200
+            Top             =   1140
             Width           =   930
          End
          Begin VB.TextBox txtIntervaloLanzaHechizo 
             Height          =   300
             Left            =   150
-            TabIndex        =   20
+            TabIndex        =   2
             Text            =   "0"
             Top             =   525
             Width           =   930
@@ -317,8 +327,8 @@ Begin VB.Form FrmInterv
             Caption         =   "Puede Atacar"
             Height          =   195
             Left            =   135
-            TabIndex        =   23
-            Top             =   930
+            TabIndex        =   36
+            Top             =   900
             Width           =   975
          End
          Begin VB.Label Label15 
@@ -326,31 +336,32 @@ Begin VB.Form FrmInterv
             Caption         =   "Lanza Spell"
             Height          =   195
             Left            =   150
-            TabIndex        =   21
+            TabIndex        =   35
             Top             =   285
             Width           =   825
          End
       End
       Begin VB.Frame Frame3 
-         Caption         =   "Hambre y sed"
+         Caption         =   "Ham. / Sed:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
-            Underline       =   0   'False
+            Underline       =   -1  'True
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   1710
-         Left            =   5925
-         TabIndex        =   14
-         Top             =   210
-         Width           =   1410
+         ForeColor       =   &H000000FF&
+         Height          =   1575
+         Left            =   5400
+         TabIndex        =   31
+         Top             =   330
+         Width           =   1290
          Begin VB.TextBox txtIntervaloHambre 
             Height          =   285
             Left            =   150
-            TabIndex        =   16
+            TabIndex        =   8
             Text            =   "0"
             Top             =   510
             Width           =   1050
@@ -358,9 +369,9 @@ Begin VB.Form FrmInterv
          Begin VB.TextBox txtIntervaloSed 
             Height          =   285
             Left            =   150
-            TabIndex        =   15
+            TabIndex        =   9
             Text            =   "0"
-            Top             =   1185
+            Top             =   1140
             Width           =   1050
          End
          Begin VB.Label Label5 
@@ -368,7 +379,7 @@ Begin VB.Form FrmInterv
             Caption         =   "Hambre"
             Height          =   195
             Left            =   180
-            TabIndex        =   18
+            TabIndex        =   33
             Top             =   255
             Width           =   555
          End
@@ -377,31 +388,32 @@ Begin VB.Form FrmInterv
             Caption         =   "Sed"
             Height          =   195
             Left            =   165
-            TabIndex        =   17
-            Top             =   930
+            TabIndex        =   32
+            Top             =   900
             Width           =   285
          End
       End
       Begin VB.Frame Frame1 
-         Caption         =   "Sanar"
+         Caption         =   "Sanar:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
-            Underline       =   0   'False
+            Underline       =   -1  'True
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   1710
-         Left            =   4470
-         TabIndex        =   9
-         Top             =   210
-         Width           =   1410
+         ForeColor       =   &H000000FF&
+         Height          =   1575
+         Left            =   4080
+         TabIndex        =   28
+         Top             =   330
+         Width           =   1290
          Begin VB.TextBox txtSanaIntervaloDescansar 
             Height          =   285
             Left            =   150
-            TabIndex        =   11
+            TabIndex        =   6
             Text            =   "0"
             Top             =   510
             Width           =   1050
@@ -409,9 +421,9 @@ Begin VB.Form FrmInterv
          Begin VB.TextBox txtSanaIntervaloSinDescansar 
             Height          =   285
             Left            =   150
-            TabIndex        =   10
+            TabIndex        =   7
             Text            =   "0"
-            Top             =   1185
+            Top             =   1140
             Width           =   1050
          End
          Begin VB.Label Label3 
@@ -419,7 +431,7 @@ Begin VB.Form FrmInterv
             Caption         =   "Descansando"
             Height          =   195
             Left            =   180
-            TabIndex        =   13
+            TabIndex        =   30
             Top             =   255
             Width           =   990
          End
@@ -428,39 +440,40 @@ Begin VB.Form FrmInterv
             Caption         =   "Sin descansar"
             Height          =   195
             Left            =   165
-            TabIndex        =   12
-            Top             =   930
+            TabIndex        =   29
+            Top             =   900
             Width           =   1005
          End
       End
       Begin VB.Frame Frame2 
-         Caption         =   "Stamina"
+         Caption         =   "Stamina:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
-            Underline       =   0   'False
+            Underline       =   -1  'True
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   1710
-         Left            =   3015
-         TabIndex        =   4
-         Top             =   210
-         Width           =   1410
+         ForeColor       =   &H000000FF&
+         Height          =   1575
+         Left            =   2760
+         TabIndex        =   25
+         Top             =   330
+         Width           =   1290
          Begin VB.TextBox txtStaminaIntervaloSinDescansar 
             Height          =   285
             Left            =   150
-            TabIndex        =   6
+            TabIndex        =   5
             Text            =   "0"
-            Top             =   1185
+            Top             =   1140
             Width           =   1050
          End
          Begin VB.TextBox txtStaminaIntervaloDescansar 
             Height          =   285
             Left            =   165
-            TabIndex        =   5
+            TabIndex        =   4
             Text            =   "0"
             Top             =   510
             Width           =   1050
@@ -470,8 +483,8 @@ Begin VB.Form FrmInterv
             Caption         =   "Sin descansar"
             Height          =   195
             Left            =   165
-            TabIndex        =   8
-            Top             =   930
+            TabIndex        =   27
+            Top             =   900
             Width           =   1005
          End
          Begin VB.Label Label4 
@@ -479,7 +492,7 @@ Begin VB.Form FrmInterv
             Caption         =   "Descansando"
             Height          =   195
             Left            =   180
-            TabIndex        =   7
+            TabIndex        =   26
             Top             =   255
             Width           =   990
          End
@@ -488,73 +501,75 @@ Begin VB.Form FrmInterv
    Begin VB.Frame Frame5 
       Caption         =   "Magia"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Tahoma"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
-         Underline       =   0   'False
+         Underline       =   -1  'True
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00C00000&
       Height          =   2055
       Left            =   120
-      TabIndex        =   2
-      Top             =   2160
-      Width           =   2655
+      TabIndex        =   23
+      Top             =   2280
+      Width           =   2415
       Begin VB.Frame Frame10 
-         Caption         =   "Duracion Spells"
+         Caption         =   "Duracion de Spells:"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Tahoma"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
-            Underline       =   0   'False
+            Underline       =   -1  'True
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
+         ForeColor       =   &H000000FF&
          Height          =   1650
          Left            =   135
-         TabIndex        =   29
+         TabIndex        =   40
          Top             =   270
-         Width           =   2400
+         Width           =   2120
          Begin VB.TextBox txtInvocacion 
             Height          =   300
-            Left            =   1170
-            TabIndex        =   37
+            Left            =   1080
+            TabIndex        =   13
             Text            =   "0"
             Top             =   1170
             Width           =   900
          End
          Begin VB.TextBox txtIntervaloInvisible 
             Height          =   300
-            Left            =   1170
-            TabIndex        =   34
+            Left            =   1080
+            TabIndex        =   11
             Text            =   "0"
-            Top             =   495
+            Top             =   600
             Width           =   900
          End
          Begin VB.TextBox txtIntervaloParalizado 
             Height          =   300
-            Left            =   195
-            TabIndex        =   31
+            Left            =   120
+            TabIndex        =   12
             Text            =   "0"
             Top             =   1170
             Width           =   795
          End
          Begin VB.TextBox txtIntervaloVeneno 
             Height          =   300
-            Left            =   195
-            TabIndex        =   30
+            Left            =   120
+            TabIndex        =   10
             Text            =   "0"
-            Top             =   510
+            Top             =   600
             Width           =   795
          End
          Begin VB.Label Label18 
             AutoSize        =   -1  'True
             Caption         =   "Invocacion"
             Height          =   195
-            Left            =   1170
-            TabIndex        =   38
+            Left            =   1080
+            TabIndex        =   44
             Top             =   960
             Width           =   795
          End
@@ -562,17 +577,17 @@ Begin VB.Form FrmInterv
             AutoSize        =   -1  'True
             Caption         =   "Invisible"
             Height          =   195
-            Left            =   1170
-            TabIndex        =   35
-            Top             =   285
+            Left            =   1080
+            TabIndex        =   43
+            Top             =   360
             Width           =   570
          End
          Begin VB.Label Label10 
             AutoSize        =   -1  'True
             Caption         =   "Paralizado"
             Height          =   195
-            Left            =   225
-            TabIndex        =   33
+            Left            =   120
+            TabIndex        =   42
             Top             =   960
             Width           =   735
          End
@@ -580,29 +595,29 @@ Begin VB.Form FrmInterv
             AutoSize        =   -1  'True
             Caption         =   "Veneno"
             Height          =   180
-            Left            =   225
-            TabIndex        =   32
-            Top             =   300
+            Left            =   120
+            TabIndex        =   41
+            Top             =   360
             Width           =   555
          End
       End
    End
    Begin VB.CommandButton ok 
-      Caption         =   "OK"
+      Caption         =   "Cerrar"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Name            =   "Tahoma"
+         Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   255
-      Left            =   120
-      TabIndex        =   1
-      Top             =   4320
-      Width           =   2055
+      Height          =   375
+      Left            =   5880
+      TabIndex        =   22
+      Top             =   4440
+      Width           =   1095
    End
 End
 Attribute VB_Name = "FrmInterv"
@@ -610,7 +625,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -623,27 +640,28 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Public Sub AplicarIntervalos()
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿ Intervalos del main loop ¿?¿?¿?¿?¿?¿?¿?¿?¿
+
 SanaIntervaloSinDescansar = val(txtSanaIntervaloSinDescansar.Text)
 StaminaIntervaloSinDescansar = val(txtStaminaIntervaloSinDescansar.Text)
 SanaIntervaloDescansar = val(txtSanaIntervaloDescansar.Text)
@@ -658,15 +676,10 @@ IntervaloWavFx = val(txtIntervaloWAVFX.Text)
 IntervaloInvocacion = val(txtInvocacion.Text)
 IntervaloParaConexion = val(txtIntervaloParaConexion.Text)
 
-'///////////////// TIMERS \\\\\\\\\\\\\\\\\\\
+
 
 IntervaloUserPuedeCastear = val(txtIntervaloLanzaHechizo.Text)
-frmMain.npcataca.Interval = val(txtNPCPuedeAtacar.Text)
-frmMain.TIMER_AI.Interval = val(txtAI.Text)
-IntervaloUserPuedeTrabajar = val(txtTrabajo.Text)
 IntervaloUserPuedeAtacar = val(txtPuedeAtacar.Text)
-frmMain.tLluvia.Interval = val(txtIntervaloPerdidaStaminaLluvia.Text)
-frmMain.CmdExec.Interval = val(txtCmdExec.Text)
 
 
 End Sub
@@ -681,32 +694,27 @@ Private Sub Command2_Click()
 
 On Error GoTo Err
 
-'Intervalos
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar", Str(SanaIntervaloSinDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloSinDescansar", Str(StaminaIntervaloSinDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloDescansar", Str(SanaIntervaloDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloDescansar", Str(StaminaIntervaloDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloSed", Str(IntervaloSed))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloHambre", Str(IntervaloHambre))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloVeneno", Str(IntervaloVeneno))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParalizado", Str(IntervaloParalizado))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvisible", Str(IntervaloInvisible))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFrio", Str(IntervaloFrio))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWAVFX", Str(IntervaloWavFx))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvocacion", Str(IntervaloInvocacion))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParaConexion", Str(IntervaloParaConexion))
 
-'&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar", str(SanaIntervaloSinDescansar))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloSinDescansar", str(StaminaIntervaloSinDescansar))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloDescansar", str(SanaIntervaloDescansar))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloDescansar", str(StaminaIntervaloDescansar))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloSed", str(IntervaloSed))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloHambre", str(IntervaloHambre))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloVeneno", str(IntervaloVeneno))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParalizado", str(IntervaloParalizado))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvisible", str(IntervaloInvisible))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFrio", str(IntervaloFrio))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWAVFX", str(IntervaloWavFx))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvocacion", str(IntervaloInvocacion))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParaConexion", str(IntervaloParaConexion))
 
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", Str(IntervaloUserPuedeCastear))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloNpcAI", frmMain.TIMER_AI.Interval)
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloNpcPuedeAtacar", frmMain.npcataca.Interval)
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo", Str(IntervaloUserPuedeTrabajar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", Str(IntervaloUserPuedeAtacar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloPerdidaStaminaLluvia", frmMain.tLluvia.Interval)
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTimerExec", frmMain.CmdExec.Interval)
 
-MsgBox "Los intervalos se han guardado sin problemas"
+
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", str(IntervaloUserPuedeCastear))
+Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", str(IntervaloUserPuedeAtacar))
+
+MsgBox "Los intervalos se han guardado sin problemas.", vbInformation, "Servidor Fenix AO"
 
 Exit Sub
 Err:

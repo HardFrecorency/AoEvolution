@@ -3,810 +3,902 @@ Begin VB.Form frmSkills3
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   8475
+   ClientHeight    =   9000
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   5955
+   ClientWidth     =   4635
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8475
-   ScaleWidth      =   5955
+   ScaleHeight     =   9000
+   ScaleWidth      =   4635
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   0
-      Left            =   630
-      TabIndex        =   42
-      Top             =   420
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   1
-      Left            =   630
-      TabIndex        =   41
-      Top             =   765
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   2
-      Left            =   630
-      TabIndex        =   40
-      Top             =   1110
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   3
-      Left            =   630
-      TabIndex        =   39
-      Top             =   1455
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   4
-      Left            =   630
-      TabIndex        =   38
-      Top             =   1800
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   5
-      Left            =   630
-      TabIndex        =   37
-      Top             =   2145
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   6
-      Left            =   630
-      TabIndex        =   36
-      Top             =   2445
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   7
-      Left            =   630
-      TabIndex        =   35
-      Top             =   2835
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   8
-      Left            =   630
-      TabIndex        =   34
-      Top             =   3195
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   9
-      Left            =   630
-      TabIndex        =   33
-      Top             =   3540
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   10
-      Left            =   630
-      TabIndex        =   32
-      Top             =   3885
-      Width           =   2205
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   11
-      Left            =   630
-      TabIndex        =   31
-      Top             =   4230
-      Width           =   2205
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   1
-      Left            =   3855
-      TabIndex        =   30
-      Top             =   390
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   2
-      Left            =   3855
-      TabIndex        =   29
-      Top             =   735
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   3
-      Left            =   3855
-      TabIndex        =   28
-      Top             =   1095
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   4
-      Left            =   3855
-      TabIndex        =   27
-      Top             =   1440
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   5
-      Left            =   3870
-      TabIndex        =   26
-      Top             =   1785
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   6
-      Left            =   3855
-      TabIndex        =   25
-      Top             =   2130
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   7
-      Left            =   3855
-      TabIndex        =   24
-      Top             =   2490
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   8
-      Left            =   3855
-      TabIndex        =   23
-      Top             =   2835
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   9
-      Left            =   3855
-      TabIndex        =   22
-      Top             =   3180
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   10
-      Left            =   3855
-      TabIndex        =   21
-      Top             =   3525
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   11
-      Left            =   3855
-      TabIndex        =   20
-      Top             =   3885
-      Width           =   765
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   12
-      Left            =   3855
-      TabIndex        =   19
-      Top             =   4230
-      Width           =   765
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   0
-      Left            =   4680
-      Top             =   390
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   2
-      Left            =   4680
-      Top             =   750
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   3
-      Left            =   3180
-      Top             =   780
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   4
-      Left            =   4680
-      Top             =   1095
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   5
-      Left            =   3180
-      Top             =   1125
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   6
-      Left            =   4680
-      Top             =   1440
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   7
-      Left            =   3180
-      Top             =   1470
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   8
-      Left            =   4680
-      Top             =   1785
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   9
-      Left            =   3180
-      Top             =   1815
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   10
-      Left            =   4680
-      Top             =   2130
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   11
-      Left            =   3180
-      Top             =   2160
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   12
-      Left            =   4680
-      Top             =   2475
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   13
-      Left            =   3180
-      Top             =   2505
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   14
-      Left            =   4680
-      Top             =   2820
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   15
-      Left            =   3180
-      Top             =   2850
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   16
-      Left            =   4680
-      Top             =   3180
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   17
-      Left            =   3180
-      Top             =   3180
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   18
-      Left            =   4680
-      Top             =   3525
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   19
-      Left            =   3180
-      Top             =   3525
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   20
-      Left            =   4680
-      Top             =   3870
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   21
-      Left            =   3180
-      Top             =   3870
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   22
-      Left            =   4680
-      Top             =   4215
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   23
-      Left            =   3180
-      Top             =   4215
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   24
-      Left            =   4680
-      Top             =   4560
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   25
-      Left            =   3180
-      Top             =   4560
-      Width           =   345
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   13
-      Left            =   3855
-      TabIndex        =   18
-      Top             =   4560
-      Width           =   765
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   12
-      Left            =   630
-      TabIndex        =   17
-      Top             =   4575
-      Width           =   2205
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   26
-      Left            =   4680
-      Top             =   4905
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   27
-      Left            =   3180
-      Top             =   4905
-      Width           =   345
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   14
-      Left            =   3855
-      TabIndex        =   16
-      Top             =   4920
-      Width           =   765
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   13
-      Left            =   630
-      TabIndex        =   15
-      Top             =   4920
-      Width           =   2205
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   28
-      Left            =   4680
-      Top             =   5250
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   29
-      Left            =   3180
-      Top             =   5250
-      Width           =   345
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   15
-      Left            =   3855
-      TabIndex        =   14
-      Top             =   5265
-      Width           =   765
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   14
-      Left            =   630
-      TabIndex        =   13
-      Top             =   5265
-      Width           =   2205
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   30
-      Left            =   4680
-      Top             =   5595
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   31
-      Left            =   3180
-      Top             =   5595
-      Width           =   345
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   16
-      Left            =   3855
-      TabIndex        =   12
-      Top             =   5625
-      Width           =   765
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   15
-      Left            =   630
-      TabIndex        =   11
-      Top             =   5610
-      Width           =   2205
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   32
-      Left            =   4680
-      Top             =   5940
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   33
-      Left            =   3180
-      Top             =   5940
-      Width           =   345
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   17
-      Left            =   3855
-      TabIndex        =   10
-      Top             =   5970
-      Width           =   765
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   16
-      Left            =   630
-      TabIndex        =   9
-      Top             =   5955
-      Width           =   2205
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   34
-      Left            =   4680
-      Top             =   6285
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   35
-      Left            =   3180
-      Top             =   6285
-      Width           =   345
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   18
-      Left            =   3855
-      TabIndex        =   8
-      Top             =   6330
-      Width           =   765
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   17
-      Left            =   630
-      TabIndex        =   7
-      Top             =   6300
-      Width           =   2205
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   1
-      Left            =   3180
-      Top             =   435
-      Width           =   345
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   18
-      Left            =   630
-      TabIndex        =   6
-      Top             =   6645
-      Width           =   2205
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   19
-      Left            =   3855
-      TabIndex        =   5
-      Top             =   6675
-      Width           =   765
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   36
-      Left            =   4680
-      Top             =   6630
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   37
-      Left            =   3180
-      Top             =   6645
-      Width           =   345
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   19
-      Left            =   630
-      TabIndex        =   4
-      Top             =   6990
-      Width           =   2205
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   20
-      Left            =   3855
-      TabIndex        =   3
-      Top             =   7035
-      Width           =   765
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   38
-      Left            =   4680
-      Top             =   6975
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   39
-      Left            =   3180
-      Top             =   6930
-      Width           =   345
-   End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "skill1"
-      ForeColor       =   &H000000FF&
-      Height          =   240
-      Index           =   20
-      Left            =   630
-      TabIndex        =   2
-      Top             =   7350
-      Width           =   2205
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Index           =   21
-      Left            =   3855
-      TabIndex        =   1
-      Top             =   7335
-      Width           =   765
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   40
-      Left            =   4680
-      Top             =   7320
-      Width           =   345
-   End
-   Begin VB.Image command1 
-      Height          =   285
-      Index           =   41
-      Left            =   3180
-      Top             =   7290
-      Width           =   345
-   End
    Begin VB.Image Image1 
-      Height          =   495
-      Left            =   2550
-      Top             =   7755
-      Width           =   855
+      Height          =   375
+      Left            =   0
+      MouseIcon       =   "frmSkills3.frx":0000
+      MousePointer    =   99  'Custom
+      Top             =   8640
+      Width           =   735
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   43
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":030A
+      MousePointer    =   99  'Custom
+      Top             =   7605
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   42
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":0614
+      MousePointer    =   99  'Custom
+      Top             =   7605
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   22
+      Left            =   3540
+      TabIndex        =   22
+      Top             =   7635
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   1
+      Left            =   3540
+      TabIndex        =   21
+      Top             =   1005
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   2
+      Left            =   3540
+      TabIndex        =   20
+      Top             =   1320
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   3
+      Left            =   3540
+      TabIndex        =   19
+      Top             =   1635
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   4
+      Left            =   3540
+      TabIndex        =   18
+      Top             =   1950
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   5
+      Left            =   3540
+      TabIndex        =   17
+      Top             =   2265
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   6
+      Left            =   3540
+      TabIndex        =   16
+      Top             =   2580
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   7
+      Left            =   3540
+      TabIndex        =   15
+      Top             =   2910
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   8
+      Left            =   3540
+      TabIndex        =   14
+      Top             =   3225
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   9
+      Left            =   3540
+      TabIndex        =   13
+      Top             =   3525
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   10
+      Left            =   3540
+      TabIndex        =   12
+      Top             =   3855
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   11
+      Left            =   3540
+      TabIndex        =   11
+      Top             =   4155
+      Width           =   315
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   12
+      Left            =   3540
+      TabIndex        =   10
+      Top             =   4470
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   0
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":091E
+      MousePointer    =   99  'Custom
+      Top             =   975
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   2
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":0C28
+      MousePointer    =   99  'Custom
+      Top             =   1320
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   3
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":0F32
+      MousePointer    =   99  'Custom
+      Top             =   1320
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   4
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":123C
+      MousePointer    =   99  'Custom
+      Top             =   1620
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   5
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":1546
+      MousePointer    =   99  'Custom
+      Top             =   1620
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   6
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":1850
+      MousePointer    =   99  'Custom
+      Top             =   1920
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   7
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":1B5A
+      MousePointer    =   99  'Custom
+      Top             =   1950
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   8
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":1E64
+      MousePointer    =   99  'Custom
+      Top             =   2265
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   9
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":216E
+      MousePointer    =   99  'Custom
+      Top             =   2280
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   10
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":2478
+      MousePointer    =   99  'Custom
+      Top             =   2595
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   11
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":2782
+      MousePointer    =   99  'Custom
+      Top             =   2595
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   12
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":2A8C
+      Top             =   2895
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   13
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":2D96
+      MousePointer    =   99  'Custom
+      Top             =   2880
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   14
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":30A0
+      MousePointer    =   99  'Custom
+      Top             =   3225
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   15
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":33AA
+      MousePointer    =   99  'Custom
+      Top             =   3225
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   16
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":36B4
+      MousePointer    =   99  'Custom
+      Top             =   3495
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   17
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":39BE
+      MousePointer    =   99  'Custom
+      Top             =   3495
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   18
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":3CC8
+      MousePointer    =   99  'Custom
+      Top             =   3840
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   19
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":3FD2
+      MousePointer    =   99  'Custom
+      Top             =   3840
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   20
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":42DC
+      MousePointer    =   99  'Custom
+      Top             =   4185
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   21
+      Left            =   3240
+      MouseIcon       =   "frmSkills3.frx":45E6
+      MousePointer    =   99  'Custom
+      Top             =   4185
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   22
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":48F0
+      MousePointer    =   99  'Custom
+      Top             =   4455
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   23
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":4BFA
+      MousePointer    =   99  'Custom
+      Top             =   4455
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   24
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":4F04
+      MousePointer    =   99  'Custom
+      Top             =   4800
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   25
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":520E
+      MousePointer    =   99  'Custom
+      Top             =   4800
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   13
+      Left            =   3540
+      TabIndex        =   9
+      Top             =   4785
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   26
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":5518
+      MousePointer    =   99  'Custom
+      Top             =   5070
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   27
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":5822
+      MousePointer    =   99  'Custom
+      Top             =   5070
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   14
+      Left            =   3540
+      TabIndex        =   8
+      Top             =   5085
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   28
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":5B2C
+      MousePointer    =   99  'Custom
+      Top             =   5400
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   29
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":5E36
+      MousePointer    =   99  'Custom
+      Top             =   5400
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   15
+      Left            =   3540
+      TabIndex        =   7
+      Top             =   5415
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   30
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":6140
+      MousePointer    =   99  'Custom
+      Top             =   5745
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   31
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":644A
+      MousePointer    =   99  'Custom
+      Top             =   5745
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   16
+      Left            =   3540
+      TabIndex        =   6
+      Top             =   5730
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   32
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":6754
+      MousePointer    =   99  'Custom
+      Top             =   6000
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   33
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":6A5E
+      MousePointer    =   99  'Custom
+      Top             =   6000
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   17
+      Left            =   3540
+      TabIndex        =   5
+      Top             =   6045
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   34
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":6D68
+      MousePointer    =   99  'Custom
+      Top             =   6360
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   35
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":7072
+      MousePointer    =   99  'Custom
+      Top             =   6360
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   18
+      Left            =   3540
+      TabIndex        =   4
+      Top             =   6360
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   1
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":737C
+      MousePointer    =   99  'Custom
+      Top             =   960
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   19
+      Left            =   3540
+      TabIndex        =   3
+      Top             =   6675
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   36
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":7686
+      MousePointer    =   99  'Custom
+      Top             =   6675
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   37
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":7990
+      MousePointer    =   99  'Custom
+      Top             =   6675
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   20
+      Left            =   3540
+      TabIndex        =   2
+      Top             =   6990
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   38
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":7C9A
+      MousePointer    =   99  'Custom
+      Top             =   6960
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   39
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":7FA4
+      MousePointer    =   99  'Custom
+      Top             =   6960
+      Width           =   300
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   255
+      Index           =   21
+      Left            =   3540
+      TabIndex        =   1
+      Top             =   7320
+      Width           =   315
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   40
+      Left            =   3840
+      MouseIcon       =   "frmSkills3.frx":82AE
+      MousePointer    =   99  'Custom
+      Top             =   7320
+      Width           =   300
+   End
+   Begin VB.Image command1 
+      Height          =   300
+      Index           =   41
+      Left            =   3255
+      MouseIcon       =   "frmSkills3.frx":85B8
+      MousePointer    =   99  'Custom
+      Top             =   7320
+      Width           =   300
    End
    Begin VB.Label puntos 
+      Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Puntos:"
-      ForeColor       =   &H000000FF&
-      Height          =   195
-      Left            =   690
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000C000&
+      Height          =   270
+      Left            =   2340
       TabIndex        =   0
-      Top             =   60
-      Width           =   540
+      Top             =   405
+      Width           =   240
    End
 End
 Attribute VB_Name = "frmSkills3"
@@ -814,12 +906,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -831,26 +921,29 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 Option Explicit
 
-Private Sub Command1_Click(Index As Integer)
+Private Sub command1_Click(Index As Integer)
 
 Call PlayWaveDS(SND_CLICK)
 
@@ -859,9 +952,9 @@ If Index Mod 2 = 0 Then
     If Alocados > 0 Then
         indice = Index \ 2 + 1
         If indice > NUMSKILLS Then indice = NUMSKILLS
-        If UserSkills(indice) < MAXSKILLPOINTS Then
+        If UserSkills(indice) < MAXSKILLPOINTS And Val(Text1(indice).Caption) < 100 Then
             Text1(indice).Caption = Val(Text1(indice).Caption) + 1
-            flags(indice) = flags(indice) + 1
+            FLAGS(indice) = FLAGS(indice) + 1
             Alocados = Alocados - 1
         End If
             
@@ -870,52 +963,57 @@ Else
     If Alocados < SkillPoints Then
         
         indice = Index \ 2 + 1
-        If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+        If Val(Text1(indice).Caption) > 0 And FLAGS(indice) > 0 Then
             Text1(indice).Caption = Val(Text1(indice).Caption) - 1
-            flags(indice) = flags(indice) - 1
+            FLAGS(indice) = FLAGS(indice) - 1
             Alocados = Alocados + 1
         End If
     End If
 End If
 
-puntos.Caption = "Puntos:" & Alocados
+puntos.Caption = Alocados
 End Sub
 
 Private Sub Form_Deactivate()
+
 Me.Visible = False
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+    DX = X
+    dy = Y
+    bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
 End Sub
 
 Private Sub Form_Load()
 
-Image1.Picture = LoadPicture(App.Path & "\Graficos\Botónok.jpg")
+Me.Picture = LoadPicture(App.Path & "\Graficos\AgregarPuntosSkills.gif")
 
 
-'Nombres de los skills
 
-Dim l
+
 Dim i As Integer
-i = 1
-For Each l In Label2
-    l.Caption = SkillsNames(i)
-    l.AutoSize = True
-    i = i + 1
-Next
-i = 0
 
-'Flags para saber que skills se modificaron
-ReDim flags(1 To NUMSKILLS)
+ReDim FLAGS(1 To NUMSKILLS)
 
 
-'Cargamos el jpg correspondiente
-For i = 0 To NUMSKILLS * 2 - 1
-    If i Mod 2 = 0 Then
-        Command1(i).Picture = LoadPicture(App.Path & "\Graficos\BotónMás.jpg")
-    Else
-        Command1(i).Picture = LoadPicture(App.Path & "\Graficos\BotónMenos.jpg")
-    End If
-Next
 
-'Alocados = SkillPoints
+
+
+
 End Sub
 
 Private Sub Image1_Click()
@@ -923,11 +1021,10 @@ Private Sub Image1_Click()
 Dim i As Integer
 Dim cad As String
 For i = 1 To NUMSKILLS
-    cad = cad & flags(i) & ","
+    cad = cad & FLAGS(i) & ","
 Next
 SendData "SKSE" & cad
 If Alocados = 0 Then frmMain.Label1.Visible = False
 SkillPoints = Alocados
 Unload Me
 End Sub
-

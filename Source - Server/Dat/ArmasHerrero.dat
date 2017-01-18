@@ -1,5 +1,5 @@
 [INIT]
-NumArmas=23
+NumArmas=24
 
 [Arma1]
 Index=15
@@ -17,59 +17,65 @@ Index=366
 Index=367
 
 [Arma6]
-Index=187
+Index=576
+Recompensa=1
+
+[Arma6]
+Index=164
 
 [Arma7]
-Index=198
+Index=398
 
 [Arma8]
-Index=164
+Index=9
 
 [Arma9]
 Index=2
 
 [Arma10]
-Index=125
+Index=3
 
 [Arma11]
-Index=19
+Index=126
 
 [Arma12]
-Index=123
+Index=401
 
 [Arma13]
-Index=124
+Index=123
 
 [Arma14]
-Index=127
+Index=125
 
 [Arma15]
-Index=3
+Index=129
 
 [Arma16]
 Index=159
 
 [Arma17]
-Index=126
-
-[Arma18]
-Index=129
-
-[Arma19]
 Index=399
 
-[Arma20]
-Index=401
+[Arma18]
+Index=124
 
-[Arma21]
-Index=402
-
-[Arma22]
+[Arma19]
 Index=403
 
+[Arma20]
+Index=589
+Recompensa=1
+
+[Arma21]
+Index=591
+Recompensa=1
+
+[Arma22]
+Index=592
+Recompensa=1
+
 [Arma23]
-Index=400
+Index=164
 
-
-
-
+[Arma24]
+Index=776

@@ -1,49 +1,69 @@
 Attribute VB_Name = "mdlCOmercioConUsuario"
-'Modulo para comerciar con otro usuario
-'Por Alejo (Alejandro Santos)
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
+'Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'[Alejo]
+'This program is free software; you can redistribute it and/or modify
+'it under the terms of the GNU General Public License as published by
+'the Free Software Foundation; either version 2 of the License, or
+'any later version.
+'
+'This program is distributed in the hope that it will be useful,
+'but WITHOUT ANY WARRANTY; without even the implied warranty of
+'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'GNU General Public License for more details.
+'
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, write to the Free Software
+'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+'
+'You can contact the original creator of Argentum Online at:
+'morgolock@speedy.com.ar
+'www.geocities.com/gmorgolock
+'Calle 3 número 983 piso 7 dto A
+'La Plata - Pcia, Buenos Aires - Republica Argentina
+'Código Postal 1900
+'Pablo Ignacio Márquez
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 Option Explicit
 
 Public Type tCOmercioUsuario
-    DestUsu As Integer 'El otro Usuario
-    Objeto As Integer 'Indice del inventario a comerciar, que objeto desea dar
+    DestUsu As Integer
+    DestNick As String
+    Objeto As Integer
+    Cant As Long
     
-    'El tipo de datos de Cant ahora es Long (antes Integer)
-    'asi se puede comerciar con oro > 32k
-    '[CORREGIDO]
-    Cant As Long 'Cuantos comerciar, cuantos objetos desea dar
-    '[/CORREGIDO]
     Acepto As Boolean
 End Type
-
-'origen: origen de la transaccion, originador del comando
-'destino: receptor de la transaccion
-Public Sub IniciarComercioConUsuario(Origen As Integer, Destino As Integer)
+Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As Integer)
 On Error GoTo errhandler
 
-'Si ambos pusieron /comerciar entonces
 If UserList(Origen).ComUsu.DestUsu = Destino And _
    UserList(Destino).ComUsu.DestUsu = Origen Then
-    'Actualiza el inventario del usuario
+    
     Call UpdateUserInv(True, Origen, 0)
-    'Decirle al origen que abra la ventanita.
+    
     Call SendData(ToIndex, Origen, 0, "INITCOMUSU")
-    UserList(Origen).Flags.Comerciando = True
+    UserList(Origen).flags.Comerciando = True
 
-    'Actualiza el inventario del usuario
+    
     Call UpdateUserInv(True, Destino, 0)
-    'Decirle al origen que abra la ventanita.
+    
     Call SendData(ToIndex, Destino, 0, "INITCOMUSU")
-    UserList(Destino).Flags.Comerciando = True
-
-    'Call EnviarObjetoTransaccion(Origen)
+    UserList(Destino).flags.Comerciando = True
 Else
-    'Es el primero que comercia ?
+    
     Call SendData(ToIndex, Destino, 0, "||" & UserList(Origen).Name & " desea comerciar. Si deseas aceptar, Escribe /COMERCIAR." & FONTTYPE_TALK)
-    UserList(Destino).Flags.TargetUser = Origen
+    UserList(Destino).flags.TargetUser = Origen
     
 End If
 
@@ -51,162 +71,138 @@ Exit Sub
 errhandler:
 
 End Sub
-
-'envia a AQuien el objeto del otro
-Public Sub EnviarObjetoTransaccion(AQuien As Integer)
-'Dim Object As UserOBJ
+Public Sub EnviarObjetoTransaccion(ByVal AQuien As Integer)
 Dim ObjInd As Integer
 Dim ObjCant As Long
 
-'[Alejo]: En esta funcion se centralizaba el problema
-'         de no poder comerciar con mas de 32k de oro.
-'         Ahora si funciona!!!
-
-'Object.Amount = UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Cant
 ObjCant = UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Cant
 If UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto = FLAGORO Then
-    'Object.ObjIndex = iORO
     ObjInd = iORO
 Else
-    'Object.ObjIndex = UserList(UserList(AQuien).ComUsu.DestUsu).Invent.Object(UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto).ObjIndex
-    ObjInd = UserList(UserList(AQuien).ComUsu.DestUsu).Invent.Object(UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto).ObjIndex
+    ObjInd = UserList(UserList(AQuien).ComUsu.DestUsu).Invent.Object(UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto).OBJIndex
 End If
 
 If ObjCant <= 0 Or ObjInd <= 0 Then Exit Sub
 
-'If Object.ObjIndex > 0 And Object.Amount > 0 Then
-'    Call SendData(ToIndex, AQuien, 0, "COMUSUINV" & 1 & "," & Object.ObjIndex & "," & ObjData(Object.ObjIndex).Name & "," & Object.Amount & "," & Object.Equipped & "," & ObjData(Object.ObjIndex).GrhIndex & "," _
-'    & ObjData(Object.ObjIndex).ObjType & "," _
-'    & ObjData(Object.ObjIndex).MaxHIT & "," _
-'    & ObjData(Object.ObjIndex).MinHIT & "," _
-'    & ObjData(Object.ObjIndex).MaxDef & "," _
-'    & ObjData(Object.ObjIndex).Valor \ 3)
-'End If
-If ObjInd > 0 And ObjCant > 0 Then
+If ObjInd > 0 And ObjCant Then
     Call SendData(ToIndex, AQuien, 0, "COMUSUINV" & 1 & "," & ObjInd & "," & ObjData(ObjInd).Name & "," & ObjCant & "," & 0 & "," & ObjData(ObjInd).GrhIndex & "," _
     & ObjData(ObjInd).ObjType & "," _
-    & ObjData(ObjInd).MaxHIT & "," _
-    & ObjData(ObjInd).MinHIT & "," _
+    & ObjData(ObjInd).MaxHit & "," _
+    & ObjData(ObjInd).MinHit & "," _
     & ObjData(ObjInd).MaxDef & "," _
     & ObjData(ObjInd).Valor \ 3)
 End If
 
 End Sub
-
 Public Sub FinComerciarUsu(UserIndex As Integer)
-UserList(UserIndex).ComUsu.Acepto = False
-UserList(UserIndex).ComUsu.Cant = 0
-UserList(UserIndex).ComUsu.DestUsu = 0
-UserList(UserIndex).ComUsu.Objeto = 0
 
-UserList(UserIndex).Flags.Comerciando = False
+If UserIndex = 0 Then Exit Sub
 
-Call SendData(ToIndex, UserIndex, 0, "FINCOMUSUOK")
+With UserList(UserIndex)
+    If .ComUsu.DestUsu Then Call SendData(ToIndex, UserIndex, 0, "FINCOMUSUOK")
+    .ComUsu.Acepto = False
+    .ComUsu.Cant = 0
+    .ComUsu.DestUsu = 0
+    .ComUsu.Objeto = 0
+    .ComUsu.DestNick = ""
+    .flags.Comerciando = False
+End With
+
 End Sub
-
 Public Sub AceptarComercioUsu(UserIndex As Integer)
-If UserList(UserIndex).ComUsu.DestUsu <= 0 Or _
-    UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
+Dim Obj1 As Obj, Obj2 As Obj
+Dim OtroUserIndex As Integer
+Dim TerminarAhora As Boolean
+
+OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
+
+If OtroUserIndex <= 0 Then
+    Call FinComerciarUsu(UserIndex)
+    Exit Sub
+End If
+
+TerminarAhora = (UserList(OtroUserIndex).ComUsu.DestUsu <> UserIndex) Or _
+                (UserList(OtroUserIndex).Name <> UserList(UserIndex).ComUsu.DestNick) Or _
+                (UserList(UserIndex).Name <> UserList(OtroUserIndex).ComUsu.DestNick) Or _
+                (Not UserList(OtroUserIndex).flags.UserLogged Or Not UserList(UserIndex).flags.UserLogged)
+
+If TerminarAhora Then
+    Call FinComerciarUsu(UserIndex)
+    Call FinComerciarUsu(OtroUserIndex)
     Exit Sub
 End If
 
 UserList(UserIndex).ComUsu.Acepto = True
 
-If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.Acepto = False Then
+If Not UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.Acepto Then
     Call SendData(ToIndex, UserIndex, 0, "||El otro usuario aun no ha aceptado tu oferta." & FONTTYPE_TALK)
     Exit Sub
 End If
 
-Dim Obj1 As Obj, Obj2 As Obj
-Dim OtroUserIndex As Integer
-Dim TerminarAhora As Boolean
-
-TerminarAhora = False
-OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
-
-'[Alejo]: Creo haber podido erradicar el bug de
-'         no poder comerciar con mas de 32k de oro.
-'         Las lineas comentadas en los siguientes
-'         2 grandes bloques IF (4 lineas) son las
-'         que originaban el problema.
-
 If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
-    'Obj1.Amount = UserList(UserIndex).ComUsu.Cant
-    Obj1.ObjIndex = iORO
-    'If Obj1.Amount > UserList(UserIndex).Stats.GLD Then
+    Obj1.OBJIndex = iORO
     If UserList(UserIndex).ComUsu.Cant > UserList(UserIndex).Stats.GLD Then
         Call SendData(ToIndex, UserIndex, 0, "||No tienes esa cantidad." & FONTTYPE_TALK)
         TerminarAhora = True
     End If
 Else
     Obj1.Amount = UserList(UserIndex).ComUsu.Cant
-    Obj1.ObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).ObjIndex
+    Obj1.OBJIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).OBJIndex
     If Obj1.Amount > UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).Amount Then
         Call SendData(ToIndex, UserIndex, 0, "||No tienes esa cantidad." & FONTTYPE_TALK)
         TerminarAhora = True
     End If
 End If
 If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
-    'Obj2.Amount = UserList(OtroUserIndex).ComUsu.Cant
-    Obj2.ObjIndex = iORO
-    'If Obj2.Amount > UserList(OtroUserIndex).Stats.GLD Then
+    Obj2.OBJIndex = iORO
     If UserList(OtroUserIndex).ComUsu.Cant > UserList(OtroUserIndex).Stats.GLD Then
         Call SendData(ToIndex, OtroUserIndex, 0, "||No tienes esa cantidad." & FONTTYPE_TALK)
         TerminarAhora = True
     End If
 Else
     Obj2.Amount = UserList(OtroUserIndex).ComUsu.Cant
-    Obj2.ObjIndex = UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).ObjIndex
+    Obj2.OBJIndex = UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).OBJIndex
     If Obj2.Amount > UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).Amount Then
         Call SendData(ToIndex, OtroUserIndex, 0, "||No tienes esa cantidad." & FONTTYPE_TALK)
         TerminarAhora = True
     End If
 End If
 
-'Por si las moscas...
-If TerminarAhora = True Then
+If TerminarAhora Then
     Call FinComerciarUsu(UserIndex)
     Call FinComerciarUsu(OtroUserIndex)
     Exit Sub
 End If
 
-'[CORREGIDO]
-'Desde acá corregí el bug que cuando se ofrecian mas de
-'10k de oro no le llegaban al destinatario.
 
-'pone el oro directamente en la billetera
 If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
-    'quito la cantidad de oro ofrecida
+    
     UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD - UserList(OtroUserIndex).ComUsu.Cant
-    Call SendUserStatsBox(OtroUserIndex)
-    'y se la doy al otro
+    Call SendUserORO(OtroUserIndex)
+    
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.Cant
-    Call SendUserStatsBox(UserIndex)
+    Call SendUserORO(UserIndex)
 Else
-    'Quita el objeto y se lo da al otro
-    If MeterItemEnInventario(UserIndex, Obj2) = False Then
-        Call TirarItemAlPiso(UserList(UserIndex).Pos, Obj2)
-    End If
-    Call QuitarObjetos(Obj2.ObjIndex, Obj2.Amount, OtroUserIndex)
+    
+    If Not MeterItemEnInventario(UserIndex, Obj2) Then Call TirarItemAlPiso(UserList(UserIndex).POS, Obj2)
+    Call QuitarObjetos(Obj2.OBJIndex, Obj2.Amount, OtroUserIndex)
 End If
 
-'pone el oro directamente en la billetera
+
 If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
-    'quito la cantidad de oro ofrecida
+    
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - UserList(UserIndex).ComUsu.Cant
-    Call SendUserStatsBox(UserIndex)
-    'y se la doy al otro
+    Call SendUserORO(UserIndex)
+    
     UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + UserList(UserIndex).ComUsu.Cant
-    Call SendUserStatsBox(OtroUserIndex)
+    Call SendUserORO(OtroUserIndex)
 Else
-    'Quita el objeto y se lo da al otro
-    If MeterItemEnInventario(OtroUserIndex, Obj1) = False Then
-        Call TirarItemAlPiso(UserList(OtroUserIndex).Pos, Obj2)
-    End If
-    Call QuitarObjetos(Obj1.ObjIndex, Obj1.Amount, UserIndex)
+    
+    If Not MeterItemEnInventario(OtroUserIndex, Obj1) Then Call TirarItemAlPiso(UserList(OtroUserIndex).POS, Obj1)
+    Call QuitarObjetos(Obj1.OBJIndex, Obj1.Amount, UserIndex)
 End If
 
-'[/CORREGIDO] :p
+
 
 Call UpdateUserInv(True, UserIndex, 0)
 Call UpdateUserInv(True, OtroUserIndex, 0)
@@ -216,5 +212,5 @@ Call FinComerciarUsu(OtroUserIndex)
  
 End Sub
 
-'[/Alejo]
+
 

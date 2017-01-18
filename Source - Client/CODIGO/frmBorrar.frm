@@ -1,159 +1,76 @@
 VERSION 5.00
 Begin VB.Form frmBorrar 
-   BorderStyle     =   1  'Fixed Single
-   Caption         =   "Eliminar personaje"
-   ClientHeight    =   2835
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   4635
+   BorderStyle     =   0  'None
+   ClientHeight    =   4635
+   ClientLeft      =   0
+   ClientTop       =   -105
+   ClientWidth     =   5250
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   2835
-   ScaleWidth      =   4635
+   ScaleHeight     =   4635
+   ScaleWidth      =   5250
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton Command1 
-      Caption         =   "Cancelar"
+   Begin VB.TextBox txtpassword 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
+      BorderStyle     =   0  'None
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   420
-      Left            =   150
-      MouseIcon       =   "frmBorrar.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   7
-      Top             =   2325
-      Width           =   1005
-   End
-   Begin VB.CommandButton cmdBorrar 
-      Caption         =   "Borrar"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   420
-      Left            =   3480
-      MouseIcon       =   "frmBorrar.frx":0152
-      MousePointer    =   99  'Custom
-      TabIndex        =   6
-      Top             =   2340
-      Width           =   1005
-   End
-   Begin VB.TextBox txtPasswd 
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   315
-      Left            =   135
-      TabIndex        =   5
-      Top             =   1860
-      Width           =   4350
-   End
-   Begin VB.TextBox txtNombre 
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   315
-      Left            =   120
-      TabIndex        =   4
-      Top             =   1140
-      Width           =   4350
-   End
-   Begin VB.Label Label4 
-      Caption         =   "Password:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   150
-      TabIndex        =   3
-      Top             =   1635
-      Width           =   2145
-   End
-   Begin VB.Label Label3 
-      Caption         =   "Nombre del personaje:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   150
-      TabIndex        =   2
-      Top             =   900
-      Width           =   2145
-   End
-   Begin VB.Label Label2 
-      Alignment       =   2  'Center
-      Caption         =   "Atención"
-      BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Comic Sans MS"
          Size            =   9.75
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00FFFFFF&
       Height          =   270
-      Left            =   1740
+      IMEMode         =   3  'DISABLE
+      Left            =   1200
+      PasswordChar    =   "*"
       TabIndex        =   1
-      Top             =   60
-      Width           =   1020
+      Top             =   2325
+      Width           =   2895
    End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      Caption         =   "Mediante esta acción borrarás el personaje almacenado en el servidor y no habrá manera de recuperarlo!"
+   Begin VB.TextBox Nombre 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   435
-      Left            =   120
+      ForeColor       =   &H00FFFFFF&
+      Height          =   390
+      Left            =   1080
       TabIndex        =   0
-      Top             =   345
-      Width           =   4440
+      Top             =   1260
+      Width           =   3135
+   End
+   Begin VB.Image Image1 
+      Height          =   255
+      Left            =   0
+      MouseIcon       =   "frmBorrar.frx":0000
+      MousePointer    =   99  'Custom
+      Top             =   4320
+      Width           =   735
+   End
+   Begin VB.Image cmdBorrar 
+      Height          =   495
+      Left            =   1080
+      MouseIcon       =   "frmBorrar.frx":030A
+      MousePointer    =   99  'Custom
+      Top             =   3000
+      Width           =   3255
    End
 End
 Attribute VB_Name = "frmBorrar"
@@ -197,13 +114,50 @@ Attribute VB_Exposed = False
 
 
 Private Sub cmdBorrar_Click()
-frmMain.Socket1.HostName = CurServerIp
-frmMain.Socket1.RemotePort = CurServerPort
+
+EstadoLogin = BorrarPJ
+frmMain.Socket1.HostName = IPdelServidor
+frmMain.Socket1.RemotePort = PuertoDelServidor
 Me.MousePointer = 11
 frmMain.Socket1.Connect
-End Sub
 
-Private Sub Command1_Click()
+End Sub
+Private Sub command1_Click()
+
 Me.Visible = False
-End Sub
 
+End Sub
+Private Sub Command2_Click()
+
+Call frmMain.Play("BGM_2E.WAV", True)
+
+End Sub
+Private Sub Form_Load()
+
+Me.Picture = LoadPicture(DirGraficos & "BorrarPersonaje.gif")
+
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+    DX = X
+    dy = Y
+    bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Call Move(Left + (X - DX), Top + (Y - dy))
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
+End Sub
+Private Sub Image1_Click()
+
+Me.Hide
+
+End Sub

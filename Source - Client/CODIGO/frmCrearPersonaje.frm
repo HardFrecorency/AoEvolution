@@ -10,850 +10,1544 @@ Begin VB.Form frmCrearPersonaje
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   600
-   ScaleMode       =   3  'Pixel
-   ScaleWidth      =   800
-   ShowInTaskbar   =   0   'False
+   ScaleMode       =   0  'User
+   ScaleWidth      =   12075.47
    StartUpPosition =   2  'CenterScreen
-   Begin VB.ComboBox lstProfesion 
+   WindowState     =   2  'Maximized
+   Begin VB.TextBox txtCorreo2 
+      Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Comic Sans MS"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   315
-      ItemData        =   "frmCrearPersonaje.frx":0000
-      Left            =   5925
-      List            =   "frmCrearPersonaje.frx":0037
-      Style           =   2  'Dropdown List
-      TabIndex        =   31
-      Top             =   2700
-      Width           =   2820
+      ForeColor       =   &H0080C0FF&
+      Height          =   330
+      Left            =   345
+      TabIndex        =   33
+      Top             =   3240
+      Width           =   4080
+   End
+   Begin VB.TextBox txtPasswdCheck 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0080C0FF&
+      Height          =   330
+      IMEMode         =   3  'DISABLE
+      Left            =   345
+      PasswordChar    =   "*"
+      TabIndex        =   35
+      Top             =   4470
+      Width           =   4080
+   End
+   Begin VB.TextBox txtPasswd 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0080C0FF&
+      Height          =   330
+      IMEMode         =   3  'DISABLE
+      Left            =   345
+      PasswordChar    =   "*"
+      TabIndex        =   34
+      Top             =   3840
+      Width           =   4080
+   End
+   Begin VB.TextBox txtCorreo 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0080C0FF&
+      Height          =   330
+      Left            =   345
+      TabIndex        =   32
+      Top             =   2625
+      Width           =   4080
    End
    Begin VB.ComboBox lstGenero 
+      Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Comic Sans MS"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   315
-      ItemData        =   "frmCrearPersonaje.frx":00D1
-      Left            =   5925
-      List            =   "frmCrearPersonaje.frx":00DB
+      Height          =   345
+      ItemData        =   "frmCrearPersonaje.frx":0000
+      Left            =   5160
+      List            =   "frmCrearPersonaje.frx":000A
       Style           =   2  'Dropdown List
-      TabIndex        =   30
-      Top             =   2250
-      Width           =   2820
+      TabIndex        =   39
+      Top             =   1950
+      Width           =   2753
    End
    Begin VB.ComboBox lstRaza 
+      Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Comic Sans MS"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   315
-      ItemData        =   "frmCrearPersonaje.frx":00EE
-      Left            =   5925
-      List            =   "frmCrearPersonaje.frx":0101
+      Height          =   345
+      ItemData        =   "frmCrearPersonaje.frx":001D
+      Left            =   5160
+      List            =   "frmCrearPersonaje.frx":0030
       Style           =   2  'Dropdown List
-      TabIndex        =   29
-      Top             =   1800
-      Width           =   2820
+      TabIndex        =   37
+      Top             =   1350
+      Width           =   2753
    End
    Begin VB.ComboBox lstHogar 
+      Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Comic Sans MS"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   315
-      ItemData        =   "frmCrearPersonaje.frx":012E
-      Left            =   9015
-      List            =   "frmCrearPersonaje.frx":013E
+      Height          =   345
+      ItemData        =   "frmCrearPersonaje.frx":005D
+      Left            =   5160
+      List            =   "frmCrearPersonaje.frx":006D
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
-      TabIndex        =   7
-      Top             =   3510
-      Width           =   2565
+      TabIndex        =   41
+      Top             =   2580
+      Width           =   2753
    End
    Begin VB.TextBox txtNombre 
-      BackColor       =   &H80000012&
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Comic Sans MS"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0080C0FF&
+      Height          =   300
+      Left            =   2280
+      MaxLength       =   20
+      TabIndex        =   0
+      Top             =   780
+      Width           =   3615
+   End
+   Begin VB.Label modCarisma 
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
          Size            =   8.25
          Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   6718
+      TabIndex        =   49
+      Top             =   7800
+      Width           =   375
+   End
+   Begin VB.Label modAgilidad 
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   6720
+      TabIndex        =   48
+      Top             =   6840
+      Width           =   375
+   End
+   Begin VB.Label modConstitucion 
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   6718
+      TabIndex        =   47
+      Top             =   5850
+      Width           =   375
+   End
+   Begin VB.Label modInteligencia 
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   6720
+      TabIndex        =   46
+      Top             =   4920
+      Width           =   375
+   End
+   Begin VB.Label modfuerza 
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   6718
+      TabIndex        =   45
+      Top             =   3960
+      Width           =   375
+   End
+   Begin VB.Label lblPass2OK 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "O"
+      BeginProperty Font 
+         Name            =   "Wingdings 2"
+         Size            =   24
+         Charset         =   2
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   225
-      Left            =   3570
-      TabIndex        =   0
-      Top             =   1275
-      Width           =   4815
-   End
-   Begin VB.Label Label3 
-      BackStyle       =   0  'Transparent
-      Caption         =   "+3"
-      ForeColor       =   &H00FFFF80&
-      Height          =   195
-      Left            =   4020
-      TabIndex        =   33
-      Top             =   4260
-      Visible         =   0   'False
-      Width           =   195
-   End
-   Begin VB.Image Image1 
-      Height          =   3120
-      Left            =   3270
-      Stretch         =   -1  'True
-      Top             =   4710
-      Width           =   2475
-   End
-   Begin VB.Label Puntos 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Left            =   7200
-      TabIndex        =   32
-      Top             =   8535
-      Width           =   270
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   3
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":0167
-      MousePointer    =   99  'Custom
-      Top             =   3465
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   5
-      Left            =   7785
-      MouseIcon       =   "frmCrearPersonaje.frx":02B9
-      MousePointer    =   99  'Custom
-      Top             =   3675
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   7
-      Left            =   7785
-      MouseIcon       =   "frmCrearPersonaje.frx":040B
-      MousePointer    =   99  'Custom
-      Top             =   3885
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   9
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":055D
-      MousePointer    =   99  'Custom
-      Top             =   4110
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   11
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":06AF
-      MousePointer    =   99  'Custom
-      Top             =   4335
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   13
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":0801
-      MousePointer    =   99  'Custom
-      Top             =   4545
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   15
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":0953
-      MousePointer    =   99  'Custom
-      Top             =   4785
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   17
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":0AA5
-      MousePointer    =   99  'Custom
-      Top             =   4965
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   19
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":0BF7
-      MousePointer    =   99  'Custom
-      Top             =   5175
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   21
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":0D49
-      MousePointer    =   99  'Custom
-      Top             =   5385
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   23
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":0E9B
-      MousePointer    =   99  'Custom
-      Top             =   5610
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   25
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":0FED
-      MousePointer    =   99  'Custom
-      Top             =   5820
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   27
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":113F
-      MousePointer    =   99  'Custom
-      Top             =   6015
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   1
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":1291
-      MousePointer    =   99  'Custom
-      Top             =   3240
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   0
-      Left            =   8355
-      MouseIcon       =   "frmCrearPersonaje.frx":13E3
-      MousePointer    =   99  'Custom
-      Top             =   3270
-      Width           =   180
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   2
-      Left            =   8355
-      MouseIcon       =   "frmCrearPersonaje.frx":1535
-      MousePointer    =   99  'Custom
-      Top             =   3495
-      Width           =   195
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   4
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":1687
-      MousePointer    =   99  'Custom
-      Top             =   3720
-      Width           =   195
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   6
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":17D9
-      MousePointer    =   99  'Custom
-      Top             =   3945
-      Width           =   180
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   8
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":192B
-      MousePointer    =   99  'Custom
-      Top             =   4155
-      Width           =   195
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   10
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":1A7D
-      MousePointer    =   99  'Custom
-      Top             =   4380
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   12
-      Left            =   8355
-      MouseIcon       =   "frmCrearPersonaje.frx":1BCF
-      MousePointer    =   99  'Custom
-      Top             =   4605
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   120
-      Index           =   14
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":1D21
-      MousePointer    =   99  'Custom
-      Top             =   4800
-      Width           =   135
-   End
-   Begin VB.Image command1 
-      Height          =   120
-      Index           =   16
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":1E73
-      MousePointer    =   99  'Custom
-      Top             =   4995
-      Width           =   135
-   End
-   Begin VB.Image command1 
-      Height          =   120
-      Index           =   18
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":1FC5
-      MousePointer    =   99  'Custom
-      Top             =   5220
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   20
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":2117
-      MousePointer    =   99  'Custom
-      Top             =   5400
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   22
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":2269
-      MousePointer    =   99  'Custom
-      Top             =   5640
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   24
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":23BB
-      MousePointer    =   99  'Custom
-      Top             =   5850
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   120
-      Index           =   26
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":250D
-      MousePointer    =   99  'Custom
-      Top             =   6075
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   28
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":265F
-      MousePointer    =   99  'Custom
-      Top             =   6285
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   29
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":27B1
-      MousePointer    =   99  'Custom
-      Top             =   6270
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   30
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":2903
-      MousePointer    =   99  'Custom
-      Top             =   6495
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   31
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":2A55
-      MousePointer    =   99  'Custom
-      Top             =   6465
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   32
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":2BA7
-      MousePointer    =   99  'Custom
-      Top             =   6720
-      Width           =   180
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   33
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":2CF9
-      MousePointer    =   99  'Custom
-      Top             =   6690
-      Width           =   180
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   34
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":2E4B
-      MousePointer    =   99  'Custom
-      Top             =   6945
-      Width           =   135
-   End
-   Begin VB.Image command1 
-      Height          =   150
-      Index           =   35
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":2F9D
-      MousePointer    =   99  'Custom
-      Top             =   6915
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   105
-      Index           =   36
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":30EF
-      MousePointer    =   99  'Custom
-      Top             =   7170
-      Width           =   150
-   End
-   Begin VB.Image command1 
-      Height          =   180
-      Index           =   37
-      Left            =   7755
-      MouseIcon       =   "frmCrearPersonaje.frx":3241
-      MousePointer    =   99  'Custom
-      Top             =   7125
-      Width           =   195
-   End
-   Begin VB.Image command1 
-      Height          =   120
-      Index           =   38
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":3393
-      MousePointer    =   99  'Custom
-      Top             =   7395
-      Width           =   135
-   End
-   Begin VB.Image command1 
-      Height          =   165
-      Index           =   39
-      Left            =   7770
-      MouseIcon       =   "frmCrearPersonaje.frx":34E5
-      MousePointer    =   99  'Custom
-      Top             =   7335
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   40
-      Left            =   8370
-      MouseIcon       =   "frmCrearPersonaje.frx":3637
-      MousePointer    =   99  'Custom
-      Top             =   7590
-      Width           =   165
-   End
-   Begin VB.Image command1 
-      Height          =   135
-      Index           =   41
-      Left            =   7815
-      MouseIcon       =   "frmCrearPersonaje.frx":3789
-      MousePointer    =   99  'Custom
-      Top             =   7560
-      Width           =   135
-   End
-   Begin VB.Image boton 
-      Height          =   645
-      Index           =   2
-      Left            =   315
-      MouseIcon       =   "frmCrearPersonaje.frx":38DB
-      MousePointer    =   99  'Custom
-      Top             =   3015
-      Width           =   660
-   End
-   Begin VB.Image boton 
-      Height          =   255
-      Index           =   1
-      Left            =   1905
-      MouseIcon       =   "frmCrearPersonaje.frx":3A2D
-      MousePointer    =   99  'Custom
-      Top             =   8565
-      Width           =   765
-   End
-   Begin VB.Image boton 
-      Height          =   210
-      Index           =   0
-      Left            =   9075
-      MouseIcon       =   "frmCrearPersonaje.frx":3B7F
-      MousePointer    =   99  'Custom
-      Top             =   8565
-      Width           =   1200
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   20
-      Left            =   7995
-      TabIndex        =   28
-      Top             =   7515
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   19
-      Left            =   7995
-      TabIndex        =   27
-      Top             =   7306
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   18
-      Left            =   7995
-      TabIndex        =   26
-      Top             =   7092
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   17
-      Left            =   7995
-      TabIndex        =   25
-      Top             =   6878
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   16
-      Left            =   7995
-      TabIndex        =   24
-      Top             =   6664
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   15
-      Left            =   7995
-      TabIndex        =   23
-      Top             =   6450
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   14
-      Left            =   7995
-      TabIndex        =   22
-      Top             =   6236
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   13
-      Left            =   7995
-      TabIndex        =   21
-      Top             =   6022
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   12
-      Left            =   7995
-      TabIndex        =   20
-      Top             =   5808
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   11
-      Left            =   7995
-      TabIndex        =   19
-      Top             =   5594
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   10
-      Left            =   7995
-      TabIndex        =   18
-      Top             =   5380
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   9
-      Left            =   7995
-      TabIndex        =   17
-      Top             =   5166
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   8
-      Left            =   7995
-      TabIndex        =   16
-      Top             =   4952
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   7
-      Left            =   7995
-      TabIndex        =   15
-      Top             =   4738
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   6
-      Left            =   7995
-      TabIndex        =   14
-      Top             =   4524
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   5
-      Left            =   7995
-      TabIndex        =   13
-      Top             =   4310
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   4
-      Left            =   7995
-      TabIndex        =   12
-      Top             =   4096
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   3
-      Left            =   7995
-      TabIndex        =   11
-      Top             =   3882
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   2
-      Left            =   7995
-      TabIndex        =   10
-      Top             =   3668
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   0
-      Left            =   7995
-      TabIndex        =   9
-      Top             =   3240
-      Width           =   270
-   End
-   Begin VB.Label Skill 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   1
-      Left            =   7995
-      TabIndex        =   8
-      Top             =   3450
-      Width           =   270
-   End
-   Begin VB.Image imgHogar 
-      Height          =   2850
-      Left            =   8775
-      Picture         =   "frmCrearPersonaje.frx":3CD1
-      Top             =   3900
-      Width           =   2985
-   End
-   Begin VB.Label lbCarisma 
-      Alignment       =   1  'Right Justify
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   5310
-      TabIndex        =   6
-      Top             =   3570
-      Width           =   225
+      ForeColor       =   &H000000C0&
+      Height          =   510
+      Left            =   4560
+      TabIndex        =   44
+      Top             =   3750
+      Width           =   345
    End
    Begin VB.Label lbSabiduria 
       BackStyle       =   0  'Transparent
       Caption         =   "0"
       ForeColor       =   &H00FFFF00&
       Height          =   255
-      Left            =   3840
-      TabIndex        =   5
-      Top             =   4260
+      Left            =   0
+      TabIndex        =   43
+      Top             =   0
       Visible         =   0   'False
       Width           =   270
    End
-   Begin VB.Label lbInteligencia 
-      Alignment       =   1  'Right Justify
+   Begin VB.Label Label3 
+      BackStyle       =   0  'Transparent
+      Caption         =   "+3"
+      ForeColor       =   &H00FFFF80&
+      Height          =   195
+      Left            =   180
+      TabIndex        =   42
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   195
+   End
+   Begin VB.Label lblMailOK 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "O"
+      BeginProperty Font 
+         Name            =   "Wingdings 2"
+         Size            =   24
+         Charset         =   2
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000000C0&
+      Height          =   510
+      Left            =   4560
+      TabIndex        =   40
+      Top             =   2520
+      Width           =   330
+   End
+   Begin VB.Label lblMail2OK 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "O"
+      BeginProperty Font 
+         Name            =   "Wingdings 2"
+         Size            =   24
+         Charset         =   2
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000000C0&
+      Height          =   510
+      Left            =   4560
+      TabIndex        =   38
+      Top             =   3150
+      Width           =   345
+   End
+   Begin VB.Label lblPassOK 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "O"
+      BeginProperty Font 
+         Name            =   "Wingdings 2"
+         Size            =   24
+         Charset         =   2
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000000C0&
+      Height          =   495
+      Left            =   4560
+      TabIndex        =   36
+      Top             =   4350
+      Width           =   345
+   End
+   Begin VB.Image Picture6 
+      Height          =   375
+      Left            =   5160
+      MouseIcon       =   "frmCrearPersonaje.frx":0096
+      MousePointer    =   99  'Custom
+      Top             =   5400
+      Width           =   375
+   End
+   Begin VB.Image Picture5 
+      Height          =   375
+      Left            =   7440
+      MouseIcon       =   "frmCrearPersonaje.frx":03A0
+      MousePointer    =   99  'Custom
+      Top             =   5400
+      Width           =   375
+   End
+   Begin VB.Image Picture2 
+      Height          =   375
+      Left            =   5520
+      MouseIcon       =   "frmCrearPersonaje.frx":06AA
+      MousePointer    =   99  'Custom
+      Top             =   7320
+      Width           =   375
+   End
+   Begin VB.Image Picture1 
+      Height          =   375
+      Left            =   7080
+      MouseIcon       =   "frmCrearPersonaje.frx":09B4
+      MousePointer    =   99  'Custom
+      Top             =   7320
+      Width           =   375
+   End
+   Begin VB.Image Picture8 
+      Height          =   255
+      Left            =   5280
+      MouseIcon       =   "frmCrearPersonaje.frx":0CBE
+      MousePointer    =   99  'Custom
+      Top             =   6360
+      Width           =   255
+   End
+   Begin VB.Image Picture7 
+      Height          =   255
+      Left            =   7440
+      MouseIcon       =   "frmCrearPersonaje.frx":0FC8
+      MousePointer    =   99  'Custom
+      Top             =   6360
+      Width           =   255
+   End
+   Begin VB.Image Picture4 
+      Height          =   255
+      Left            =   5520
+      MouseIcon       =   "frmCrearPersonaje.frx":12D2
+      MousePointer    =   99  'Custom
+      Top             =   4440
+      Width           =   255
+   End
+   Begin VB.Image Picture3 
+      Height          =   255
+      Left            =   7200
+      MouseIcon       =   "frmCrearPersonaje.frx":15DC
+      MousePointer    =   99  'Custom
+      Top             =   4440
+      Width           =   255
+   End
+   Begin VB.Image Picture10 
+      Height          =   255
+      Left            =   5640
+      MouseIcon       =   "frmCrearPersonaje.frx":18E6
+      MousePointer    =   99  'Custom
+      Top             =   3480
+      Width           =   255
+   End
+   Begin VB.Image Picture9 
+      Height          =   375
+      Left            =   7080
+      MouseIcon       =   "frmCrearPersonaje.frx":1BF0
+      MousePointer    =   99  'Custom
+      Top             =   3480
+      Width           =   375
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   5310
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   23
+      Left            =   11031
+      TabIndex        =   31
+      Top             =   7800
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   22
+      Left            =   11031
+      TabIndex        =   30
+      Top             =   7500
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   21
+      Left            =   11031
+      TabIndex        =   29
+      Top             =   7200
+      Width           =   398
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   46
+      Left            =   11415
+      MouseIcon       =   "frmCrearPersonaje.frx":1EFA
+      MousePointer    =   99  'Custom
+      Top             =   7905
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   44
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":204C
+      MousePointer    =   99  'Custom
+      Top             =   7560
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   42
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":219E
+      MousePointer    =   99  'Custom
+      Top             =   7290
+      Width           =   195
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   47
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":22F0
+      MousePointer    =   99  'Custom
+      Top             =   7920
+      Width           =   135
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   45
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2442
+      MousePointer    =   99  'Custom
+      Top             =   7605
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   43
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2594
+      MousePointer    =   99  'Custom
+      Top             =   7305
+      Width           =   195
+   End
+   Begin VB.Label puntosquedan 
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
+      Caption         =   "28"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   6300
+      TabIndex        =   28
+      Top             =   2955
+      Width           =   255
+   End
+   Begin VB.Label Puntos 
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
+      Caption         =   "10"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   8865
+      TabIndex        =   27
+      Top             =   525
+      Width           =   270
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   3
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":26E6
+      MousePointer    =   99  'Custom
+      Top             =   1185
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   5
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2838
+      MousePointer    =   99  'Custom
+      Top             =   1440
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   7
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":298A
+      MousePointer    =   99  'Custom
+      Top             =   1800
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   9
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2ADC
+      MousePointer    =   99  'Custom
+      Top             =   2070
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   11
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2C2E
+      MousePointer    =   99  'Custom
+      Top             =   2400
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   13
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2D80
+      MousePointer    =   99  'Custom
+      Top             =   2700
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   15
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":2ED2
+      MousePointer    =   99  'Custom
+      Top             =   3000
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   17
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":3024
+      MousePointer    =   99  'Custom
+      Top             =   3270
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   19
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":3176
+      MousePointer    =   99  'Custom
+      Top             =   3615
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   21
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":32C8
+      MousePointer    =   99  'Custom
+      Top             =   3945
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   23
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":341A
+      MousePointer    =   99  'Custom
+      Top             =   4200
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   25
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":356C
+      MousePointer    =   99  'Custom
+      Top             =   4560
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   27
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":36BE
+      MousePointer    =   99  'Custom
+      Top             =   4815
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   1
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":3810
+      MousePointer    =   99  'Custom
+      Top             =   840
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   0
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":3962
+      MousePointer    =   99  'Custom
+      Top             =   870
+      Width           =   180
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   2
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":3AB4
+      MousePointer    =   99  'Custom
+      Top             =   1200
+      Width           =   195
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   4
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":3C06
+      MousePointer    =   99  'Custom
+      Top             =   1500
+      Width           =   195
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   6
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":3D58
+      MousePointer    =   99  'Custom
+      Top             =   1800
+      Width           =   180
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   8
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":3EAA
+      MousePointer    =   99  'Custom
+      Top             =   2085
+      Width           =   195
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   10
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":3FFC
+      MousePointer    =   99  'Custom
+      Top             =   2400
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   12
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":414E
+      MousePointer    =   99  'Custom
+      Top             =   2730
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   240
+      Index           =   14
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":42A0
+      MousePointer    =   99  'Custom
+      Top             =   3000
+      Width           =   255
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   16
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":43F2
+      MousePointer    =   99  'Custom
+      Top             =   3360
+      Width           =   135
+   End
+   Begin VB.Image command1 
+      Height          =   120
+      Index           =   18
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":4544
+      MousePointer    =   99  'Custom
+      Top             =   3630
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   20
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":4696
+      MousePointer    =   99  'Custom
+      Top             =   3960
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   22
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":47E8
+      MousePointer    =   99  'Custom
+      Top             =   4200
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   24
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":493A
+      MousePointer    =   99  'Custom
+      Top             =   4560
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   210
+      Index           =   26
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":4A8C
+      MousePointer    =   99  'Custom
+      Top             =   4800
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   28
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":4BDE
+      MousePointer    =   99  'Custom
+      Top             =   5160
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   29
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":4D30
+      MousePointer    =   99  'Custom
+      Top             =   5160
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   30
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":4E82
+      MousePointer    =   99  'Custom
+      Top             =   5490
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   31
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":4FD4
+      MousePointer    =   99  'Custom
+      Top             =   5430
+      Width           =   150
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   32
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":5126
+      MousePointer    =   99  'Custom
+      Top             =   5760
+      Width           =   180
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   33
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":5278
+      MousePointer    =   99  'Custom
+      Top             =   5760
+      Width           =   180
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   34
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":53CA
+      MousePointer    =   99  'Custom
+      Top             =   6105
+      Width           =   135
+   End
+   Begin VB.Image command1 
+      Height          =   150
+      Index           =   35
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":551C
+      MousePointer    =   99  'Custom
+      Top             =   6090
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   225
+      Index           =   36
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":566E
+      MousePointer    =   99  'Custom
+      Top             =   6360
+      Width           =   255
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   37
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":57C0
+      MousePointer    =   99  'Custom
+      Top             =   6360
+      Width           =   195
+   End
+   Begin VB.Image command1 
+      Height          =   120
+      Index           =   38
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":5912
+      MousePointer    =   99  'Custom
+      Top             =   6720
+      Width           =   135
+   End
+   Begin VB.Image command1 
+      Height          =   165
+      Index           =   39
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":5A64
+      MousePointer    =   99  'Custom
+      Top             =   6705
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   40
+      Left            =   11400
+      MouseIcon       =   "frmCrearPersonaje.frx":5BB6
+      MousePointer    =   99  'Custom
+      Top             =   6990
+      Width           =   165
+   End
+   Begin VB.Image command1 
+      Height          =   135
+      Index           =   41
+      Left            =   10875
+      MouseIcon       =   "frmCrearPersonaje.frx":5D08
+      MousePointer    =   99  'Custom
+      Top             =   6990
+      Width           =   135
+   End
+   Begin VB.Image boton 
+      Height          =   255
+      Index           =   1
+      Left            =   120
+      MouseIcon       =   "frmCrearPersonaje.frx":5E5A
+      MousePointer    =   99  'Custom
+      Top             =   8640
+      Width           =   1125
+   End
+   Begin VB.Image boton 
+      Appearance      =   0  'Flat
+      Height          =   450
+      Index           =   0
+      Left            =   360
+      MouseIcon       =   "frmCrearPersonaje.frx":5FAC
+      MousePointer    =   99  'Custom
+      Top             =   7800
+      Width           =   4560
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   20
+      Left            =   11031
+      TabIndex        =   26
+      Top             =   6900
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   19
+      Left            =   11031
+      TabIndex        =   25
+      Top             =   6600
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   18
+      Left            =   11031
+      TabIndex        =   24
+      Top             =   6285
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   17
+      Left            =   11031
+      TabIndex        =   23
+      Top             =   5970
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   16
+      Left            =   11031
+      TabIndex        =   22
+      Top             =   5685
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   15
+      Left            =   11031
+      TabIndex        =   21
+      Top             =   5385
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   14
+      Left            =   11031
+      TabIndex        =   20
+      Top             =   5070
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   13
+      Left            =   11031
+      TabIndex        =   19
+      Top             =   4770
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   12
+      Left            =   11031
+      TabIndex        =   18
+      Top             =   4470
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   11
+      Left            =   11031
+      TabIndex        =   17
+      Top             =   4155
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   10
+      Left            =   11031
+      TabIndex        =   16
+      Top             =   3840
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   9
+      Left            =   11031
+      TabIndex        =   15
+      Top             =   3540
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   8
+      Left            =   11031
+      TabIndex        =   14
+      Top             =   3225
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   7
+      Left            =   11031
+      TabIndex        =   13
+      Top             =   2925
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   6
+      Left            =   11031
+      TabIndex        =   12
+      Top             =   2610
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   5
+      Left            =   11031
+      TabIndex        =   11
+      Top             =   2310
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   4
+      Left            =   11031
+      TabIndex        =   10
+      Top             =   2010
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   3
+      Left            =   11031
+      TabIndex        =   9
+      Top             =   1710
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   2
+      Left            =   11031
+      TabIndex        =   8
+      Top             =   1395
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   0
+      Left            =   11031
+      TabIndex        =   7
+      Top             =   780
+      Width           =   398
+   End
+   Begin VB.Label Skill 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   300
+      Index           =   1
+      Left            =   11031
+      TabIndex        =   6
+      Top             =   1080
+      Width           =   398
+   End
+   Begin VB.Label lbCarisma 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "6"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   450
+      Left            =   6251
+      TabIndex        =   5
+      Top             =   7680
+      Width           =   495
+   End
+   Begin VB.Label lbInteligencia 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "6"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   450
+      Left            =   6255
       TabIndex        =   4
-      Top             =   3240
-      Width           =   210
+      Top             =   4800
+      Width           =   495
    End
    Begin VB.Label lbConstitucion 
-      Alignment       =   1  'Right Justify
+      Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   5310
+      Caption         =   "6"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   450
+      Left            =   6251
       TabIndex        =   3
-      Top             =   3900
-      Width           =   225
+      Top             =   5730
+      Width           =   495
    End
    Begin VB.Label lbAgilidad 
-      Alignment       =   1  'Right Justify
+      Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   5310
+      Caption         =   "6"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   450
+      Left            =   6255
       TabIndex        =   2
-      Top             =   2910
-      Width           =   225
+      Top             =   6720
+      Width           =   495
    End
    Begin VB.Label lbFuerza 
-      Alignment       =   1  'Right Justify
+      Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   5310
+      Caption         =   "6"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   450
+      Left            =   6255
       TabIndex        =   1
-      Top             =   2580
-      Width           =   210
+      Top             =   3840
+      Width           =   495
    End
 End
 Attribute VB_Name = "frmCrearPersonaje"
@@ -898,30 +1592,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public SkillPoints As Byte
-
 Function CheckData() As Boolean
-If UserRaza = "" Then
+
+If UserRaza = 0 Then
     MsgBox "Seleccione la raza del personaje."
     Exit Function
 End If
 
-If UserSexo = "" Then
-    MsgBox "Seleccione el sexo del personaje."
-    Exit Function
-End If
-
-If UserClase = "" Then
-    MsgBox "Seleccione la clase del personaje."
-    Exit Function
-End If
-
-If UserClase = "" Then
-    MsgBox "Seleccione la clase del personaje."
-    Exit Function
-End If
-
-If UserHogar = "" Then
+If UserHogar = 0 Then
     MsgBox "Seleccione el hogar del personaje."
+    Exit Function
+End If
+
+If Val(puntosquedan.Caption) > 0 Then
+    MsgBox "Asigne los atributos del personaje."
     Exit Function
 End If
 
@@ -949,7 +1633,8 @@ Call PlayWaveDS(SND_CLICK)
 
 Select Case Index
     Case 0
-        
+        LlegoConfirmacion = False
+        Confirmacion = 0
         Dim i As Integer
         Dim k As Object
         i = 1
@@ -960,25 +1645,88 @@ Select Case Index
         
         UserName = txtNombre.Text
         
-        If Right(UserName, 1) = " " Then
-                UserName = RTrim(UserName)
-                MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
+        If Right$(UserName, 1) = " " Then
+            UserName = RTrim(UserName)
+            MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
         End If
         
-        UserRaza = lstRaza.List(lstRaza.ListIndex)
-        UserSexo = lstGenero.List(lstGenero.ListIndex)
-        UserClase = lstProfesion.List(lstProfesion.ListIndex)
+        UserRaza = lstRaza.ListIndex + 1
+        UserSexo = lstGenero.ListIndex
+        UserHogar = lstHogar.ListIndex + 1
         
         UserAtributos(1) = Val(lbFuerza.Caption)
-        UserAtributos(2) = Val(lbInteligencia.Caption)
-        UserAtributos(3) = Val(lbAgilidad.Caption)
+        UserAtributos(2) = Val(lbAgilidad.Caption)
+        UserAtributos(3) = Val(lbInteligencia.Caption)
         UserAtributos(4) = Val(lbCarisma.Caption)
         UserAtributos(5) = Val(lbConstitucion.Caption)
         
-        UserHogar = lstHogar.List(lstHogar.ListIndex)
+        If UserAtributos(1) + UserAtributos(3) + UserAtributos(4) + UserAtributos(2) + UserAtributos(5) > 63 Then Exit Sub
         
-        If CheckData() Then frmPasswd.Show vbModal
+     If CheckData() Then
+     
+     If CheckDatos() Then
+    UserPassword = MD5String(txtPasswd.Text)
+    UserEmail = txtCorreo.Text
+    
+    If Not CheckMailString(UserEmail) Then
+            MsgBox "Direccion de mail invalida.", vbExclamation, "Fenix AO"
+            Exit Sub
+    End If
+    
+    If Trim(txtPasswd) = "" Or Trim(txtPasswdCheck) = "" Then
+        MsgBox "Tenés que ingresar una contraseña, no se aceptan espacios en blanco.", vbInformation, "Fenix AO"
+        txtPasswd = ""
+        txtPasswdCheck = ""
+        txtPasswd.SetFocus
+        Exit Sub
+    End If
         
+    frmMain.Socket1.HostName = IPdelServidor
+    frmMain.Socket1.RemotePort = PuertoDelServidor
+
+    'SendNewChar = True
+    Me.MousePointer = 11
+    EstadoLogin = CrearNuevoPj
+    
+    If Not frmMain.Socket1.Connected Then
+        MsgBox "Error: Se ha perdido la conexion con el server."
+        Unload Me
+        
+    Else
+        Call Login(ValidarLoginMSG(CInt(bRK)))
+    End If
+            If Musica = 0 Then
+            CurMidi = DirMidi & "2.mid"
+            LoopMidi = 1
+            Call CargarMIDI(CurMidi)
+            Call Play_Midi
+        End If
+        
+    frmConnect.Picture = LoadPicture(App.Path & "\Graficos\conectar.jpg")
+    Me.Visible = False
+   '         Do While Not LlegoConfirmacion
+   '             DoEvents 'esperamos a que lleguen y mantenemos la interfaz viva
+   '         Loop
+   '         If Confirmacion = 1 Then
+   '    MsgBox "Un mail ha sido enviado a la casilla a la cual registraste tu personaje. Utiliza el código que en él aparece para así poder activar el personaje en el formulario correspondiente de Activar/desactivar personaje. Si no recibes el email, chequea la seguridad de tu cuenta y revisa la sección de correo no deseado para comprobar que no haya llegado allí."
+   '
+   '     frmConnect.FONDO.Picture = LoadPicture(App.Path & "\Graficos\conectar.jpg")
+   '
+   '     frmMain.Socket1.Disconnect
+   '     frmConnect.MousePointer = 1
+   '   Unload Me
+   '   ElseIf Confirmacion = 2 Then
+   '           EstadoLogin = dados
+   '           Me.MousePointer = 1
+        Else
+        MsgBox "Error al crear el personaje, intentelo otra vez"
+     End If
+      
+      
+End If
+
+
+
     Case 1
         If Musica = 0 Then
             CurMidi = DirMidi & "2.mid"
@@ -987,40 +1735,17 @@ Select Case Index
             Call Play_Midi
         End If
         
-        frmConnect.FONDO.Picture = LoadPicture(App.Path & "\Graficos\conectar.jpg")
-        Me.Visible = False
+        frmConnect.Picture = LoadPicture(App.Path & "\Graficos\conectar.jpg")
         
-        
-    Case 2
-        Call PlayWaveDS(SND_DICE)
-        Call TirarDados
+        frmMain.Socket1.Disconnect
+        frmConnect.MousePointer = 1
+      Unload Me
       
 End Select
 
 
 End Sub
-
-
-Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
-
-Randomize Timer
-
-RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
-If RandomNumber > UpperBound Then RandomNumber = UpperBound
-
-End Function
-
-
-Private Sub TirarDados()
-'lbFuerza.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-'lbInteligencia.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-'lbAgilidad.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-'lbCarisma.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-'lbConstitucion.Caption = CInt(RandomNumber(1, 6) + RandomNumber(1, 6) + RandomNumber(1, 6))
-Call SendData("TIRDAD")
-End Sub
-
-Private Sub Command1_Click(Index As Integer)
+Private Sub command1_Click(Index As Integer)
 Call PlayWaveDS(SND_CLICK)
 
 Dim indice
@@ -1044,38 +1769,323 @@ End If
 Puntos.Caption = SkillPoints
 End Sub
 
+Function CheckDatos() As Boolean
+
+If txtPasswd.Text <> txtPasswdCheck.Text Then
+    MsgBox "Las contraseñas que ingresaste no coinciden." & vbCrLf & vbCrLf & "Por favor volvé a ingresarlos.", vbInformation, "Fenix AO"
+    txtPasswdCheck = ""
+    txtPasswdCheck.SetFocus
+    Exit Function
+End If
+
+If txtCorreo.Text <> txtCorreo2.Text Then
+    MsgBox "Las direcciones de correo electrónico ingresadas no coinciden." & vbCrLf & vbCrLf & "Por favor volvé a ingresarlos.", vbInformation, "Fenix AO"
+    txtCorreo2.SetFocus
+    Exit Function
+End If
+
+CheckDatos = True
+
+End Function
 Private Sub Form_Load()
+
 SkillPoints = 10
 Puntos.Caption = SkillPoints
-Me.Picture = LoadPicture(App.Path & "\graficos\CP-Interface.jpg")
-imgHogar.Picture = LoadPicture(App.Path & "\graficos\CP-Ullathorpe.jpg")
+Me.Picture = LoadPicture(App.Path & "\graficos\CP-Interface.gif")
 
-Dim i As Integer
-lstProfesion.Clear
-For i = LBound(ListaClases) To UBound(ListaClases)
-    lstProfesion.AddItem ListaClases(i)
-Next i
+Select Case (lstRaza.List(lstRaza.ListIndex))
+    Case "Humano"
+        modfuerza.Caption = "+ 1"
+        modConstitucion.Caption = "+ 2"
+        modAgilidad.Caption = "+ 1"
+        modInteligencia.Caption = "+ 1"
+        modCarisma.Caption = ""
+        
+    Case "Elfo"
+        modfuerza.Caption = "- 1"
+        modConstitucion.Caption = ""
+        modAgilidad.Caption = "+ 3"
+        modInteligencia.Caption = "+ 2"
+        modCarisma.Caption = "+ 2"
+        
+    Case "Elfo Oscuro"
+        modfuerza.Caption = "- 1"
+        modConstitucion.Caption = ""
+        modAgilidad.Caption = "+ 2"
+        modInteligencia.Caption = "+ 2"
+        modCarisma.Caption = "- 1"
+        
+    Case "Enano"
+        modfuerza.Caption = "+ 3"
+        modConstitucion.Caption = "+ 3"
+        modAgilidad.Caption = ""
+        modInteligencia.Caption = "- 4"
+        modCarisma.Caption = "- 1"
+        
+    Case "Gnomo"
+        modfuerza.Caption = "- 4"
+        modConstitucion.Caption = ""
+        modAgilidad.Caption = ""
+        modInteligencia.Caption = "+ 3"
+        modCarisma.Caption = "+ 1"
+        
+End Select
 
-lstProfesion.ListIndex = 1
-
-Image1.Picture = LoadPicture(App.Path & "\graficos\" & lstProfesion.Text & ".jpg")
-Call TirarDados
 End Sub
 
+Private Sub Pîcture4_Click()
 
-Private Sub lstProfesion_Click()
-On Error Resume Next
-Image1.Picture = LoadPicture(App.Path & "\graficos\" & lstProfesion.Text & ".jpg")
 End Sub
 
+Private Sub lstRaza_click()
+
+Select Case (lstRaza.List(lstRaza.ListIndex))
+    Case "Humano"
+        modfuerza.Caption = "+ 1"
+        modConstitucion.Caption = "+ 2"
+        modAgilidad.Caption = "+ 1"
+        modInteligencia.Caption = ""
+        modCarisma.Caption = ""
+        
+    Case "Elfo"
+        modfuerza.Caption = "+ 1"
+        modConstitucion.Caption = "+ 1"
+        modAgilidad.Caption = "- 1"
+        modInteligencia.Caption = "+ 2"
+        modCarisma.Caption = "+ 2"
+        
+    Case "Elfo Oscuro"
+        modfuerza.Caption = "+ 2"
+        modConstitucion.Caption = "+ 1"
+        modAgilidad.Caption = "+ 2"
+        modInteligencia.Caption = "+ 1"
+        modCarisma.Caption = "- 3"
+        
+    Case "Enano"
+        modfuerza.Caption = "+ 3"
+        modConstitucion.Caption = "+ 3"
+        modAgilidad.Caption = "- 1"
+        modInteligencia.Caption = "- 6"
+        modCarisma.Caption = "- 2"
+        
+    Case "Gnomo"
+        modfuerza.Caption = "- 4"
+        modConstitucion.Caption = ""
+        modAgilidad.Caption = "+ 3"
+        modInteligencia.Caption = "+ 3"
+        modCarisma.Caption = "+ 2"
+        
+    End Select
+
+End Sub
+
+Private Sub txtCorreo_Change()
+
+If Not CheckMailString(txtCorreo) Then
+    lblMailOK = "O"
+    lblMailOK.ForeColor = &HC0&
+Else
+    lblMailOK = "P"
+    lblMailOK.ForeColor = &H80FF&
+    Beep
+End If
+
+If Not (UCase$(txtCorreo.Text) = UCase$(txtCorreo2.Text)) Or (txtCorreo2.Text) = "" Or Not CheckMailString(txtCorreo2) Then
+    lblMail2OK = "O"
+    lblMail2OK.ForeColor = &HC0&
+Else
+    lblMail2OK = "P"
+    lblMail2OK.ForeColor = &H80FF&
+    Beep
+End If
+
+End Sub
+Private Sub txtCorreo_GotFocus()
+
+Call MsgBox("La dirección de correo electrónico DEBE SER real.")
+
+End Sub
+Private Sub txtCorreo2_Change()
+
+If Not CheckMailString(txtCorreo) Then
+    lblMailOK = "O"
+    lblMailOK.ForeColor = &HC0&
+Else
+    lblMailOK = "P"
+    lblMailOK.ForeColor = &H80FF&
+    Beep
+End If
+
+If Not (UCase$(txtCorreo.Text) = UCase$(txtCorreo2.Text)) Or (txtCorreo2.Text) = "" Or Not CheckMailString(txtCorreo2) Then
+    lblMail2OK = "O"
+    lblMail2OK.ForeColor = &HC0&
+Else
+    lblMail2OK = "P"
+    lblMail2OK.ForeColor = &H80FF&
+    Beep
+End If
+
+End Sub
+Private Sub txtPasswd_Change()
+
+If Trim(txtPasswd) = "" Then
+    lblPass2OK = "O"
+    lblPass2OK.ForeColor = &HC0&
+Else
+    lblPass2OK = "P"
+    lblPass2OK.ForeColor = &H80FF&
+    Beep
+End If
+
+If (txtPasswdCheck = txtPasswd) And txtPasswd <> "" Then
+    lblPassOK = "P"
+    lblPassOK.ForeColor = &H80FF&
+    Beep
+Else
+    lblPassOK = "O"
+    lblPassOK.ForeColor = &HC0&
+End If
+
+End Sub
+Private Sub txtPasswdCheck_Change()
+
+If Trim(txtPasswdCheck) = "" And Trim(txtPasswdCheck) = "" Then
+    lblPassOK = "O"
+    lblPassOK.ForeColor = &HC0&
+Else
+    If (txtPasswdCheck = txtPasswd) And txtPasswd <> "" Then
+        lblPassOK = "P"
+        lblPassOK.ForeColor = &H80FF&
+        Beep
+    Else
+        lblPassOK = "O"
+        lblPassOK.ForeColor = &HC0&
+    End If
+End If
+
+End Sub
+Private Sub Picture1_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(puntosquedan.Caption) > 0 Then
+    If Val(lbCarisma.Caption) < 18 Then
+    lbCarisma.Caption = Val(lbCarisma.Caption) + 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) - 1
+    End If
+End If
+
+End Sub
+Private Sub Picture2_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(lbCarisma.Caption) > 6 Then
+    lbCarisma.Caption = Val(lbCarisma.Caption) - 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) + 1
+End If
+
+End Sub
+Private Sub Picture3_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(puntosquedan.Caption) > 0 Then
+    If Val(lbInteligencia.Caption) < 18 Then
+    lbInteligencia.Caption = Val(lbInteligencia.Caption) + 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) - 1
+    End If
+End If
+
+End Sub
+Private Sub Picture4_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(lbInteligencia.Caption) > 6 Then
+    lbInteligencia.Caption = Val(lbInteligencia.Caption) - 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) + 1
+End If
+
+End Sub
+Private Sub Picture5_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(puntosquedan.Caption) > 0 Then
+    If Val(lbConstitucion.Caption) < 18 Then
+    lbConstitucion.Caption = Val(lbConstitucion.Caption) + 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) - 1
+    End If
+End If
+
+End Sub
+Private Sub Picture6_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(lbConstitucion.Caption) > 6 Then
+    lbConstitucion.Caption = Val(lbConstitucion.Caption) - 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) + 1
+End If
+
+End Sub
+Private Sub Picture7_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(puntosquedan.Caption) > 0 Then
+    If Val(lbAgilidad.Caption) < 18 Then
+    lbAgilidad.Caption = Val(lbAgilidad.Caption) + 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) - 1
+    End If
+End If
+
+End Sub
+Private Sub Picture8_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(lbAgilidad.Caption) > 6 Then
+    lbAgilidad.Caption = Val(lbAgilidad.Caption) - 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) + 1
+End If
+
+End Sub
+Private Sub Picture10_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(lbFuerza.Caption) > 6 Then
+    lbFuerza.Caption = Val(lbFuerza.Caption) - 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) + 1
+End If
+
+End Sub
+Private Sub Picture9_Click()
+
+Call PlayWaveDS(SND_CLICK)
+
+If Val(puntosquedan.Caption) > 0 Then
+    If Val(lbFuerza.Caption) < 18 Then
+    lbFuerza.Caption = Val(lbFuerza.Caption) + 1
+    puntosquedan.Caption = Val(puntosquedan.Caption) - 1
+    End If
+End If
+
+End Sub
 Private Sub txtNombre_Change()
+
 txtNombre.Text = LTrim(txtNombre.Text)
-End Sub
 
+End Sub
 Private Sub txtNombre_GotFocus()
-MsgBox "Sea cuidadoso al seleccionar el nombre de su personaje, Argentum es un juego de rol, un mundo magico y fantastico, si selecciona un nombre obsceno o con connotación politica los administradores borrarán su personaje y no habrá ninguna posibilidad de recuperarlo."
-End Sub
 
+Call MsgBox("Sea cuidadoso al seleccionar el nombre de su personaje, Argentum es un juego de rol, un mundo magico y fantastico, si selecciona un nombre obsceno o con connotación politica los administradores borrarán su personaje y no habrá ninguna posibilidad de recuperarlo.")
+
+End Sub
 Private Sub txtNombre_KeyPress(KeyAscii As Integer)
- KeyAscii = Asc(UCase(Chr(KeyAscii)))
+
+KeyAscii = Asc(UCase$(Chr(KeyAscii)))
+ 
 End Sub

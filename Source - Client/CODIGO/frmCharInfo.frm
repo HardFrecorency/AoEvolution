@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmCharInfo 
-   BorderStyle     =   1  'Fixed Single
+   BorderStyle     =   0  'None
    Caption         =   "Info"
-   ClientHeight    =   6195
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   5325
+   ClientHeight    =   6375
+   ClientLeft      =   0
+   ClientTop       =   -105
+   ClientWidth     =   6000
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -19,246 +19,217 @@ Begin VB.Form frmCharInfo
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6195
-   ScaleWidth      =   5325
+   ScaleHeight     =   6375
+   ScaleWidth      =   6000
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton desc 
-      Caption         =   "Peticion"
-      Height          =   495
-      Left            =   2100
+   Begin VB.Label neutrales 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Neutrales asesinados:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   15
+      Top             =   5280
+      Width           =   4695
+   End
+   Begin VB.Image aceptar 
+      Height          =   375
+      Left            =   4440
       MouseIcon       =   "frmCharInfo.frx":0000
       MousePointer    =   99  'Custom
-      TabIndex        =   24
       Top             =   5640
       Width           =   855
    End
-   Begin VB.CommandButton Echar 
-      Caption         =   "Echar"
-      Height          =   495
-      Left            =   1080
-      MouseIcon       =   "frmCharInfo.frx":0152
+   Begin VB.Image rechazar 
+      Height          =   375
+      Left            =   3120
+      MouseIcon       =   "frmCharInfo.frx":030A
       MousePointer    =   99  'Custom
-      TabIndex        =   23
       Top             =   5640
-      Width           =   855
+      Width           =   1095
    End
-   Begin VB.CommandButton Aceptar 
-      Caption         =   "Aceptar"
-      Height          =   495
-      Left            =   4200
-      MouseIcon       =   "frmCharInfo.frx":02A4
+   Begin VB.Image desc 
+      Height          =   375
+      Left            =   1920
+      MouseIcon       =   "frmCharInfo.frx":0614
       MousePointer    =   99  'Custom
-      TabIndex        =   22
       Top             =   5640
       Width           =   975
    End
-   Begin VB.CommandButton Rechazar 
-      Caption         =   "Rechazar"
-      Height          =   495
-      Left            =   3120
-      MouseIcon       =   "frmCharInfo.frx":03F6
+   Begin VB.Image echar 
+      Height          =   375
+      Left            =   600
+      MouseIcon       =   "frmCharInfo.frx":091E
       MousePointer    =   99  'Custom
-      TabIndex        =   21
       Top             =   5640
-      Width           =   855
+      Width           =   1095
    End
-   Begin VB.CommandButton Command1 
-      Cancel          =   -1  'True
-      Caption         =   "Cerrar"
-      Height          =   495
-      Left            =   120
-      MouseIcon       =   "frmCharInfo.frx":0548
+   Begin VB.Image Image1 
+      Height          =   255
+      Left            =   0
+      MouseIcon       =   "frmCharInfo.frx":0C28
       MousePointer    =   99  'Custom
-      TabIndex        =   20
-      Top             =   5640
-      Width           =   855
+      Top             =   6120
+      Width           =   735
    End
-   Begin VB.Frame rep 
-      Caption         =   "Reputacion"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1095
-      Left            =   120
-      TabIndex        =   16
-      Top             =   4440
-      Width           =   5055
-      Begin VB.Label reputacion 
-         Caption         =   "Reputacion:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   19
-         Top             =   720
-         Width           =   4695
-      End
-      Begin VB.Label criminales 
-         Caption         =   "Criminales asesinados:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   18
-         Top             =   480
-         Width           =   4695
-      End
-      Begin VB.Label Ciudadanos 
-         Caption         =   "Ciudadanos asesinados:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   17
-         Top             =   240
-         Width           =   4695
-      End
+   Begin VB.Label Ciudadanos 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ciudadanos asesinados:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   14
+      Top             =   4800
+      Width           =   4695
    End
-   Begin VB.Frame Frame1 
-      Caption         =   "Clanes"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1815
-      Left            =   120
+   Begin VB.Label criminales 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Criminales asesinados:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   13
+      Top             =   5040
+      Width           =   4695
+   End
+   Begin VB.Label Solicitudes 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Solicitudes para ingresar a clanes:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   12
+      Top             =   3000
+      Width           =   4695
+   End
+   Begin VB.Label solicitudesRechazadas 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Solicitudes rechazadas:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   11
+      Top             =   3240
+      Width           =   4695
+   End
+   Begin VB.Label fundo 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Fundo el clan:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   10
+      Top             =   3480
+      Width           =   4695
+   End
+   Begin VB.Label lider 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Veces fue lider de clan:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
       TabIndex        =   9
-      Top             =   2640
-      Width           =   5055
-      Begin VB.Label faccion 
-         Caption         =   "Faccion:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   15
-         Top             =   1440
-         Width           =   4695
-      End
-      Begin VB.Label integro 
-         Caption         =   "Clanes que integro:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   14
-         Top             =   1200
-         Width           =   4695
-      End
-      Begin VB.Label lider 
-         Caption         =   "Veces fue lider de clan:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   13
-         Top             =   960
-         Width           =   4695
-      End
-      Begin VB.Label fundo 
-         Caption         =   "Fundo el clan:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   12
-         Top             =   720
-         Width           =   4695
-      End
-      Begin VB.Label solicitudesRechazadas 
-         Caption         =   "Solicitudes rechazadas:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   11
-         Top             =   480
-         Width           =   4695
-      End
-      Begin VB.Label Solicitudes 
-         Caption         =   "Solicitudes para ingresar a clanes:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   10
-         Top             =   240
-         Width           =   4695
-      End
+      Top             =   3720
+      Width           =   4695
    End
-   Begin VB.Frame charinfo 
-      Caption         =   "General"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   2415
-      Left            =   120
+   Begin VB.Label integro 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Clanes que integro:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   8
+      Top             =   3960
+      Width           =   4695
+   End
+   Begin VB.Label Nombre 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nombre:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   7
+      Top             =   720
+      Width           =   4695
+   End
+   Begin VB.Label Nivel 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nivel:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   6
+      Top             =   1680
+      Width           =   4695
+   End
+   Begin VB.Label Clase 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Clase:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   5
+      Top             =   1200
+      Width           =   4695
+   End
+   Begin VB.Label Raza 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Raza:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   4
+      Top             =   960
+      Width           =   4695
+   End
+   Begin VB.Label Genero 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Genero:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   3
+      Top             =   1440
+      Width           =   4695
+   End
+   Begin VB.Label Oro 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Oro:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   2
+      Top             =   1920
+      Width           =   4695
+   End
+   Begin VB.Label Banco 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Banco:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   1
+      Top             =   2160
+      Width           =   4695
+   End
+   Begin VB.Label faccion 
+      BackColor       =   &H80000007&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Status:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   600
       TabIndex        =   0
-      Top             =   120
-      Width           =   5055
-      Begin VB.Label status 
-         Caption         =   "Status:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   8
-         Top             =   2040
-         Width           =   4695
-      End
-      Begin VB.Label Banco 
-         Caption         =   "Banco:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   7
-         Top             =   1800
-         Width           =   4695
-      End
-      Begin VB.Label Oro 
-         Caption         =   "Oro:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   6
-         Top             =   1560
-         Width           =   4695
-      End
-      Begin VB.Label Genero 
-         Caption         =   "Genero:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   5
-         Top             =   1080
-         Width           =   4695
-      End
-      Begin VB.Label Raza 
-         Caption         =   "Raza:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   4
-         Top             =   600
-         Width           =   4695
-      End
-      Begin VB.Label Clase 
-         Caption         =   "Clase:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   3
-         Top             =   840
-         Width           =   4695
-      End
-      Begin VB.Label Nivel 
-         Caption         =   "Nivel:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   2
-         Top             =   1320
-         Width           =   4695
-      End
-      Begin VB.Label Nombre 
-         Caption         =   "Nombre:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   1
-         Top             =   360
-         Width           =   4695
-      End
+      Top             =   2400
+      Width           =   4695
    End
 End
 Attribute VB_Name = "frmCharInfo"
@@ -266,12 +237,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -283,159 +252,176 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
-
-
-Public frmmiembros As Boolean
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
+Public frmmiembros As Byte
 Public frmsolicitudes As Boolean
-
 Private Sub Aceptar_Click()
+
 frmmiembros = False
 frmsolicitudes = False
-Call SendData("ACEPTARI" & Right(Nombre, Len(Nombre) - 7))
-Unload frmGuildLeader
+Call SendData("ACEPTARI" & Right$(Nombre, Len(Nombre) - 8))
+frmGuildLeader.Visible = False
 Call SendData("GLINFO")
+
 Unload Me
-End Sub
 
-Private Sub Command1_Click()
+End Sub
+Private Sub command1_Click()
+
 Unload Me
+
 End Sub
-
-
 Public Sub parseCharInfo(ByVal Rdata As String)
 
-If frmmiembros Then
-    Rechazar.Visible = False
-    Aceptar.Visible = False
-    Echar.Visible = True
-    desc.Visible = False
-Else
-    Rechazar.Visible = True
-    Aceptar.Visible = True
-    Echar.Visible = False
-    desc.Visible = True
-End If
+Select Case frmmiembros
+    Case 0
+        Rechazar.Visible = True
+        aceptar.Visible = True
+        Echar.Visible = False
+        desc.Visible = True
+    Case 1
+        Rechazar.Visible = False
+        aceptar.Visible = False
+        Echar.Visible = True
+        desc.Visible = False
+    Case 2
+        Rechazar.Visible = False
+        aceptar.Visible = False
+        Echar.Visible = False
+        desc.Visible = False
+End Select
 
+Nombre.Caption = "Nombre: " & ReadField(1, Rdata, 44)
+Raza.Caption = "Raza: " & ReadField(2, Rdata, 44)
+Clase.Caption = "Clase: " & ReadField(3, Rdata, 44)
+Genero.Caption = "Genero: " & ReadField(4, Rdata, 44)
+Nivel.Caption = "Nivel: " & ReadField(5, Rdata, 44)
+Oro.Caption = "Oro: " & ReadField(6, Rdata, 44)
+Banco.Caption = "Banco: " & ReadField(7, Rdata, 44)
 
-'h$ = "CHRINFO" & UserName & ","
-'h$ = h$ & MiUser.Raza & ","
-'h$ = h$ & MiUser.Clase & ","
-'h$ = h$ & MiUser.Genero & ","
-'h$ = h$ & MiUser.Stats.ELV & ","
-'h$ = h$ & MiUser.Stats.GLD & ","
-'h$ = h$ & MiUser.Stats.Banco & ","
-'h$ = h$ & MiUser.Reputacion.Promedio & ","
-
-
-Nombre.Caption = "Nombre:" & ReadField(1, Rdata, 44)
-Raza.Caption = "Raza:" & ReadField(2, Rdata, 44)
-Clase.Caption = "Clase:" & ReadField(3, Rdata, 44)
-Genero.Caption = "Genero:" & ReadField(4, Rdata, 44)
-Nivel.Caption = "Nivel:" & ReadField(5, Rdata, 44)
-Oro.Caption = "Oro:" & ReadField(6, Rdata, 44)
-Banco.Caption = "Banco:" & ReadField(7, Rdata, 44)
-
-Dim Y As Long, k As Long
-
-Y = Val(ReadField(8, Rdata, 44))
-
-If Y > 0 Then
-    status.Caption = "Status: Ciudadano"
-Else
-    status.Caption = "Status: Criminal"
-End If
-
-
-'h$ = h$ & MiUser.GuildInfo.FundoClan & ","9
-'h$ = h$ & MiUser.GuildInfo.EsGuildLeader & ","10
-'h$ = h$ & MiUser.GuildInfo.Echadas & ","11
-'h$ = h$ & MiUser.GuildInfo.Solicitudes & ","12
-'h$ = h$ & MiUser.GuildInfo.solicitudesRechazadas & ","13
-'h$ = h$ & MiUser.GuildInfo.VecesFueGuildLeader & ","14
-'h$ = h$ & MiUser.GuildInfo.ClanesParticipo & ","15
-
-'h$ = h$ & MiUser.GuildInfo.ClanFundado & ","16
-'h$ = h$ & MiUser.GuildInfo.GuildName & ","17
-
-
-
-Y = Val(ReadField(9, Rdata, 44))
-
-Solicitudes.Caption = "Solicitudes para ingresar a clanes:" & ReadField(12, Rdata, 44)
-solicitudesRechazadas.Caption = "Solicitudes rechazadas:" & ReadField(13, Rdata, 44)
-
-
-If Y = 1 Then
-    fundo.Caption = "Fundo el clan: " & ReadField(16, Rdata, 44)
+If Val(ReadField(8, Rdata, 44)) = 1 Then
+    fundo.Caption = "Fundo el clan: " & ReadField(9, Rdata, 44)
 Else
     fundo.Caption = "Fundo el clan: Ninguno"
 End If
 
+solicitudes.Caption = "Solicitudes para ingresar a clanes: " & ReadField(10, Rdata, 44)
+solicitudesRechazadas.Caption = "Solicitudes rechazadas: " & ReadField(11, Rdata, 44)
+lider.Caption = "Veces fue lider de clan: " & ReadField(12, Rdata, 44)
+integro.Caption = "Clanes que integro: " & ReadField(13, Rdata, 44)
 
-lider.Caption = "Veces fue lider de clan:" & ReadField(14, Rdata, 44)
-integro.Caption = "Clanes que integro:" & ReadField(15, Rdata, 44)
+Select Case Val(ReadField(14, Rdata, 44))
+    Case 0
+        faccion.ForeColor = vbWhite
+        faccion.Caption = "Faccion: Neutral"
+    Case 1
+        faccion.ForeColor = vbBlue
+        faccion.Caption = "Faccion: Alianza del Fenix"
+    Case 2
+        faccion.ForeColor = vbRed
+        faccion.Caption = "Faccion: Ejército de Lord Thek"
+End Select
 
-'h$ = h$ & MiUser.faccion.ArmadaReal & "," 18
-'h$ = h$ & MiUser.faccion.FuerzasCaos & "," 19
-'h$ = h$ & MiUser.faccion.CiudadanosMatados & "," 20
-'h$ = h$ & MiUser.faccion.CriminalesMatados 21
+neutrales.Caption = "Neutrales asesinados: " & ReadField(15, Rdata, 44)
+Ciudadanos.Caption = "Ciudadanos asesinados: " & ReadField(16, Rdata, 44)
+criminales.Caption = "Criminales asesinados: " & ReadField(17, Rdata, 44)
 
-Y = Val(ReadField(18, Rdata, 44))
+Me.Show vbModeless, frmMain
 
-If Y = 1 Then
-    faccion.Caption = "Faccion: Ejercito Real"
-Else
-    k = Val(ReadField(19, Rdata, 44))
-    If k = 1 Then
-        faccion.Caption = "Faccion: Fuerzas del caos"
-    Else
-        faccion.Caption = "Faccion: Ninguna"
+End Sub
+Private Sub desc_Click()
+
+Call SendData("ENVCOMEN" & Right$(Nombre, Len(Nombre) - 8))
+
+End Sub
+Private Sub Echar_Click()
+
+Call SendData("ECHARCLA" & Right$(Nombre, Len(Nombre) - 8))
+frmmiembros = 0
+frmsolicitudes = False
+frmGuildLeader.Visible = False
+Call SendData("GLINFO")
+Unload Me
+
+End Sub
+Private Sub Form_Load()
+
+Me.Picture = LoadPicture(DirGraficos & "CharInfo.gif")
+Echar.Picture = LoadPicture(DirGraficos & "echar.gif")
+desc.Picture = LoadPicture(DirGraficos & "desc.gif")
+aceptar.Picture = LoadPicture(DirGraficos & "aceptar.gif")
+Rechazar.Picture = LoadPicture(DirGraficos & "rechazar.gif")
+
+End Sub
+Private Sub Image1_Click()
+
+Unload Me
+
+End Sub
+Private Sub Rechazar_Click()
+
+Call SendData("RECHAZAR" & Right$(Nombre, Len(Nombre) - 8))
+frmmiembros = 0
+frmsolicitudes = False
+frmGuildLeader.Visible = False
+Call SendData("GLINFO")
+Unload Me
+
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+   DX = X
+   dy = Y
+   bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
+End Sub
+Private Sub Text1_Change()
+
+If Val(Text1.Text) < 0 Then
+    Text1.Text = MAX_INVENTORY_OBJS
+End If
+
+If Val(Text1.Text) > MAX_INVENTORY_OBJS And ItemElegido <> FLAGORO Then
+    Text1.Text = 1
+End If
+
+End Sub
+Private Sub Text1_KeyPress(KeyAscii As Integer)
+
+If (KeyAscii <> 8) Then
+    If (Index <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then
+        KeyAscii = 0
     End If
 End If
 
-Ciudadanos.Caption = "Ciudadanos asesinados:" & ReadField(20, Rdata, 44)
-criminales.Caption = "Criminales asesinados:" & ReadField(21, Rdata, 44)
-reputacion.Caption = "Reputacion:" & Val(ReadField(8, Rdata, 44))
-Me.Show vbModeless, frmMain
-
-
-End Sub
-
-Private Sub desc_Click()
-Call SendData("ENVCOMEN" & Right(Nombre, Len(Nombre) - 7))
-End Sub
-
-Private Sub Echar_Click()
-Call SendData("ECHARCLA" & Right(Nombre, Len(Nombre) - 7))
-frmmiembros = False
-frmsolicitudes = False
-Unload frmGuildLeader
-Call SendData("GLINFO")
-Unload Me
-End Sub
-
-Private Sub Rechazar_Click()
-Call SendData("RECHAZAR" & Right(Nombre, Len(Nombre) - 7))
-frmmiembros = False
-frmsolicitudes = False
-Unload frmGuildLeader
-Call SendData("GLINFO")
-Unload Me
 End Sub

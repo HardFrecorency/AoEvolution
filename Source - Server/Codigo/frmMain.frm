@@ -1,205 +1,237 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Begin VB.Form frmMain 
-   BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
-   Caption         =   "Argentum Online"
-   ClientHeight    =   1725
+   Caption         =   "Servidor Fenix AO  ~ Argentum OnLine ~"
+   ClientHeight    =   3540
    ClientLeft      =   1950
-   ClientTop       =   1815
-   ClientWidth     =   5190
+   ClientTop       =   1695
+   ClientWidth     =   6615
    ControlBox      =   0   'False
-   FillColor       =   &H00C0C0C0&
+   FillColor       =   &H80000004&
    BeginProperty Font 
-      Name            =   "Arial"
+      Name            =   "Tahoma"
       Size            =   8.25
       Charset         =   0
-      Weight          =   700
+      Weight          =   400
       Underline       =   0   'False
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
-   ForeColor       =   &H80000004&
+   ForeColor       =   &H80000007&
    Icon            =   "frmMain.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   1725
-   ScaleWidth      =   5190
-   ShowInTaskbar   =   0   'False
+   ScaleHeight     =   3540
+   ScaleWidth      =   6615
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
-   Begin SocketWrenchCtrl.Socket Socket2 
-      Index           =   0
-      Left            =   15
-      Top             =   495
-      _Version        =   65536
-      _ExtentX        =   741
-      _ExtentY        =   741
-      _StockProps     =   0
-      AutoResolve     =   -1  'True
-      Backlog         =   1
-      Binary          =   0   'False
-      Blocking        =   0   'False
-      Broadcast       =   0   'False
-      BufferSize      =   0
-      HostAddress     =   ""
-      HostFile        =   ""
-      HostName        =   ""
-      InLine          =   0   'False
-      Interval        =   0
-      KeepAlive       =   0   'False
-      Library         =   ""
-      Linger          =   0
-      LocalPort       =   0
-      LocalService    =   ""
-      Protocol        =   0
-      RemotePort      =   0
-      RemoteService   =   ""
-      ReuseAddress    =   0   'False
-      Route           =   -1  'True
-      Timeout         =   0
-      Type            =   1
-      Urgent          =   0   'False
-   End
-   Begin SocketWrenchCtrl.Socket Socket1 
-      Left            =   30
-      Top             =   -60
-      _Version        =   65536
-      _ExtentX        =   741
-      _ExtentY        =   741
-      _StockProps     =   0
-      AutoResolve     =   -1  'True
-      Backlog         =   1
-      Binary          =   0   'False
-      Blocking        =   0   'False
-      Broadcast       =   0   'False
-      BufferSize      =   2048
-      HostAddress     =   ""
-      HostFile        =   ""
-      HostName        =   ""
-      InLine          =   0   'False
-      Interval        =   0
-      KeepAlive       =   0   'False
-      Library         =   ""
-      Linger          =   0
-      LocalPort       =   0
-      LocalService    =   ""
-      Protocol        =   0
-      RemotePort      =   0
-      RemoteService   =   ""
-      ReuseAddress    =   0   'False
-      Route           =   -1  'True
-      Timeout         =   0
-      Type            =   1
-      Urgent          =   0   'False
-   End
-   Begin VB.Timer tTraficStat 
-      Interval        =   6000
-      Left            =   570
-      Top             =   105
-   End
-   Begin VB.Timer Timer1 
-      Interval        =   3000
-      Left            =   1425
-      Top             =   630
-   End
-   Begin VB.Timer CmdExec 
-      Interval        =   1
-      Left            =   1260
-      Top             =   90
-   End
-   Begin VB.Timer GameTimer 
-      Interval        =   40
-      Left            =   1800
-      Top             =   60
-   End
-   Begin VB.Timer tPiqueteC 
-      Interval        =   6000
-      Left            =   495
-      Top             =   510
-   End
-   Begin VB.Timer tLluviaEvent 
-      Interval        =   60000
-      Left            =   2040
+   Begin VB.Timer TimerMeditar 
+      Interval        =   400
+      Left            =   2880
       Top             =   720
    End
-   Begin VB.Timer tLluvia 
-      Interval        =   500
-      Left            =   60
-      Top             =   1035
+   Begin VB.Data ADODB 
+      Caption         =   "Data1"
+      Connect         =   "Access"
+      DatabaseName    =   ""
+      DefaultCursorType=   0  'DefaultCursor
+      DefaultType     =   2  'UseODBC
+      Exclusive       =   0   'False
+      Height          =   375
+      Left            =   1200
+      Options         =   0
+      ReadOnly        =   0   'False
+      RecordsetType   =   1  'Dynaset
+      RecordSource    =   ""
+      Top             =   2400
+      Visible         =   0   'False
+      Width           =   2655
    End
-   Begin VB.Timer AutoSave 
-      Enabled         =   0   'False
-      Interval        =   60000
-      Left            =   570
-      Top             =   1080
+   Begin VB.ListBox i 
+      Height          =   3180
+      ItemData        =   "frmMain.frx":1042
+      Left            =   5160
+      List            =   "frmMain.frx":1049
+      TabIndex        =   8
+      Top             =   240
+      Width           =   1335
    End
-   Begin VB.Frame Frame1 
-      Caption         =   "BroadCast"
+   Begin VB.CommandButton cmdMore 
+      Caption         =   "Mensaje BroadCast >>"
+      Height          =   375
+      Left            =   240
+      TabIndex        =   7
+      Top             =   720
+      Width           =   1935
+   End
+   Begin VB.Frame Frame2 
+      Caption         =   "Usuarios:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
       Height          =   1095
       Left            =   120
-      TabIndex        =   2
-      Top             =   600
+      TabIndex        =   4
+      Top             =   120
       Width           =   4935
-      Begin VB.Timer Auditoria 
-         Interval        =   1000
-         Left            =   3180
-         Top             =   90
+      Begin VB.Timer TimerTrabaja 
+         Interval        =   10000
+         Left            =   4200
+         Top             =   120
       End
-      Begin VB.CommandButton Command1 
-         Caption         =   "Enviar"
-         Height          =   255
+      Begin VB.Timer CmdExec 
+         Enabled         =   0   'False
+         Interval        =   1
+         Left            =   3240
+         Tag             =   "S"
+         Top             =   120
+      End
+      Begin VB.Timer UserTimer 
+         Interval        =   1000
+         Left            =   2760
+         Top             =   120
+      End
+      Begin VB.Timer TimerFatuo 
+         Interval        =   2500
+         Left            =   3720
+         Top             =   120
+      End
+      Begin VB.Timer tRevisarCabs 
+         Left            =   10000
+         Top             =   480
+      End
+      Begin InetCtlsObjects.Inet Inet1 
+         Left            =   4200
+         Top             =   600
+         _ExtentX        =   1005
+         _ExtentY        =   1005
+         _Version        =   393216
+         Protocol        =   4
+         RemoteHost      =   "fenixao.localstrike.com.ar"
+         URL             =   "http://fenixao.localstrike.com.ar/descargas/Clave.txt"
+         Document        =   "/descargas/Clave.txt"
+         RequestTimeout  =   30
+      End
+      Begin VB.Label CantUsuarios 
+         Appearance      =   0  'Flat
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000FF&
+         Height          =   195
+         Left            =   2640
+         TabIndex        =   6
+         Top             =   360
+         Width           =   105
+      End
+      Begin VB.Label lblCantUsers 
+         Appearance      =   0  'Flat
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de Usuarios Online:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000000&
+         Height          =   195
          Left            =   120
          TabIndex        =   5
-         Top             =   720
+         Top             =   360
+         Width           =   2400
+      End
+   End
+   Begin VB.Frame Frame1 
+      Caption         =   "Mensaje BroadCast:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   2175
+      Left            =   120
+      TabIndex        =   1
+      Top             =   1320
+      Width           =   4935
+      Begin VB.TextBox BroadMsg 
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000000&
+         Height          =   1275
+         Left            =   120
+         MultiLine       =   -1  'True
+         ScrollBars      =   2  'Vertical
+         TabIndex        =   2
+         Top             =   360
          Width           =   4695
       End
-      Begin VB.TextBox BroadMsg 
-         Height          =   315
-         Left            =   1080
-         TabIndex        =   4
-         Top             =   240
-         Width           =   3735
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Mensaje"
-         Height          =   255
+      Begin VB.CommandButton Command1 
+         Caption         =   "Enviar Mensaje BroadCast"
+         Height          =   375
          Left            =   120
          TabIndex        =   3
-         Top             =   240
-         Width           =   855
+         Top             =   1680
+         Width           =   4695
       End
    End
-   Begin VB.Timer FX 
-      Interval        =   200
-      Left            =   2520
-      Top             =   60
+   Begin VB.Line Line2 
+      BorderColor     =   &H8000000C&
+      X1              =   0
+      X2              =   6480
+      Y1              =   0
+      Y2              =   0
    End
-   Begin VB.Timer npcataca 
-      Interval        =   4000
-      Left            =   4440
-      Top             =   0
+   Begin VB.Line Line1 
+      BorderColor     =   &H80000009&
+      BorderWidth     =   3
+      X1              =   0
+      X2              =   5160
+      Y1              =   0
+      Y2              =   0
    End
-   Begin VB.Timer KillLog 
-      Interval        =   60000
-      Left            =   3465
-      Top             =   45
-   End
-   Begin VB.Timer TIMER_AI 
-      Interval        =   100
-      Left            =   3960
-      Top             =   60
-   End
-   Begin VB.Label CantUsuarios 
-      Appearance      =   0  'Flat
+   Begin VB.Label txStatus 
       AutoSize        =   -1  'True
-      BackColor       =   &H00C0C0C0&
       BackStyle       =   0  'Transparent
-      Caption         =   "Numero de usuarios:"
       BeginProperty Font 
-         Name            =   "MS Serif"
+         Name            =   "Arial"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -207,16 +239,6 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00000000&
-      Height          =   195
-      Left            =   120
-      TabIndex        =   1
-      Top             =   240
-      Width           =   1575
-   End
-   Begin VB.Label txStatus 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
       ForeColor       =   &H000000FF&
       Height          =   210
       Left            =   120
@@ -225,25 +247,42 @@ Begin VB.Form frmMain
       Width           =   45
    End
    Begin VB.Menu mnuControles 
-      Caption         =   "Argentum"
+      Caption         =   "&Fenix AO"
       Begin VB.Menu mnuServidor 
          Caption         =   "Configuracion"
+         Shortcut        =   ^C
+      End
+      Begin VB.Menu mnuSeparador1 
+         Caption         =   "-"
       End
       Begin VB.Menu mnuSystray 
-         Caption         =   "Systray Servidor"
+         Caption         =   "SysTray Servidor"
+         Shortcut        =   ^S
+      End
+      Begin VB.Menu mnuSeparador2 
+         Caption         =   "-"
       End
       Begin VB.Menu mnuCerrar 
-         Caption         =   "Cerrar Servidor"
+         Caption         =   "Cerrar"
+      End
+   End
+   Begin VB.Menu mnuAyuda 
+      Caption         =   "Ayuda"
+      Begin VB.Menu mnuAcerca 
+         Caption         =   "Acerca de ..."
       End
    End
    Begin VB.Menu mnuPopUp 
       Caption         =   "PopUpMenu"
       Visible         =   0   'False
       Begin VB.Menu mnuMostrar 
-         Caption         =   "&Mostrar"
+         Caption         =   "&Mostrar Servidor"
+      End
+      Begin VB.Menu mnuSeparador3 
+         Caption         =   "-"
       End
       Begin VB.Menu mnuSalir 
-         Caption         =   "&Salir"
+         Caption         =   "&Cerrar"
       End
    End
 End
@@ -252,7 +291,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -265,29 +306,30 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Option Explicit
 
 Private Type NOTIFYICONDATA
     cbSize As Long
-    hWnd As Long
+    hwnd As Long
     uID As Long
     uFlags As Long
     uCallbackMessage As Long
@@ -313,15 +355,15 @@ Const WM_MBUTTONDOWN = &H207
 Const WM_MBUTTONUP = &H208
 Const WM_MBUTTONDBLCLK = &H209
 
-Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hWnd As Long, lpdwProcessId As Long) As Long
-Private Declare Function SetCapture Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hwnd As Long, lpdwProcessId As Long) As Long
+Private Declare Function SetCapture Lib "user32" (ByVal hwnd As Long) As Long
 Private Declare Function Shell_NotifyIconA Lib "SHELL32" (ByVal dwMessage As Long, lpData As NOTIFYICONDATA) As Integer
 
-Private Function setNOTIFYICONDATA(hWnd As Long, ID As Long, flags As Long, CallbackMessage As Long, Icon As Long, Tip As String) As NOTIFYICONDATA
+Private Function setNOTIFYICONDATA(hwnd As Long, ID As Long, flags As Long, CallbackMessage As Long, Icon As Long, Tip As String) As NOTIFYICONDATA
     Dim nidTemp As NOTIFYICONDATA
 
     nidTemp.cbSize = Len(nidTemp)
-    nidTemp.hWnd = hWnd
+    nidTemp.hwnd = hwnd
     nidTemp.uID = ID
     nidTemp.uFlags = flags
     nidTemp.uCallbackMessage = CallbackMessage
@@ -330,236 +372,93 @@ Private Function setNOTIFYICONDATA(hWnd As Long, ID As Long, flags As Long, Call
 
     setNOTIFYICONDATA = nidTemp
 End Function
-
-Sub CheckIdleUser()
-Dim iUserIndex As Integer
-
-For iUserIndex = 1 To MaxUsers
-   
-   'Conexion activa? y es un usuario loggeado?
-   If UserList(iUserIndex).ConnID <> -1 And UserList(iUserIndex).flags.UserLogged Then
-        'Actualiza el contador de inactividad
-        UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
-        If UserList(iUserIndex).Counters.IdleCount >= IdleLimit Then
-            Call SendData(ToIndex, iUserIndex, 0, "!!Demasiado tiempo inactivo. Has sido desconectado..")
-            Call Cerrar_Usuario(iUserIndex)
-        End If
-  End If
-  
-Next iUserIndex
-
-End Sub
-
-
-
-Private Sub Auditoria_Timer()
-On Error GoTo errhand
-
-Dim k As Integer
-For k = 1 To LastUser
-    If UserList(k).ConnID <> -1 Then
-        DayStats.Segundos = DayStats.Segundos + 1
-    End If
-Next k
-
-Call PasarSegundo
-
-Static Andando As Boolean
-Static Contador As Long
-Dim TMp As Boolean
-
-Contador = Contador + 1
-
-If Contador >= 10 Then
-    Contador = 0
-    TMp = EstadisticasWeb.EstadisticasAndando()
-    
-    If Andando = False And TMp = True Then
-        Call InicializaEstadisticas
-    End If
-    
-    Andando = TMp
-End If
-
-Exit Sub
-
-errhand:
-Call LogError("Error en Timer Auditoria (sistema de desconexion de 10 segundos). Err: " & Err.Description & " - " & Err.number)
-End Sub
-
-Private Sub AutoSave_Timer()
-
-On Error GoTo errhandler
-'fired every minute
-
-Static Minutos As Long
-Static MinutosLatsClean As Long
-
-Static MinsSocketReset As Long
-
-Static MinsPjesSave As Long
-
-MinsRunning = MinsRunning + 1
-
-If MinsRunning = 60 Then
-    Horas = Horas + 1
-    If Horas = 24 Then
-        Call SaveDayStats
-        DayStats.MaxUsuarios = 0
-        DayStats.Segundos = 0
-        DayStats.Promedio = 0
-        Call DayElapsed
-        'Dias = Dias + 1
-        Horas = 0
-    End If
-    MinsRunning = 0
-End If
-
-Dim i As Integer
-    
-Minutos = Minutos + 1
-
-'MinsSocketReset = MinsSocketReset + 1
-'for debug purposes
-'If MinsSocketReset > 1 Then
-'    MinsSocketReset = 0
-'    For i = 1 To MaxUsers
-'        If UserList(i).ConnID <> -1 And Not UserList(i).flags.UserLogged Then Call CloseSocket(i)
-'    Next i
-'    Call ReloadSokcet
-'End If
-    
-If Minutos >= MinutosWs Then
-    Call DoBackUp
-    Call aClon.VaciarColeccion
-    Minutos = 0
-End If
-
-If MinutosLatsClean >= 15 Then
-        MinutosLatsClean = 0
-        Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
-        Call LimpiarMundo
-Else
-        MinutosLatsClean = MinutosLatsClean + 1
-End If
-
-'[Consejeros]
-'If MinsPjesSave >= 30 Then
-'    MinsPjesSave = 0
-'    Call GuardarUsuarios
-'Else
-'    MinsPjesSave = MinsPjesSave + 1
-'End If
-
-Call PurgarPenas
-Call CheckIdleUser
-
-'<<<<<-------- Log the number of users online ------>>>
-Dim N As Integer
-N = FreeFile(1)
-Open App.Path & "\logs\numusers.log" For Output Shared As N
-Print #N, NumUsers
-Close #N
-'<<<<<-------- Log the number of users online ------>>>
-
-Exit Sub
-errhandler:
-    Call LogError("Error en TimerAutoSave")
-
-End Sub
-
-
-
-
-
-
 Private Sub CmdExec_Timer()
+On Error Resume Next
+
+#If UsarQueSocket = 1 Then
 Dim i As Integer
 
 For i = 1 To MaxUsers
     If UserList(i).ConnID <> -1 Then
-        If Not UserList(i).CommandsBuffer.IsEmpty Then
-            Call HandleData(i, UserList(i).CommandsBuffer.Pop)
-        End If
+        If Not UserList(i).CommandsBuffer.IsEmpty Then Call HandleData(i, UserList(i).CommandsBuffer.Pop)
     End If
 Next i
+
+#End If
+
+End Sub
+Private Sub cmdMore_Click()
+
+If cmdMore.Caption = "Mensaje BroadCast >>" Then
+    Me.Height = 4395
+    cmdMore.Caption = "<< Ocultar"
+Else
+    Me.Height = 2070
+    cmdMore.Caption = "Mensaje BroadCast >>"
+End If
 
 End Sub
 
 Private Sub Command1_Click()
 Call SendData(ToAll, 0, 0, "!!" & BroadMsg.Text & ENDC)
 End Sub
+Public Sub InitMain(f As Byte)
 
-Public Sub InitMain(ByVal f As Byte)
-
-If f = 1 Then
+If f Then
     Call mnuSystray_Click
-Else
-    frmMain.Show
+Else: frmMain.Show
 End If
 
 End Sub
+Private Sub Form_Load()
 
+Call mnuSystray_Click
+Codifico = RandomNumber(1, 99)
 
-
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 On Error Resume Next
    
    If Not Visible Then
-        Select Case x \ Screen.TwipsPerPixelX
+        Select Case X \ Screen.TwipsPerPixelX
                 
             Case WM_LBUTTONDBLCLK
                 WindowState = vbNormal
                 Visible = True
                 Dim hProcess As Long
-                GetWindowThreadProcessId hWnd, hProcess
+                GetWindowThreadProcessId hwnd, hProcess
                 AppActivate hProcess
             Case WM_RBUTTONUP
                 hHook = SetWindowsHookEx(WH_CALLWNDPROC, AddressOf AppHook, App.hInstance, App.ThreadID)
-                PopupMenu mnuPopUp
+                PopupMenu mnuPopUp, , , , mnuMostrar
                 If hHook Then UnhookWindowsHookEx hHook: hHook = 0
         End Select
    End If
    
 End Sub
-
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-'Cancel = 1
-'Me.Hide
-End Sub
-
-Private Sub Form_Resize()
-'If WindowState = vbMinimized Then Command2_Click
-End Sub
-
 Private Sub QuitarIconoSystray()
 On Error Resume Next
 
-'Borramos el icono del systray
+
 Dim i As Integer
 Dim nid As NOTIFYICONDATA
 
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, vbNull, frmMain.Icon, "")
+nid = setNOTIFYICONDATA(frmMain.hwnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, vbNull, frmMain.Icon, "")
 
 i = Shell_NotifyIconA(NIM_DELETE, nid)
     
-
 End Sub
-
 Private Sub Form_Unload(Cancel As Integer)
 On Error Resume Next
 
 Call QuitarIconoSystray
-
-#If UsarAPI Then
-Call LimpiaWsApi
+#If UsarQueSocket = 1 Then
+    Call LimpiaWsApi(frmMain.hwnd)
 #Else
-Socket1.Cleanup
+    Socket1.Cleanup
 #End If
 
 Call DescargaNpcsDat
-
 
 Dim LoopC As Integer
 
@@ -567,462 +466,70 @@ For LoopC = 1 To MaxUsers
     If UserList(LoopC).ConnID <> -1 Then Call CloseSocket(LoopC)
 Next
 
-'Log
-Dim N As Integer
-N = FreeFile
-Open App.Path & "\logs\Main.log" For Append Shared As #N
-Print #N, Date & " " & Time & " server cerrado."
-Close #N
 
+Call LogMain(" Server cerrado")
 End
 
-
-
 End Sub
-
-
-
-
-Private Sub FX_Timer()
-Dim MapIndex As Integer
-Dim N As Integer
-For MapIndex = 1 To NumMaps
-    Randomize
-    If RandomNumber(1, 150) < 12 Then
-        If MapInfo(MapIndex).NumUsers > 0 Then
-
-                Select Case MapInfo(MapIndex).Terreno
-                   'Bosque
-                   Case Bosque
-                        N = RandomNumber(1, 100)
-                        Select Case MapInfo(MapIndex).Zona
-                            Case Campo
-                              If Not Lloviendo Then
-                                If N < 30 And N >= 15 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE)
-                                ElseIf N < 30 And N < 15 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE2)
-                                ElseIf N >= 30 And N <= 35 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO)
-                                ElseIf N >= 35 And N <= 40 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO2)
-                                ElseIf N >= 40 And N <= 45 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE3)
-                                End If
-                               End If
-                            Case Ciudad
-                               If Not Lloviendo Then
-                                If N < 30 And N >= 15 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE)
-                                ElseIf N < 30 And N < 15 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE2)
-                                ElseIf N >= 30 And N <= 35 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO)
-                                ElseIf N >= 35 And N <= 40 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO2)
-                                ElseIf N >= 40 And N <= 45 Then
-                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE3)
-                                End If
-                               End If
-                        End Select
-
-                End Select
-
-        End If
-    End If
-Next
-
-End Sub
-
-Private Sub GameTimer_Timer()
-Dim iUserIndex As Integer
-Dim bEnviarStats As Boolean
-Dim bEnviarAyS As Boolean
-Dim iNpcIndex As Integer
-
-Static lTirarBasura As Long
-Static lPermiteAtacar As Long
-Static lPermiteCast As Long
-Static lPermiteTrabajar As Long
-
-'[Alejo]
-If lPermiteAtacar < IntervaloUserPuedeAtacar Then
-    lPermiteAtacar = lPermiteAtacar + 1
-End If
-
-If lPermiteCast < IntervaloUserPuedeCastear Then
-    lPermiteCast = lPermiteCast + 1
-End If
-
-If lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
-     lPermiteTrabajar = lPermiteTrabajar + 1
-End If
-'[/Alejo]
-
-
- '<<<<<< Procesa eventos de los usuarios >>>>>>
- For iUserIndex = 1 To MaxUsers
-   'Conexion activa?
-   If UserList(iUserIndex).ConnID <> -1 Then
-      '¿User valido?
-      If UserList(iUserIndex).flags.UserLogged Then
-         
-         '[Alejo-18-5]
-         bEnviarStats = False
-         bEnviarAyS = False
-         
-         UserList(iUserIndex).NumeroPaquetesPorMiliSec = 0
-
-         '<<<<<<<<<<<< Allow attack >>>>>>>>>>>>>
-'         If lPermiteAtacar < IntervaloUserPuedeAtacar Then
-'                lPermiteAtacar = lPermiteAtacar + 1
-'         Else
-         If Not lPermiteAtacar < IntervaloUserPuedeAtacar Then
-                UserList(iUserIndex).flags.PuedeAtacar = 1
-'                lPermiteAtacar = 0
-         End If
-         '<<<<<<<<<<<< Allow attack >>>>>>>>>>>>>
-
-         '<<<<<<<<<<<< Allow Cast spells >>>>>>>>>>>
-'         If lPermiteCast < IntervaloUserPuedeCastear Then
-'              lPermiteCast = lPermiteCast + 1
-'         Else
-         If Not lPermiteCast < IntervaloUserPuedeCastear Then
-              UserList(iUserIndex).flags.PuedeLanzarSpell = 1
-'              lPermiteCast = 0
-         End If
-         '<<<<<<<<<<<< Allow Cast spells >>>>>>>>>>>
-
-         '<<<<<<<<<<<< Allow Work >>>>>>>>>>>
-'         If lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
-'              lPermiteTrabajar = lPermiteTrabajar + 1
-'         Else
-         If Not lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
-              UserList(iUserIndex).flags.PuedeTrabajar = 1
-'              lPermiteTrabajar = 0
-         End If
-         '<<<<<<<<<<<< Allow Work >>>>>>>>>>>
-
-
-         Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.Map, UserList(iUserIndex).Pos.x, UserList(iUserIndex).Pos.y)
-         
-                
-         If UserList(iUserIndex).flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
-         If UserList(iUserIndex).flags.Ceguera = 1 Or _
-            UserList(iUserIndex).flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
-          
-         If UserList(iUserIndex).flags.Muerto = 0 Then
-               
-               '[Consejeros]
-               If UserList(iUserIndex).flags.Desnudo And UserList(iUserIndex).flags.Privilegios = 0 Then Call EfectoFrio(iUserIndex)
-               If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
-               If UserList(iUserIndex).flags.Envenenado = 1 And UserList(iUserIndex).flags.Privilegios = 0 Then Call EfectoVeneno(iUserIndex, bEnviarStats)
-               If UserList(iUserIndex).flags.AdminInvisible <> 1 And UserList(iUserIndex).flags.Invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
-          
-               Call DuracionPociones(iUserIndex)
-               Call HambreYSed(iUserIndex, bEnviarAyS)
-
-               If Lloviendo Then
-                    If Not Intemperie(iUserIndex) Then
-                                 If Not UserList(iUserIndex).flags.Descansar And (UserList(iUserIndex).flags.Hambre = 0 And UserList(iUserIndex).flags.Sed = 0) Then
-                                 'No esta descansando
-                                          Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                                          Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                                 ElseIf UserList(iUserIndex).flags.Descansar Then
-                                 'esta descansando
-                                          Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                                          Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                                          'termina de descansar automaticamente
-                                          If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
-                                             UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                                    Call SendData(ToIndex, iUserIndex, 0, "DOK")
-                                                    Call SendData(ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
-                                                    UserList(iUserIndex).flags.Descansar = False
-                                          End If
-                                 End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
-                    End If
-               Else
-                    If Not UserList(iUserIndex).flags.Descansar And (UserList(iUserIndex).flags.Hambre = 0 And UserList(iUserIndex).flags.Sed = 0) Then
-                    'No esta descansando
-                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                             Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                    ElseIf UserList(iUserIndex).flags.Descansar Then
-                    'esta descansando
-                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                             Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                             'termina de descansar automaticamente
-                             If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
-                                UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                     Call SendData(ToIndex, iUserIndex, 0, "DOK")
-                                     Call SendData(ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
-                                     UserList(iUserIndex).flags.Descansar = False
-                             End If
-                    End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
-               End If
-
-               If bEnviarStats Then Call SendUserStatsBox(iUserIndex)
-               If bEnviarAyS Then Call EnviarHambreYsed(iUserIndex)
-
-               If UserList(iUserIndex).NroMacotas > 0 Then Call TiempoInvocacion(iUserIndex)
-       End If 'Muerto
-     Else 'no esta logeado?
-     'UserList(iUserIndex).Counters.IdleCount = 0
-     '[Gonzalo]: deshabilitado para el nuevo sistema de tiraje
-     'de dados :)
-        UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
-        If UserList(iUserIndex).Counters.IdleCount > IntervaloParaConexion Then
-              UserList(iUserIndex).Counters.IdleCount = 0
-              Call CloseSocket(iUserIndex)
-        End If
-     End If 'UserLogged
-        
-   End If
-
-   Next iUserIndex
-
-'[Alejo]
-If Not lPermiteAtacar < IntervaloUserPuedeAtacar Then
-    lPermiteAtacar = 0
-End If
-
-If Not lPermiteCast < IntervaloUserPuedeCastear Then
-    lPermiteCast = 0
-End If
-
-If Not lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
-     lPermiteTrabajar = 0
-End If
-
-'[/Alejo]
-  'DoEvents
-End Sub
-
 Private Sub mnuCerrar_Click()
 
-Call SaveGuildsDB
+Call SaveGuildsNew
 
-If MsgBox("¡¡Atencion!! Si cierra el servidor puede provocar la perdida de datos. ¿Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
-    Dim f
-    For Each f In Forms
-        Unload f
-    Next
-End If
+If MsgBox("Si cierra el servidor puede provocar la perdida de datos." & vbCrLf & vbCrLf & "¿Desea hacerlo de todas maneras?", vbYesNo + vbExclamation, "Advertencia") = vbYes Then Call ApagarSistema
 
 End Sub
-
 Private Sub mnusalir_Click()
-    Call mnuCerrar_Click
-End Sub
 
+Call mnuCerrar_Click
+
+End Sub
 Public Sub mnuMostrar_Click()
 On Error Resume Next
-    WindowState = vbNormal
-    Form_MouseMove 0, 0, 7725, 0
-End Sub
 
-Private Sub KillLog_Timer()
-On Error Resume Next
-
-If FileExist(App.Path & "\logs\connect.log", vbNormal) Then Kill App.Path & "\logs\connect.log"
-If FileExist(App.Path & "\logs\haciendo.log", vbNormal) Then Kill App.Path & "\logs\haciendo.log"
-If FileExist(App.Path & "\logs\stats.log", vbNormal) Then Kill App.Path & "\logs\stats.log"
-If FileExist(App.Path & "\logs\Asesinatos.log", vbNormal) Then Kill App.Path & "\logs\Asesinatos.log"
-If FileExist(App.Path & "\logs\HackAttemps.log", vbNormal) Then Kill App.Path & "\logs\HackAttemps.log"
-If FileExist(App.Path & "\logs\wsapi.log", vbNormal) Then Kill App.Path & "\logs\wsapi.log"
+WindowState = vbNormal
+Form_MouseMove 0, 0, 7725, 0
 
 End Sub
-
 Private Sub mnuServidor_Click()
+
 frmServidor.Visible = True
+
 End Sub
-
 Private Sub mnuSystray_Click()
-
 Dim i As Integer
 Dim S As String
 Dim nid As NOTIFYICONDATA
 
-S = "ARGENTUM-ONLINE"
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
+S = "Servidor Fenix AO"
+nid = setNOTIFYICONDATA(frmMain.hwnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
 i = Shell_NotifyIconA(NIM_ADD, nid)
     
 If WindowState <> vbMinimized Then WindowState = vbMinimized
 Visible = False
 
 End Sub
-
-
-
-
-
-
-Private Sub npcataca_Timer()
-
-Dim npc As Integer
-
-For npc = 1 To LastNPC
-    Npclist(npc).CanAttack = 1
-Next npc
-
-
-End Sub
-
-
-
-
-Private Sub Socket1_Accept(SocketId As Integer)
-#If Not (UsarAPI = 1) Then
-
-'=========================================================
-'USO DEL CONTROL SOCKET WRENCH
-'=============================
-
-If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Pedido de conexion SocketID:" & SocketId & vbCrLf
-
-On Error Resume Next
-    
-    Dim NewIndex As Integer
-    
-    
-    If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "NextOpenUser" & vbCrLf
-    
-    NewIndex = NextOpenUser ' Nuevo indice
-    If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "UserIndex asignado " & NewIndex & vbCrLf
-    
-    If NewIndex <= MaxUsers Then
-            If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Cargando Socket " & NewIndex & vbCrLf
-            
-            Unload Socket2(NewIndex)
-            Load Socket2(NewIndex)
-            
-            Socket2(NewIndex).AddressFamily = AF_INET
-            Socket2(NewIndex).protocol = IPPROTO_IP
-            Socket2(NewIndex).SocketType = SOCK_STREAM
-            Socket2(NewIndex).Binary = False
-            Socket2(NewIndex).BufferSize = SOCKET_BUFFER_SIZE
-            Socket2(NewIndex).Blocking = False
-            Socket2(NewIndex).Linger = 1
-            
-            Socket2(NewIndex).accept = SocketId
-            
-            
-            If aDos.MaxConexiones(Socket2(NewIndex).PeerAddress) Then
-            
-                UserList(NewIndex).ConnID = -1
-                If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "User slot reseteado " & NewIndex & vbCrLf
-            
-               
-                
-                If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Socket unloaded" & NewIndex & vbCrLf
-                
-                'Call LogCriticEvent(Socket2(NewIndex).PeerAddress & " intento crear mas de 3 conexiones.")
-                Call aDos.RestarConexion(Socket2(NewIndex).PeerAddress)
-                'Socket2(NewIndex).Disconnect
-                Unload frmMain.Socket2(NewIndex)
-                
-                Exit Sub
-            End If
-            
-            UserList(NewIndex).ConnID = SocketId
-            UserList(NewIndex).ip = Socket2(NewIndex).PeerAddress
-            
-            If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & Socket2(NewIndex).PeerAddress & " logged." & vbCrLf
-    Else
-        Call LogCriticEvent("No acepte conexion porque no tenia slots")
-    End If
-    
-Exit Sub
-
-#End If
-End Sub
-
-
 Private Sub Socket1_Blocking(Status As Integer, Cancel As Integer)
 Cancel = True
 End Sub
-
-Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Response As Integer)
-' solo para depurar
-'Call LogError("Socket1:" & ErrorString)
-
-If DebugSocket Then frmDebugSocket.Text2.Text = frmDebugSocket.Text2.Text & Time & " " & ErrorString & vbCrLf
-
-frmDebugSocket.Label3.Caption = Socket1.State
-End Sub
-
-Private Sub Socket2_Blocking(Index As Integer, Status As Integer, Cancel As Integer)
-'Cancel = True
-End Sub
-
 Private Sub Socket2_Connect(Index As Integer)
-'If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Conectado" & vbCrLf
+
 Set UserList(Index).CommandsBuffer = New CColaArray
-End Sub
 
+End Sub
 Private Sub Socket2_Disconnect(Index As Integer)
-    If UserList(Index).flags.UserLogged And _
-        UserList(Index).Counters.Saliendo = False Then
-        Call Cerrar_Usuario(Index)
-    Else
-        Call CloseSocket(Index)
-    End If
+
+If UserList(Index).flags.UserLogged And _
+    UserList(Index).Counters.Saliendo = False Then
+    Call Cerrar_Usuario(Index)
+Else: Call CloseSocket(Index)
+End If
+
 End Sub
-
-'Private Sub Socket2_LastError(Index As Integer, ErrorCode As Integer, ErrorString As String, Response As Integer)
-''24004   WSAEINTR    Blocking function was canceled
-''24009   WSAEBADF    Invalid socket descriptor passed to function
-''24013   WSAEACCES   Access denied
-''24014   WSAEFAULT   Invalid address passed to function
-''24022   WSAEINVAL   Invalid socket function call
-''24024   WSAEMFILE   No socket descriptors are available
-''24035   WSAEWOULDBLOCK  Socket would block on this operation
-''24036   WSAEINPROGRESS  Blocking function in progress
-''24037   WSAEALREADY Function being canceled has already completed
-''24038   WSAENOTSOCK Invalid socket descriptor passed to function
-''24039   WSAEDESTADDRREQ Destination address is required
-''24040   WSAEMSGSIZE Datagram was too large to fit in specified buffer
-''24041   WSAEPROTOTYPE   Specified protocol is the wrong type for this socket
-''24042   WSAENOPROTOOPT  Socket option is unknown or unsupported
-''24043   WSAEPROTONOSUPPORT  Specified protocol is not supported
-''24044   WSAESOCKTNOSUPPORT  Specified socket type is not supported in this address family
-''24045   WSAEOPNOTSUPP   Socket operation is not supported
-''24046   WSAEPFNOSUPPORT Specified protocol family is not supported
-''24047   WSAEAFNOSUPPORT Specified address family is not supported by this protocol
-''24048   WSAEADDRINUSE   Specified address is already in use
-''24049   WSAEADDRNOTAVAIL    Specified address is not available
-''24050   WSAENETDOWN Network subsystem has failed
-''24051   WSAENETUNREACH  Network cannot be reached from this host
-''24052   WSAENETRESET    Network dropped connection on reset
-''24053   WSAECONNABORTED Connection was aborted due to timeout or other failure
-''24054   WSAECONNRESET   Connection was reset by remote network
-''24055   WSAENOBUFS  No buffer space is available
-''24056   WSAEISCONN  Socket is already connected
-''24057   WSAENOTCONN Socket Is Not Connected
-''24058   WSAESHUTDOWN    Socket connection has been shut down
-''24060   WSAETIMEDOUT    Operation timed out before completion
-''24061   WSAECONNREFUSED Connection refused by remote network
-''24064   WSAEHOSTDOWN    Remote host is down
-''24065   WSAEHOSTUNREACH Remote host is unreachable
-''24091   WSASYSNOTREADY  Network subsystem is not ready for communication
-''24092   WSAVERNOTSUPPORTED  Requested version is not available
-''24093   WSANOTINITIALIZED   Windows sockets library not initialized
-''25001   WSAHOST_NOT_FOUND   Authoritative Answer Host not found
-''25002   WSATRY_AGAIN    Non-authoritative Answer Host not found
-''25003   WSANO_RECOVERY  Non-recoverable error
-''25004   WSANO_DATA  No data record of requested type
-''Response = SOCKET_ERRIGNORE
-'If ErrorCode = 24053 Then Call CloseSocket(Index)
-'End Sub
-
 Private Sub Socket2_Read(Index As Integer, DataLength As Integer, IsUrgent As Integer)
 
-#If Not (UsarAPI = 1) Then
 
+#If UsarQueSocket = 0 Then
 On Error GoTo ErrorHandler
-
-'*********************************************
-'Separamos las lineas con ENDC y las enviamos a HandleData()
-'*********************************************
 Dim LoopC As Integer
 Dim RD As String
 Dim rBuffer(1 To COMMAND_BUFFER_SIZE) As String
@@ -1032,28 +539,13 @@ Dim sChar As Integer
 Dim eChar As Integer
 Dim aux$
 Dim OrigCad As String
-
 Dim LenRD As Long
-
-'<<<<<<<<<<<<<<<<<< Evitamos DoS >>>>>>>>>>>>>>>>>>>>>>>>>>>
-'Call AddtoVar(UserList(Index).NumeroPaquetesPorMiliSec, 1, 1000)
-'
-'If UserList(Index).NumeroPaquetesPorMiliSec > 700 Then
-'   'UserList(Index).Flags.AdministrativeBan = 1
-'   Call LogCriticalHackAttemp(UserList(Index).Name & " " & frmMain.Socket2(Index).PeerAddress & " alcanzo el max paquetes por iteracion.")
-'   Call SendData(ToIndex, Index, 0, "ERRSe ha perdido la conexion, por favor vuelva a conectarse.")
-'   Call CloseSocket(Index)
-'   Exit Sub
-'End If
 
 Call Socket2(Index).Read(RD, DataLength)
 
 OrigCad = RD
 LenRD = Len(RD)
 
-'Call AddtoVar(UserList(Index).BytesTransmitidosUser, LenB(RD), 100000)
-
-'[¡¡BUCLE INFINITO!!]'
 If LenRD = 0 Then
     UserList(Index).AntiCuelgue = UserList(Index).AntiCuelgue + 1
     If UserList(Index).AntiCuelgue >= 150 Then
@@ -1066,15 +558,12 @@ If LenRD = 0 Then
 Else
     UserList(Index).AntiCuelgue = 0
 End If
-'[¡¡BUCLE INFINITO!!]'
 
-'Verificamos por una comando roto y le agregamos el resto
-If UserList(Index).RDBuffer <> "" Then
+If Len(UserList(Index).RDBuffer) > 0 Then
     RD = UserList(Index).RDBuffer & RD
     UserList(Index).RDBuffer = ""
 End If
 
-'Verifica por mas de una linea
 sChar = 1
 For LoopC = 1 To LenRD
 
@@ -1089,221 +578,482 @@ For LoopC = 1 To LenRD
         
 Next LoopC
 
-'Verifica una linea rota y guarda
-If Len(RD) - (sChar - 1) <> 0 Then
-    UserList(Index).RDBuffer = Mid$(RD, sChar, Len(RD))
-End If
+If Len(RD) - (sChar - 1) <> 0 Then UserList(Index).RDBuffer = Mid$(RD, sChar, Len(RD))
 
-'Enviamos el buffer al manejador
 For LoopC = 1 To CR
-    
-    '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
-    '%%% EL PROBLEMA DEL SPEEDHACK          %%%
-    '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     If ClientsCommandsQueue = 1 Then
-        If rBuffer(LoopC) <> "" Then If Not UserList(Index).CommandsBuffer.Push(rBuffer(LoopC)) Then Call Cerrar_Usuario(Index)
-    
-    Else ' SH tiebe efecto
-          If UserList(Index).ConnID <> -1 Then
-            Call HandleData(Index, rBuffer(LoopC))
-          Else
-            Exit Sub
-          End If
+        If Len(rBuffer(LoopC)) > 0 Then If Not UserList(Index).CommandsBuffer.Push(rBuffer(LoopC)) Then Call Cerrar_Usuario(Index)
+    Else
+        If UserList(Index).ConnID <> -1 Then
+          Call HandleData(Index, rBuffer(LoopC))
+        Else
+          Exit Sub
+        End If
     End If
-        
 Next LoopC
 
 Exit Sub
 
-
 ErrorHandler:
-    Call LogError("Error en Socket read." & Err.Description & " Numero paquetes:" & UserList(Index).NumeroPaquetesPorMiliSec & " . Rdata:" & OrigCad)
-
+    Call LogError("Error en Socket read. " & Err.Description & " Numero paquetes:" & UserList(Index).NumeroPaquetesPorMiliSec & " . Rdata:" & OrigCad)
+    Call CloseSocket(Index)
 #End If
 End Sub
 
 
-
-Private Sub TIMER_AI_Timer()
-
-On Error GoTo ErrorHandler
-
-Dim NpcIndex As Integer
-Dim x As Integer
-Dim y As Integer
-Dim UseAI As Integer
-Dim mapa As Integer
-
-If Not haciendoBK Then
-    'Update NPCs
-    For NpcIndex = 1 To LastNPC
-        
-        If Npclist(NpcIndex).flags.NPCActive Then 'Nos aseguramos que sea INTELIGENTE!
-           If Npclist(NpcIndex).flags.Paralizado = 1 Then
-                 Call EfectoParalisisNpc(NpcIndex)
-           Else
-                'Usamos AI si hay algun user en el mapa
-                mapa = Npclist(NpcIndex).Pos.Map
-                If mapa > 0 Then
-                     If MapInfo(mapa).NumUsers > 0 Then
-                             If Npclist(NpcIndex).Movement <> ESTATICO Then
-                                   Call NPCAI(NpcIndex)
-                             End If
-                     End If
-                End If
-                
-           End If
-                   
-        End If
-    
-    Next NpcIndex
-
-End If
-
-
-Exit Sub
-
-ErrorHandler:
- Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).Name & " mapa:" & Npclist(NpcIndex).Pos.Map)
- Call MuereNpc(NpcIndex, 0)
-
-End Sub
-
-Private Sub Timer1_Timer()
-
+Private Sub TimerFatuo_Timer()
+On Error GoTo Error
 Dim i As Integer
 
-For i = 1 To MaxUsers
-    If UserList(i).flags.UserLogged Then _
-        If UserList(i).flags.Oculto = 1 Then Call DoPermanecerOculto(i)
-Next i
-
-End Sub
-
-Private Sub tLluvia_Timer()
-On Error GoTo errhandler
-
-Dim iCount As Integer
-
-If Lloviendo Then
-   For iCount = 1 To LastUser
-    Call EfectoLluvia(iCount)
-   Next iCount
-End If
+For i = 1 To LastNPC
+    If Npclist(i).flags.NPCActive And Npclist(i).Numero = 89 Then Npclist(i).CanAttack = 1
+Next
 
 Exit Sub
-errhandler:
-Call LogError("tLluvia")
+
+Error:
+    Call LogError("Error en TimerFatuo: " & Err.Description)
 End Sub
-
-Private Sub tLluviaEvent_Timer()
-
-On Error GoTo ErrorHandler
-
-Static MinutosLloviendo As Long
-Static MinutosSinLluvia As Long
-
-If Not Lloviendo Then
-    MinutosSinLluvia = MinutosSinLluvia + 1
-    If MinutosSinLluvia >= 15 And MinutosSinLluvia < 1440 Then
-            If RandomNumber(1, 100) <= 10 Then
-                Lloviendo = True
-                MinutosSinLluvia = 0
-                Call SendData(ToAll, 0, 0, "LLU")
-            End If
-    ElseIf MinutosSinLluvia >= 1440 Then
-                Lloviendo = True
-                MinutosSinLluvia = 0
-                Call SendData(ToAll, 0, 0, "LLU")
-    End If
-Else
-    MinutosLloviendo = MinutosLloviendo + 1
-    If MinutosLloviendo >= 5 Then
-            Lloviendo = False
-            Call SendData(ToAll, 0, 0, "LLU")
-            MinutosLloviendo = 0
-    Else
-            If RandomNumber(1, 100) <= 7 Then
-                Lloviendo = False
-                MinutosLloviendo = 0
-                Call SendData(ToAll, 0, 0, "LLU")
-            End If
-    End If
-End If
-
-
-Exit Sub
-ErrorHandler:
-Call LogError("Error tLluviaTimer")
-
-
-
-End Sub
-
-
-Private Sub tPiqueteC_Timer()
-On Error GoTo errhandler
-
-Static Segundos As Integer
-
-Segundos = Segundos + 6
-
+Private Sub TimerMeditar_Timer()
 Dim i As Integer
 
 For i = 1 To LastUser
-    If UserList(i).flags.UserLogged Then
-            
-            If MapData(UserList(i).Pos.Map, UserList(i).Pos.x, UserList(i).Pos.y).trigger = 5 Then
-                    UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
-                    Call SendData(ToIndex, i, 0, "||Estas obstruyendo la via publica, muevete o seras encarcelado!!!" & FONTTYPE_INFO)
-                    If UserList(i).Counters.PiqueteC > 23 Then
-                            UserList(i).Counters.PiqueteC = 0
-                            Call Encarcelar(i, 3)
-                    End If
-            Else
-                    If UserList(i).Counters.PiqueteC > 0 Then UserList(i).Counters.PiqueteC = 0
-            End If
-            
-            If Segundos >= 18 Then
-'                Dim nfile As Integer
-'                nfile = FreeFile ' obtenemos un canal
-'                Open App.Path & "\logs\maxpasos.log" For Append Shared As #nfile
-'                Print #nfile, UserList(i).Counters.Pasos
-'                Close #nfile
-                If Segundos >= 18 Then UserList(i).Counters.Pasos = 0
-            End If
-            
-    End If
-Next i
+    If UserList(i).flags.Meditando Then Call TimerMedita(i)
+Next
 
-If Segundos >= 18 Then Segundos = 0
-   
+End Sub
+Sub TimerMedita(UserIndex As Integer)
+Dim Cant As Single
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.tInicioMeditar) >= TIEMPO_INICIOMEDITAR Then
+    Cant = UserList(UserIndex).Counters.ManaAcumulado + UserList(UserIndex).Stats.MaxMAN * (1 + UserList(UserIndex).Stats.UserSkills(Meditar) * 0.05) / 100
+    If Cant <= 0.75 Then
+        UserList(UserIndex).Counters.ManaAcumulado = Cant
+        Exit Sub
+    Else
+        Cant = Round(Cant)
+        UserList(UserIndex).Counters.ManaAcumulado = 0
+    End If
+    Call AddtoVar(UserList(UserIndex).Stats.MinMAN, Cant, UserList(UserIndex).Stats.MaxMAN)
+    Call SendData(ToIndex, UserIndex, 0, "MN" & Cant)
+    Call SubirSkill(UserIndex, Meditar)
+    If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
+        Call SendData(ToIndex, UserIndex, 0, "D9")
+        Call SendData(ToIndex, UserIndex, 0, "MEDOK")
+        UserList(UserIndex).flags.Meditando = False
+        UserList(UserIndex).Char.FX = 0
+        UserList(UserIndex).Char.loops = 0
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).POS.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
+    End If
+End If
+
+Call SendUserMANA(UserIndex)
+
+End Sub
+Private Sub TimerTrabaja_Timer()
+Dim i As Integer
+On Error GoTo Error
+
+For i = 1 To LastUser
+    If UserList(i).flags.Trabajando Then
+        UserList(i).Counters.IdleCount = Timer
+        
+        Select Case UserList(i).flags.Trabajando
+            Case Pesca
+                Call DoPescar(i)
+                    
+            Case Talar
+                Call DoTalar(i, ObjData(MapData(UserList(i).POS.Map, UserList(i).TrabajoPos.X, UserList(i).TrabajoPos.Y).OBJInfo.OBJIndex).ArbolElfico = 1)
+    
+            Case Mineria
+                Call DoMineria(i, ObjData(MapData(UserList(i).POS.Map, UserList(i).TrabajoPos.X, UserList(i).TrabajoPos.Y).OBJInfo.OBJIndex).MineralIndex)
+        End Select
+    End If
+Next
+Exit Sub
+Error:
+    Call LogError("Error en TimerTrabaja: " & Err.Description)
+    
+End Sub
+Private Sub UserTimer_Timer()
+On Error GoTo Error
+Static Andaban As Boolean, Contador As Single
+Dim Andan As Boolean, UI As Integer, i As Integer
+
+If CuentaRegresiva Then
+    CuentaRegresiva = CuentaRegresiva - 1
+    
+    If CuentaRegresiva = 0 Then
+        Call SendData(ToMap, 0, GMCuenta, "||YA!!!" & FONTTYPE_FIGHT)
+        Me.Enabled = False
+    Else
+        Call SendData(ToMap, 0, GMCuenta, "||" & CuentaRegresiva & "..." & FONTTYPE_INFO)
+    End If
+End If
+
+For i = 1 To LastUser
+    If UserList(i).ConnID <> -1 Then DayStats.Segundos = DayStats.Segundos + 1
+Next
+
+If TiempoTranscurrido(Contador) >= 10 Then
+    Contador = Timer
+    Andan = EstadisticasWeb.EstadisticasAndando()
+    If Not Andaban And Andan Then Call InicializaEstadisticas
+    Andaban = Andan
+End If
+
+For UI = 1 To LastUser
+    If UserList(UI).flags.UserLogged And UserList(UI).ConnID <> -1 Then
+        Call TimerPiquete(UI)
+        If UserList(UI).flags.Protegido > 1 Then Call TimerProtEntro(UI)
+        If UserList(UI).flags.Encarcelado Then Call TimerCarcel(UI)
+        If UserList(UI).flags.Muerto = 0 Then
+            If UserList(UI).flags.Paralizado Then Call TimerParalisis(UI)
+            If UserList(UI).flags.BonusFlecha Then Call TimerFlecha(UI)
+            If UserList(UI).flags.Ceguera = 1 Then Call TimerCeguera(UI)
+            If UserList(UI).flags.Envenenado = 1 Then Call TimerVeneno(UI)
+            If UserList(UI).flags.Envenenado = 2 Then Call TimerVenenoDoble(UI)
+            If UserList(UI).flags.Estupidez = 1 Then Call TimerEstupidez(UI)
+            If UserList(UI).flags.AdminInvisible = 0 And UserList(UI).flags.Invisible = 1 And UserList(UI).flags.Oculto = 0 Then Call TimerInvisibilidad(UI)
+            If UserList(UI).flags.Desnudo = 1 Then Call TimerFrio(UI)
+            If UserList(UI).flags.TomoPocion Then Call TimerPocion(UI)
+            If UserList(UI).flags.Transformado Then Call TimerTransformado(UI)
+            If UserList(UI).NroMascotas Then Call TimerInvocacion(UI)
+            If UserList(UI).flags.Oculto Then Call TimerOculto(UI)
+            If UserList(UI).flags.Sacrificando Then Call TimerSacrificando(UI)
+            
+            Call TimerHyS(UI)
+            Call TimerSanar(UI)
+            Call TimerStamina(UI)
+        End If
+        If EnviarEstats Then
+            Call SendUserStatsBox(UI)
+            EnviarEstats = False
+        End If
+        Call TimerIdleCount(UI)
+        If UserList(UI).Counters.Saliendo Then Call TimerSalir(UI)
+    End If
+Next
+
 Exit Sub
 
-errhandler:
-    Call LogError("Error en tPiqueteC_Timer")
+Error:
+    Call LogError("Error en UserTimer:" & Err.Description & " " & UI)
+    
 End Sub
+Public Sub TimerOculto(UserIndex As Integer)
+Dim ClaseBuena As Boolean
 
+ClaseBuena = UserList(UserIndex).Clase = GUERRERO Or UserList(UserIndex).Clase = ARQUERO Or UserList(UserIndex).Clase = CAZADOR
 
-Private Sub tTraficStat_Timer()
-
-'Dim i As Integer
-'
-'If frmTrafic.Visible Then frmTrafic.lstTrafico.Clear
-'
-'For i = 1 To LastUser
-'    If UserList(i).Flags.UserLogged Then
-'        If frmTrafic.Visible Then
-'            frmTrafic.lstTrafico.AddItem UserList(i).Name & " " & UserList(i).BytesTransmitidosUser + UserList(i).BytesTransmitidosSvr & " bytes per second"
-'        End If
-'        UserList(i).BytesTransmitidosUser = 0
-'        UserList(i).BytesTransmitidosSvr = 0
-'    End If
-'Next i
+If RandomNumber(1, 10 + UserList(UserIndex).Stats.UserSkills(Ocultarse) / 4 + 15 * Buleano(ClaseBuena) + 25 * Buleano(ClaseBuena And Not UserList(UserIndex).Clase = GUERRERO And UserList(UserIndex).Invent.ArmourEqpObjIndex = 360)) <= 5 Then
+    UserList(UserIndex).flags.Oculto = 0
+    UserList(UserIndex).flags.Invisible = 0
+    Call SendData(ToMap, 0, UserList(UserIndex).POS.Map, ("V3" & UserList(UserIndex).Char.CharIndex & ",0"))
+    Call SendData(ToIndex, UserIndex, 0, "V5")
+End If
 
 End Sub
+Public Sub TimerStamina(UserIndex As Integer)
 
-Private Sub Userslst_Click()
+If UserList(UserIndex).Stats.MinSta < UserList(UserIndex).Stats.MaxSta And UserList(UserIndex).flags.Hambre = 0 And UserList(UserIndex).flags.Sed = 0 And UserList(UserIndex).flags.Desnudo = 0 Then
+   If (Not UserList(UserIndex).flags.Descansar And TiempoTranscurrido(UserList(UserIndex).Counters.STACounter) >= StaminaIntervaloSinDescansar) Or _
+   (UserList(UserIndex).flags.Descansar And TiempoTranscurrido(UserList(UserIndex).Counters.STACounter) >= StaminaIntervaloDescansar) Then
+        UserList(UserIndex).Counters.STACounter = Timer
+        UserList(UserIndex).Stats.MinSta = Minimo(UserList(UserIndex).Stats.MinSta + CInt(RandomNumber(5, Porcentaje(UserList(UserIndex).Stats.MaxSta, 15))), UserList(UserIndex).Stats.MaxSta)
+        If TiempoTranscurrido(UserList(UserIndex).Counters.CartelStamina) >= 10 Then
+            UserList(UserIndex).Counters.CartelStamina = Timer
+            Call SendData(ToIndex, UserIndex, 0, "MV")
+        End If
+        EnviarEstats = True
+    End If
+End If
+
+End Sub
+Sub TimerTransformado(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Transformado) >= IntervaloInvisible Then
+    Call DoTransformar(UserIndex)
+End If
+
+End Sub
+Sub TimerInvisibilidad(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Invisibilidad) >= IntervaloInvisible Then
+    Call SendData(ToIndex, UserIndex, 0, "V6")
+    Call QuitarInvisible(UserIndex)
+End If
+
+End Sub
+Sub TimerFlecha(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.BonusFlecha) >= 45 Then
+    UserList(UserIndex).Counters.BonusFlecha = 0
+    UserList(UserIndex).flags.BonusFlecha = False
+    Call SendData(ToIndex, UserIndex, 0, "||Se acabó el efecto del Arco Encantado." & FONTTYPE_INFO)
+End If
+
+End Sub
+Sub TimerPiquete(UserIndex As Integer)
+
+If MapData(UserList(UserIndex).POS.Map, UserList(UserIndex).POS.X, UserList(UserIndex).POS.Y).trigger = 5 Then
+    UserList(UserIndex).Counters.PiqueteC = UserList(UserIndex).Counters.PiqueteC + 1
+    If UserList(UserIndex).Counters.PiqueteC Mod 5 = 0 Then Call SendData(ToIndex, UserIndex, 0, "9N")
+    If UserList(UserIndex).Counters.PiqueteC >= 25 Then
+        UserList(UserIndex).Counters.PiqueteC = 0
+        Call Encarcelar(UserIndex, 3)
+    End If
+Else: UserList(UserIndex).Counters.PiqueteC = 0
+End If
+
+End Sub
+Public Sub TimerProtEntro(UserIndex As Integer)
+On Error GoTo Error
+
+UserList(UserIndex).Counters.Protegido = UserList(UserIndex).Counters.Protegido - 1
+If UserList(UserIndex).Counters.Protegido <= 0 Then UserList(UserIndex).flags.Protegido = 0
+
+Exit Sub
+
+Error:
+    Call LogError("Error en TimerProtEntro" & " " & Err.Description)
+End Sub
+Sub TimerParalisis(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Paralisis) >= IntervaloParalizadoUsuario Then
+    UserList(UserIndex).Counters.Paralisis = 0
+    UserList(UserIndex).flags.Paralizado = 0
+    Call SendData(ToIndex, UserIndex, 0, "P8")
+End If
+
+End Sub
+Sub TimerCeguera(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Ceguera) >= IntervaloParalizadoUsuario / 2 Then
+    UserList(UserIndex).Counters.Ceguera = 0
+    UserList(UserIndex).flags.Ceguera = 0
+    Call SendData(ToIndex, UserIndex, 0, "NSEGUE")
+End If
+
+End Sub
+Sub TimerEstupidez(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Estupidez) >= IntervaloParalizadoUsuario Then
+    UserList(UserIndex).Counters.Estupidez = 0
+    UserList(UserIndex).flags.Estupidez = 0
+    Call SendData(ToIndex, UserIndex, 0, "NESTUP")
+End If
+
+End Sub
+Sub TimerCarcel(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Pena) >= UserList(UserIndex).Counters.TiempoPena Then
+    UserList(UserIndex).Counters.TiempoPena = 0
+    UserList(UserIndex).flags.Encarcelado = 0
+    UserList(UserIndex).Counters.Pena = 0
+    If UserList(UserIndex).POS.Map = Prision.Map Then
+        Call WarpUserChar(UserIndex, Libertad.Map, Libertad.X, Libertad.Y, True)
+        Call SendData(ToIndex, UserIndex, 0, "4P")
+    End If
+End If
+
+End Sub
+Sub TimerVenenoDoble(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Veneno) >= 2 Then
+    If TiempoTranscurrido(UserList(UserIndex).flags.EstasEnvenenado) >= 8 Then
+        UserList(UserIndex).flags.Envenenado = 0
+        UserList(UserIndex).flags.EstasEnvenenado = 0
+        UserList(UserIndex).Counters.Veneno = 0
+    Else
+        Call SendData(ToIndex, UserIndex, 0, "1M")
+        UserList(UserIndex).Counters.Veneno = Timer
+        If Not UserList(UserIndex).flags.Quest Then
+            UserList(UserIndex).Stats.MinHP = Maximo(0, UserList(UserIndex).Stats.MinHP - 25)
+            If UserList(UserIndex).Stats.MinHP = 0 Then
+                Call UserDie(UserIndex)
+            Else: EnviarEstats = True
+            End If
+        End If
+    End If
+End If
+
+End Sub
+Sub UserSacrificado(UserIndex As Integer)
+Dim MiObj As Obj
+
+MiObj.OBJIndex = Gema
+MiObj.Amount = UserList(UserIndex).Stats.ELV ^ 2
+
+Call MakeObj(ToMap, UserIndex, UserList(UserIndex).POS.Map, MiObj, UserList(UserIndex).POS.Map, UserList(UserIndex).POS.X, UserList(UserIndex).POS.Y)
+Call UserDie(UserIndex)
+
+UserList(UserList(UserIndex).flags.Sacrificador).flags.Sacrificado = 0
+Call SendData(ToIndex, UserList(UserIndex).flags.Sacrificador, 0, "||Sacrificaste a " & UserList(UserIndex).Name & " por " & MiObj.Amount & " partes de la piedra filosofal." & FONTTYPE_INFO)
+UserList(UserIndex).flags.Ban = 1
+Call CloseSocket(UserIndex)
+
+End Sub
+Sub TimerSacrificando(UserIndex As Integer)
+
+UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - 10
+UserList(UserList(UserIndex).flags.Sacrificador).Stats.MinMAN = Minimo(0, UserList(UserList(UserIndex).flags.Sacrificador).Stats.MinMAN - 50)
+Call SendUserMANA(UserList(UserIndex).flags.Sacrificador)
+
+If UserList(UserList(UserIndex).flags.Sacrificador).Stats.MinMAN = 0 Then Call CancelarSacrificio(UserIndex)
+If UserList(UserIndex).Stats.MinHP <= 0 Then Call UserSacrificado(UserIndex)
+
+EnviarEstats = True
+
+End Sub
+Sub TimerVeneno(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Veneno) >= IntervaloVeneno Then
+    If TiempoTranscurrido(UserList(UserIndex).flags.EstasEnvenenado) >= IntervaloVeneno * 10 Then
+        UserList(UserIndex).flags.Envenenado = 0
+        UserList(UserIndex).flags.EstasEnvenenado = 0
+        UserList(UserIndex).Counters.Veneno = 0
+    Else
+        Call SendData(ToIndex, UserIndex, 0, "1M")
+        UserList(UserIndex).Counters.Veneno = Timer
+        If Not UserList(UserIndex).flags.Quest Then
+            UserList(UserIndex).Stats.MinHP = Maximo(0, UserList(UserIndex).Stats.MinHP - RandomNumber(1, 5))
+            If UserList(UserIndex).Stats.MinHP = 0 Then
+                Call UserDie(UserIndex)
+            Else: EnviarEstats = True
+            End If
+        End If
+    End If
+End If
+
+End Sub
+Public Sub TimerFrio(UserIndex As Integer)
+
+If UserList(UserIndex).flags.Privilegios > 1 Then Exit Sub
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Frio) >= IntervaloFrio Then
+    UserList(UserIndex).Counters.Frio = Timer
+    If MapInfo(UserList(UserIndex).POS.Map).Terreno = Nieve Then
+        If TiempoTranscurrido(UserList(UserIndex).Counters.CartelFrio) >= 5 Then
+            UserList(UserIndex).Counters.CartelFrio = Timer
+            Call SendData(ToIndex, UserIndex, 0, "1K")
+        End If
+        If Not UserList(UserIndex).flags.Quest Then
+            UserList(UserIndex).Stats.MinHP = Maximo(0, UserList(UserIndex).Stats.MinHP - Porcentaje(UserList(UserIndex).Stats.MaxHP, 5))
+            EnviarEstats = True
+            If UserList(UserIndex).Stats.MinHP = 0 Then
+                Call SendData(ToIndex, UserIndex, 0, "1L")
+                Call UserDie(UserIndex)
+            End If
+        End If
+    End If
+    Call QuitarSta(UserIndex, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
+    If TiempoTranscurrido(UserList(UserIndex).Counters.CartelFrio) >= 10 Then
+        UserList(UserIndex).Counters.CartelFrio = Timer
+        Call SendData(ToIndex, UserIndex, 0, "FR")
+    End If
+    EnviarEstats = True
+End If
+
+End Sub
+Sub TimerPocion(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).flags.DuracionEfecto) >= 45 Then
+    UserList(UserIndex).flags.DuracionEfecto = 0
+    UserList(UserIndex).flags.TomoPocion = False
+    UserList(UserIndex).Stats.UserAtributos(Agilidad) = UserList(UserIndex).Stats.UserAtributosBackUP(Agilidad)
+    UserList(UserIndex).Stats.UserAtributos(fuerza) = UserList(UserIndex).Stats.UserAtributosBackUP(fuerza)
+    Call UpdateFuerzaYAg(UserIndex)
+End If
+
+End Sub
+Public Sub TimerHyS(UserIndex As Integer)
+Dim EnviaInfo As Boolean
+
+If UserList(UserIndex).flags.Privilegios > 1 Or (UserList(UserIndex).Clase = TALADOR And UserList(UserIndex).Recompensas(1) = 2) Or UserList(UserIndex).flags.Quest Then Exit Sub
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.AGUACounter) >= IntervaloSed Then
+    If UserList(UserIndex).flags.Sed = 0 Then
+        UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU - 10
+        If UserList(UserIndex).Stats.MinAGU <= 0 Then
+            UserList(UserIndex).Stats.MinAGU = 0
+            UserList(UserIndex).flags.Sed = 1
+        End If
+        EnviaInfo = True
+    End If
+    UserList(UserIndex).Counters.AGUACounter = Timer
+End If
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.COMCounter) >= IntervaloHambre Then
+    If UserList(UserIndex).flags.Hambre = 0 Then
+        UserList(UserIndex).Counters.COMCounter = Timer
+        UserList(UserIndex).Stats.MinHam = UserList(UserIndex).Stats.MinHam - 10
+        If UserList(UserIndex).Stats.MinHam <= 0 Then
+            UserList(UserIndex).Stats.MinHam = 0
+            UserList(UserIndex).flags.Hambre = 1
+        End If
+        EnviaInfo = True
+    End If
+    UserList(UserIndex).Counters.COMCounter = Timer
+End If
+
+If EnviaInfo Then Call EnviarHambreYsed(UserIndex)
+
+End Sub
+Sub TimerSanar(UserIndex As Integer)
+
+If (UserList(UserIndex).flags.Descansar And TiempoTranscurrido(UserList(UserIndex).Counters.HPCounter) >= SanaIntervaloDescansar) Or _
+     (Not UserList(UserIndex).flags.Descansar And TiempoTranscurrido(UserList(UserIndex).Counters.HPCounter) >= SanaIntervaloSinDescansar) Then
+    If (Not Lloviendo Or Not Intemperie(UserIndex)) And UserList(UserIndex).Stats.MinHP < UserList(UserIndex).Stats.MaxHP And UserList(UserIndex).flags.Hambre = 0 And UserList(UserIndex).flags.Sed = 0 Then
+        If UserList(UserIndex).flags.Descansar Then
+            UserList(UserIndex).Stats.MinHP = Minimo(UserList(UserIndex).Stats.MaxHP, UserList(UserIndex).Stats.MinHP + Porcentaje(UserList(UserIndex).Stats.MaxHP, 20))
+            If UserList(UserIndex).Stats.MaxHP = UserList(UserIndex).Stats.MinHP And UserList(UserIndex).Stats.MaxSta = UserList(UserIndex).Stats.MinSta Then
+                Call SendData(ToIndex, UserIndex, 0, "DOK")
+                Call SendData(ToIndex, UserIndex, 0, "DN")
+                UserList(UserIndex).flags.Descansar = False
+            End If
+        Else
+            UserList(UserIndex).Stats.MinHP = Minimo(UserList(UserIndex).Stats.MaxHP, UserList(UserIndex).Stats.MinHP + Porcentaje(UserList(UserIndex).Stats.MaxHP, 5))
+        End If
+        Call SendData(ToIndex, UserIndex, 0, "1N")
+        EnviarEstats = True
+    End If
+    UserList(UserIndex).Counters.HPCounter = Timer
+End If
+    
+End Sub
+Sub TimerInvocacion(UserIndex As Integer)
+Dim i As Integer
+Dim NpcIndex As Integer
+
+If UserList(UserIndex).flags.Privilegios > 0 Or UserList(UserIndex).flags.Quest Then Exit Sub
+
+For i = 1 To MAXMASCOTAS - 17 * Buleano(Not UserList(UserIndex).flags.Quest)
+    If UserList(UserIndex).MascotasIndex(i) Then
+        NpcIndex = UserList(UserIndex).MascotasIndex(i)
+        If Npclist(NpcIndex).Contadores.TiempoExistencia > 0 And TiempoTranscurrido(Npclist(NpcIndex).Contadores.TiempoExistencia) >= IntervaloInvocacion + 10 * Buleano(Npclist(NpcIndex).Numero = 92) Then Call MuereNpc(NpcIndex, 0)
+    End If
+Next
+
+End Sub
+Public Sub TimerIdleCount(UserIndex As Integer)
+
+If UserList(UserIndex).flags.Privilegios = 0 And UserList(UserIndex).flags.Trabajando = 0 And TiempoTranscurrido(UserList(UserIndex).Counters.IdleCount) >= IntervaloParaConexion And Not UserList(UserIndex).Counters.Saliendo Then
+    Call SendData(ToIndex, UserIndex, 0, "!!Demasiado tiempo inactivo. Has sido desconectado..")
+    Call SendData(ToIndex, UserIndex, 0, "FINOK")
+    Call CloseSocket(UserIndex)
+End If
+
+End Sub
+Sub TimerSalir(UserIndex As Integer)
+
+If TiempoTranscurrido(UserList(UserIndex).Counters.Salir) >= IntervaloCerrarConexion Then
+    Call SendData(ToIndex, UserIndex, 0, "FINOK")
+    Call CloseSocket(UserIndex)
+End If
+
+End Sub
+
+Private Sub Winsock1_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
 
 End Sub

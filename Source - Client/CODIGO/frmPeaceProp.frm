@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmPeaceProp 
-   BorderStyle     =   1  'Fixed Single
+   BorderStyle     =   0  'None
    Caption         =   "Ofertas de paz"
-   ClientHeight    =   2895
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   4980
+   ClientHeight    =   3885
+   ClientLeft      =   0
+   ClientTop       =   -105
+   ClientWidth     =   4725
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -19,51 +19,13 @@ Begin VB.Form frmPeaceProp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2895
-   ScaleWidth      =   4980
+   ScaleHeight     =   3885
+   ScaleWidth      =   4725
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton Command4 
-      Caption         =   "Rechazar"
-      Height          =   495
-      Left            =   3720
-      MouseIcon       =   "frmPeaceProp.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   4
-      Top             =   2280
-      Width           =   975
-   End
-   Begin VB.CommandButton Command3 
-      Caption         =   "Aceptar"
-      Height          =   495
-      Left            =   2520
-      MouseIcon       =   "frmPeaceProp.frx":0152
-      MousePointer    =   99  'Custom
-      TabIndex        =   3
-      Top             =   2280
-      Width           =   975
-   End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Detalles"
-      Height          =   495
-      Left            =   1320
-      MouseIcon       =   "frmPeaceProp.frx":02A4
-      MousePointer    =   99  'Custom
-      TabIndex        =   2
-      Top             =   2280
-      Width           =   975
-   End
-   Begin VB.CommandButton Command1 
-      Cancel          =   -1  'True
-      Caption         =   "Cerrar"
-      Height          =   495
-      Left            =   120
-      MouseIcon       =   "frmPeaceProp.frx":03F6
-      MousePointer    =   99  'Custom
-      TabIndex        =   1
-      Top             =   2280
-      Width           =   975
-   End
    Begin VB.ListBox lista 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000007&
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -73,13 +35,38 @@ Begin VB.Form frmPeaceProp
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2010
-      ItemData        =   "frmPeaceProp.frx":0548
-      Left            =   120
-      List            =   "frmPeaceProp.frx":054A
+      ForeColor       =   &H00FFFFFF&
+      Height          =   1980
+      ItemData        =   "frmPeaceProp.frx":0000
+      Left            =   580
+      List            =   "frmPeaceProp.frx":0002
       TabIndex        =   0
-      Top             =   120
-      Width           =   4695
+      Top             =   840
+      Width           =   3615
+   End
+   Begin VB.Image Image3 
+      Height          =   375
+      Left            =   0
+      MouseIcon       =   "frmPeaceProp.frx":0004
+      MousePointer    =   99  'Custom
+      Top             =   3600
+      Width           =   855
+   End
+   Begin VB.Image Image2 
+      Height          =   375
+      Left            =   600
+      MouseIcon       =   "frmPeaceProp.frx":030E
+      MousePointer    =   99  'Custom
+      Top             =   3120
+      Width           =   975
+   End
+   Begin VB.Image Image1 
+      Height          =   255
+      Left            =   3120
+      MouseIcon       =   "frmPeaceProp.frx":0618
+      MousePointer    =   99  'Custom
+      Top             =   3240
+      Width           =   1095
    End
 End
 Attribute VB_Name = "frmPeaceProp"
@@ -87,12 +74,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -104,52 +89,71 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
-
-
-
-Private Sub Command1_Click()
-Unload Me
-End Sub
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Public Sub ParsePeaceOffers(ByVal s As String)
+Dim T%, R%
 
-Dim t%, r%
+T% = Val(ReadField(1, s, 44))
 
-t% = Val(ReadField(1, s, 44))
-
-For r% = 1 To t%
-    Call lista.AddItem(ReadField(r% + 1, s, 44))
-Next r%
+For R% = 1 To T%
+    Call lista.AddItem(ReadField(R% + 1, s, 44))
+Next R%
 
 Me.Show vbModeless, frmMain
 
 End Sub
+Private Sub Form_Load()
 
-Private Sub Command2_Click()
-'Me.Visible = False
+Me.Picture = LoadPicture(DirGraficos & "OfertaDePazParaGuildMaster.gif")
+
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+    DX = X
+    dy = Y
+    bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
+End Sub
+Private Sub Image1_Click()
+Call SendData("ACEPPEAT" & lista.List(lista.ListIndex))
+Unload Me
+End Sub
+
+Private Sub Image2_Click()
 Call SendData("PEACEDET" & lista.List(lista.ListIndex))
 End Sub
 
-Private Sub Command3_Click()
-'Me.Visible = False
-Call SendData("ACEPPEAT" & lista.List(lista.ListIndex))
+Private Sub Image3_Click()
 Unload Me
 End Sub
 

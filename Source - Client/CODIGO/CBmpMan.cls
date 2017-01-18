@@ -13,55 +13,48 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
-'=============================================================================
+'FénixAO 1.0
 '
-'   NOMBRE: CBmpMan.cls
-'   AUTOR: Federico Torres
-'   FECHA: 11/01/03
-'   CONTACTO: fede_jt@hotmail.com
+'Based on Argentum Online 0.99z
+'Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'   DESCRIPCION:
-'       Clase para manejar los graficos, evita tener que cargarlos todos en memoria
+'This program is free software; you can redistribute it and/or modify
+'it under the terms of the GNU General Public License as published by
+'the Free Software Foundation; either version 2 of the License, or
+'any later version.
 '
+'This program is distributed in the hope that it will be useful,
+'but WITHOUT ANY WARRANTY; without even the implied warranty of
+'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'GNU General Public License for more details.
 '
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, write to the Free Software
+'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
+'You can contact the original creator of Argentum Online at:
+'morgolock@speedy.com.ar
+'www.geocities.com/gmorgolock
+'Calle 3 número 983 piso 7 dto A
+'La Plata - Pcia, Buenos Aires - Republica Argentina
+'Código Postal 1900
+'Pablo Ignacio Márquez
 '
-'       Primero hay que setear los miembros de la clase. MaxEntries indica la cantidad maxima de graficos a cargar.
-'       lpDirectDraw7 es un puntero a un objeto de tipo DirectDraw7, se usa para cargar las surface.
-'       Con los valores asignados hay que ejecutar el metodo Init().
-'       Getbmp devuelve un objeto tipo directdrawsurface7, si el grafico que se pide no esta cargado se carga.
-'       Al llegar al limite de graficos permitidos, al pedir el proximo grafico que no este cargado se borra el que menos
-'       se uso (de los que ya estaban cargados).
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
 '
-'
-'   REVISION por Federico Torres:
-'       12/01/03: Agregado color key.
-'
-'   REVISION por Gulfas Morgolock:
-'       04/04/03: Agregué el array mKeys(). Este vector
-'       mapea un filename a su respectiva posición en el
-'       vector de surfaces mSurfaceDB(). Si mKey(Index) es
-'       cero el filename de valor index no está en memoria.
-'       BMPMan originalmente hacia una busqueda lineal para
-'       obtener un surface, con esta técnica el tiempo de
-'       acceso es constante!
-'
-'   REVISION por Gulfas Morgolock:
-'       01/04/03: Arreglé un bug en BorrarMenosUsado().
-'       No se reseteaba la referencia al bmp.
-'
-'
-'
-'   FALTA:
-'       -Comprobar errores.
-'       -Elegir si se quiere colorkey y que color.
-'
-'
-'=============================================================================
-
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 Option Explicit
 
 Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal Length As Long)
+
+Public Enum eModoBMPMan
+    mododinamico = 0
+    ModoCacheado = 1
+End Enum
 
 Private Type BITMAPFILEHEADER
         bfType As Integer
@@ -71,11 +64,11 @@ Private Type BITMAPFILEHEADER
         bfOffBits As Long
 End Type
 
-Private Type BITMAPINFOHEADER '40 bytes
+Private Type BITMAPINFOHEADER
         biSize As Long
         biWidth As Long
         biHeight As Long
-        biPlanes As Integer 'borrar de aca para abajo?
+        biPlanes As Integer
         biBitCount As Integer
         biCompression As Long
         biSizeImage As Long
@@ -100,7 +93,7 @@ Private Type BMP_INFO
     Size As Long
 End Type
 
-
+Private mModo As eModoBMPMan
 Private mBMPDB() As BMP_DB_ENTRY
 Private mDDraw As DirectDraw7
 Private mSurfaceDB() As DirectDrawSurface7
@@ -115,65 +108,86 @@ Private GrhPath As String
 Public Property Let Path(ByVal inString As String)
 GrhPath = inString
 End Property
-
 Public Function GetBMP(FileName As Integer) As DirectDrawSurface7
-
 Dim RetVal As Integer
 
-If mKeys(FileName) <> 0 Then 'esta el surface en memoria?
-    mBMPDB(mKeys(FileName)).Accesos = mBMPDB(mKeys(FileName)).Accesos + 1 'Sumo un acceso
-    Set GetBMP = mSurfaceDB(mKeys(FileName)) 'y devuelvo una surface con el grafico cargado
-Else 'Grafico no cargado
-    RetVal = BuscaVacio() 'busco espacio para cargarlo
-    If RetVal = -1 Then 'todas las surface ocupadas
-        RetVal = 1
-        RetVal = BorraMenosUsado() 'borro el grafico menos usado
+Select Case mModo
+Case mododinamico
+    If mKeys(FileName) <> 0 Then
+        mBMPDB(mKeys(FileName)).Accesos = mBMPDB(mKeys(FileName)).Accesos + 1
+        Set GetBMP = mSurfaceDB(mKeys(FileName))
+    Else
+        RetVal = BuscaVacio()
+        If RetVal = -1 Then
+            RetVal = 1
+            RetVal = BorraMenosUsado()
+        End If
+        Call CrearGrafico(FileName, RetVal)
+        mBMPDB(RetVal).Accesos = mBMPDB(RetVal).Accesos + 1
+        mKeys(FileName) = RetVal
+        Set GetBMP = mSurfaceDB(RetVal)
     End If
-    Call CrearGrafico(FileName, RetVal) 'y creo la textura
-    mBMPDB(RetVal).Accesos = mBMPDB(RetVal).Accesos + 1 'Sumo un acceso
-    mKeys(FileName) = RetVal
-    Set GetBMP = mSurfaceDB(RetVal) 'y devuelvo una surface con el grafico cargado
-End If
-
+Case ModoCacheado
+    Set GetBMP = mSurfaceDB(FileName)
+End Select
 
 End Function
+Public Function Init(Optional modo As eModoBMPMan = ModoCacheado) As Long
+On Error Resume Next
+Dim loopc As Integer
+mModo = modo
 
-
-Public Function Init() As Long 'Inicializa todo, ejecutar antes de usar el objeto
-On Error GoTo ErrHandler
-
-If mMaxEntries < 1 Then 'por lo menos 1 grafico
-    Init = -1
-    Exit Function
-End If
-
-ReDim mBMPDB(0 To mMaxEntries)
-ReDim mSurfaceDB(0 To mMaxEntries)
-ReDim mKeys(0 To 15000) As Integer
-
-mCantidadGraficos = 0
-mContador = 0
-Init = 1
+Select Case modo
+    Case mododinamico
+        If mMaxEntries < 1 Then
+            Init = -1
+            Exit Function
+        End If
+        
+        ReDim mBMPDB(0 To mMaxEntries)
+        ReDim mSurfaceDB(0 To mMaxEntries)
+        ReDim mKeys(0 To 17000) As Integer
+        
+        mCantidadGraficos = 0
+        mContador = 0
+        Init = 1
+    
+    Case ModoCacheado
+        ReDim mSurfaceDB(1 To Config_Inicio.NumeroDeBMPs)
+        For loopc = 1 To Config_Inicio.NumeroDeBMPs
+            Call CrearGrafico(loopc, loopc)
+        Next
+    
+End Select
 
 Exit Function
 
-ErrHandler:
-    Init = -1
 End Function
 
 Public Function BorrarTodo() As Long
-'Vacia la lista de graficos
+
+On Error Resume Next
 Dim i As Integer
-For i = 1 To mMaxEntries
-    Call ZeroMemory(mBMPDB(i), Len(mBMPDB(i)))
-    Set mSurfaceDB(i) = Nothing
-Next
+
+Select Case mModo
+Case mododinamico
+    For i = 1 To mMaxEntries
+        Call ZeroMemory(mBMPDB(i), Len(mBMPDB(i)))
+        Set mSurfaceDB(i) = Nothing
+    Next
+Case ModoCacheado
+    For i = 1 To Config_Inicio.NumeroDeBMPs
+        Call ZeroMemory(mBMPDB(i), Len(mBMPDB(i)))
+        Set mSurfaceDB(i) = Nothing
+    Next
+End Select
+
 BorrarTodo = 1
 mCantidadGraficos = 0
 End Function
 
 Public Function Borrar(FileName As Integer) As Integer
-'Borra un grafico
+
 Borrar = -1
 Call ZeroMemory(mBMPDB(mKeys(FileName)), Len(mBMPDB(mKeys(FileName))))
 Set mSurfaceDB(mKeys(FileName)) = Nothing
@@ -183,33 +197,42 @@ mCantidadGraficos = mCantidadGraficos - 1
 End Function
 
 Private Function CrearGrafico(Archivo As Integer, bIndex As Integer) As Integer
-'12/1/3, colorkey
+
 Dim ddsd As DDSURFACEDESC2, BMPInfo As BMP_INFO, RetVal As Long, ddck As DDCOLORKEY
 ddsd.lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
 
-Call GetBMPHeader(GrhPath & Archivo & ".bmp", BMPInfo)  'para alto y ancho de la surface
+Call GetBMPHeader(GrhPath & Archivo & ".bmp", BMPInfo)
 
-ddsd.ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
-ddsd.lHeight = BMPInfo.Height
-ddsd.lWidth = BMPInfo.Width
+With ddsd
+    If RenderMod.bUseVideo Then
+        .ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN
+    Else
+        .ddsCaps.lCaps = DDSCAPS_OFFSCREENPLAIN Or DDSCAPS_SYSTEMMEMORY
+    End If
+    
+    .lHeight = BMPInfo.Height
+    .lWidth = BMPInfo.Width
+End With
 
 ddck.high = 0: ddck.low = 0
 
-With mBMPDB(bIndex)
-    .FileName = Archivo
-    .Accesos = 0
-    .Height = BMPInfo.Height
-    .Width = BMPInfo.Width
-    .Size = BMPInfo.Size
-    .Cont = mContador
-End With
-mContador = mContador + 1
+If mModo = mododinamico Then
+    With mBMPDB(bIndex)
+        .FileName = Archivo
+        .Accesos = 0
+        .Height = BMPInfo.Height
+        .Width = BMPInfo.Width
+        .Size = BMPInfo.Size
+        .Cont = mContador
+    End With
+    mContador = mContador + 1
 
-Set mSurfaceDB(bIndex) = mDDraw.CreateSurfaceFromFile(GrhPath & Archivo & ".bmp", ddsd) 'creo la surface
+mCantidadGraficos = mCantidadGraficos + 1
+End If
+If Archivo <> 0 Then Set mSurfaceDB(bIndex) = mDDraw.CreateSurfaceFromFile(GrhPath & Archivo & ".bmp", ddsd)
 mSurfaceDB(bIndex).SetColorKey DDCKEY_SRCBLT, ddck
 
 CrearGrafico = 1
-mCantidadGraficos = mCantidadGraficos + 1
 
 End Function
 
@@ -217,10 +240,7 @@ Private Sub Class_Initialize()
 mMaxEntries = 0
 End Sub
 
-
-
 Private Function BuscaVacio() As Integer
-'Si esta todo lleno devuelve -1 (llamar BorraMenosUsado)
 Dim i As Integer
 For i = 1 To mMaxEntries
     If (mSurfaceDB(i) Is Nothing) Then
@@ -233,8 +253,6 @@ BuscaVacio = -1
 End Function
 
 Private Function BorraMenosUsado() As Integer
-'Borra el grafico menos usado
-'Devuelve el index al borrado
 
 BorraMenosUsado = 1
 
@@ -261,34 +279,29 @@ Call ZeroMemory(mBMPDB(BorraMenosUsado), Len(mBMPDB(BorraMenosUsado)))
 
 End Function
 
-Private Sub Class_Terminate()
-On Error Resume Next 'no me importa, estoy cerrando
-
-'Erase mBMPDB()
-Dim i As Integer
-
-For i = 1 To mMaxEntries
-    Set mSurfaceDB(i) = Nothing
-Next
-
-End Sub
-
 Public Property Let lpDirectDraw7(ByRef objDirectDraw7 As DirectDraw7)
 Set mDDraw = objDirectDraw7
 End Property
-
 Private Function GetBMPHeader(Archivo As String, ByRef lpBMPInfo As BMP_INFO) As Long
-'if fileexist
 Dim nfile As Integer, H_BMPH As BITMAPFILEHEADER, H_BMPI As BITMAPINFOHEADER
 nfile = FreeFile()
+
 Open Archivo For Binary Access Read As #nfile
 Get #nfile, , H_BMPH
 Get #nfile, , H_BMPI
 Close #nfile
+
+
+
+
+
+
 lpBMPInfo.Height = H_BMPI.biHeight
 lpBMPInfo.Width = H_BMPI.biWidth
 lpBMPInfo.Size = H_BMPH.bfSize
+
 GetBMPHeader = 1
+
 End Function
 
 Public Property Get MaxEntries() As Long

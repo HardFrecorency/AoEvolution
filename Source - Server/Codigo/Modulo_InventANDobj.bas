@@ -1,5 +1,7 @@
 Attribute VB_Name = "InvNpc"
-'Argentum Online 0.9.0.2
+'FénixAO 1.0
+'
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -12,201 +14,154 @@ Attribute VB_Name = "InvNpc"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 Option Explicit
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'                        Modulo Inv & Obj
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'Modulo para controlar los objetos y los inventarios.
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-Public Function TirarItemAlPiso(Pos As WorldPos, Obj As Obj) As WorldPos
+Public Function TirarItemAlPiso(POS As WorldPos, Obj As Obj) As WorldPos
 On Error GoTo errhandler
+Dim NuevaPos As WorldPos
 
-    Dim NuevaPos As WorldPos
-    NuevaPos.X = 0
-    NuevaPos.Y = 0
-    Call Tilelibre(Pos, NuevaPos)
-    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-          Call MakeObj(ToMap, 0, Pos.Map, _
-          Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
-          TirarItemAlPiso = NuevaPos
-    End If
+Call Tilelibre(POS, NuevaPos)
+
+If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+      Call MakeObj(ToMap, 0, POS.Map, _
+      Obj, POS.Map, NuevaPos.X, NuevaPos.Y)
+      TirarItemAlPiso = NuevaPos
+End If
 
 Exit Function
 errhandler:
 
 End Function
+Public Sub NPC_TIRAR_ITEMS(MiNPC As Npc, UserIndex As Integer)
 
-Public Sub NPC_TIRAR_ITEMS(ByRef Npc As Npc)
-'TIRA TODOS LOS ITEMS DEL NPC
 On Error Resume Next
 
-If Npc.Invent.NroItems > 0 Then
+If MiNPC.Invent.NroItems Then
     
     Dim i As Byte
     Dim MiObj As Obj
+    Dim Prob As Integer
     
-    For i = 1 To MAX_INVENTORY_SLOTS
-    
-        If Npc.Invent.Object(i).objIndex > 0 Then
-              MiObj.Amount = Npc.Invent.Object(i).Amount
-              MiObj.objIndex = Npc.Invent.Object(i).objIndex
-              Call TirarItemAlPiso(Npc.Pos, MiObj)
+    For i = 1 To MAX_NPCINVENTORY_SLOTS
+ If MiNPC.Probabilidad = 0 Then
+        If MiNPC.Invent.Object(i).OBJIndex Then
+              If val(MiNPC.MaxRecom) Then
+              MiObj.Amount = RandomNumber(MiNPC.MinRecom, MiNPC.MaxRecom)
+              Else
+              MiObj.Amount = MiNPC.Invent.Object(i).Amount
+              End If
+              MiObj.OBJIndex = MiNPC.Invent.Object(i).OBJIndex
+              
+              If Not MeterItemEnInventario(UserIndex, MiObj) Then Call TirarItemAlPiso(UserList(UserIndex).POS, MiObj)
+              
+              
         End If
-      
-    Next i
+        Else
+        Prob = RandomNumber(0, 100)
+        If Prob <= MiNPC.Probabilidad Then
+                If MiNPC.Invent.Object(i).OBJIndex Then
+              If MiNPC.MaxRecom Then
+              MiObj.Amount = RandomNumber(MiNPC.MinRecom, MiNPC.MaxRecom)
+              Else
+              MiObj.Amount = MiNPC.Invent.Object(i).Amount
+              End If
+              MiObj.OBJIndex = MiNPC.Invent.Object(i).OBJIndex
+              
+              If Not MeterItemEnInventario(UserIndex, MiObj) Then
+                Call TirarItemAlPiso(UserList(UserIndex).POS, MiObj)
+              End If
+              Call UpdateUserInv(True, UserIndex, 0)
+              
+              
+        End If
+        End If
+      End If
+    Next
 
 End If
 
 End Sub
-
-Function QuedanItems(ByVal NpcIndex As Integer, ByVal objIndex As Integer) As Boolean
+Function QuedanItems(NpcIndex As Integer, OBJIndex As Integer) As Boolean
 On Error Resume Next
-'Call LogTarea("Function QuedanItems npcindex:" & NpcIndex & " objindex:" & ObjIndex)
-
 Dim i As Integer
-If Npclist(NpcIndex).Invent.NroItems > 0 Then
-    For i = 1 To MAX_INVENTORY_SLOTS
-        If Npclist(NpcIndex).Invent.Object(i).objIndex = objIndex Then
+
+If Npclist(NpcIndex).Invent.NroItems Then
+    For i = 1 To MAX_NPCINVENTORY_SLOTS
+        If Npclist(NpcIndex).Invent.Object(i).OBJIndex = OBJIndex Then
             QuedanItems = True
             Exit Function
         End If
     Next
 End If
-QuedanItems = False
+
 End Function
-
-Function EncontrarCant(ByVal NpcIndex As Integer, ByVal objIndex As Integer) As Integer
-On Error Resume Next
-'Devuelve la cantidad original del obj de un npc
-
-Dim ln As String, npcfile As String
-Dim i As Integer
-If Npclist(NpcIndex).Numero > 499 Then
-    npcfile = DatPath & "NPCs-HOSTILES.dat"
-Else
-    npcfile = DatPath & "NPCs.dat"
-End If
- 
-For i = 1 To MAX_INVENTORY_SLOTS
-    ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & i)
-    If objIndex = val(ReadField(1, ln, 45)) Then
-        EncontrarCant = val(ReadField(2, ln, 45))
-        Exit Function
-    End If
-Next
-                   
-EncontrarCant = 50
-                   
-End Function
-
-Sub ResetNpcInv(ByVal NpcIndex As Integer)
+Sub ResetNpcInv(NpcIndex As Integer)
 On Error Resume Next
 
 Dim i As Integer
 
 Npclist(NpcIndex).Invent.NroItems = 0
 
-For i = 1 To MAX_INVENTORY_SLOTS
-   Npclist(NpcIndex).Invent.Object(i).objIndex = 0
+For i = 1 To MAX_NPCINVENTORY_SLOTS
+   Npclist(NpcIndex).Invent.Object(i).OBJIndex = 0
    Npclist(NpcIndex).Invent.Object(i).Amount = 0
-Next i
+Next
 
 Npclist(NpcIndex).InvReSpawn = 0
 
 End Sub
+Sub QuitarNpcInvItem(NpcIndex As Integer, Slot As Byte, Cantidad As Integer, UserIndex As Integer)
+Dim OBJIndex As Integer
 
-Sub QuitarNpcInvItem(ByVal NpcIndex As Integer, ByVal Slot As Byte, ByVal Cantidad As Integer)
+OBJIndex = Npclist(NpcIndex).Invent.Object(Slot).OBJIndex
 
-
-
-Dim objIndex As Integer
-objIndex = Npclist(NpcIndex).Invent.Object(Slot).objIndex
-
-    'Quita un Obj
-    If ObjData(Npclist(NpcIndex).Invent.Object(Slot).objIndex).Crucial = 0 Then
-        Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount - Cantidad
-        
-        If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
-            Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
-            Npclist(NpcIndex).Invent.Object(Slot).objIndex = 0
-            Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
-            If Npclist(NpcIndex).Invent.NroItems = 0 And Npclist(NpcIndex).InvReSpawn <> 1 Then
-               Call CargarInvent(NpcIndex) 'Reponemos el inventario
-            End If
+If Npclist(NpcIndex).InvReSpawn = 1 Then
+    Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount - Cantidad
+    If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
+        Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
+        Npclist(NpcIndex).Invent.Object(Slot).OBJIndex = 0
+        Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
+        If Npclist(NpcIndex).Invent.NroItems = 0 And Npclist(NpcIndex).InvReSpawn <> 1 Then
+           Call CargarInvent(NpcIndex)
         End If
-    Else
-        Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount - Cantidad
-        
-        If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
-            Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
-            Npclist(NpcIndex).Invent.Object(Slot).objIndex = 0
-            Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
-            
-            If Not QuedanItems(NpcIndex, objIndex) Then
-                   
-                   Npclist(NpcIndex).Invent.Object(Slot).objIndex = objIndex
-                   Npclist(NpcIndex).Invent.Object(Slot).Amount = EncontrarCant(NpcIndex, objIndex)
-                   Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
-            
-            End If
-            
-            If Npclist(NpcIndex).Invent.NroItems = 0 And Npclist(NpcIndex).InvReSpawn <> 1 Then
-               Call CargarInvent(NpcIndex) 'Reponemos el inventario
-            End If
-        End If
-    
-    
-    
     End If
+    Call UpdateNPCInv(False, UserIndex, NpcIndex, Slot)
+End If
+
 End Sub
+Sub CargarInvent(NpcIndex As Integer)
+Dim LoopC As Integer, ln As String, npcfile As String
 
-Sub CargarInvent(ByVal NpcIndex As Integer)
-
-'Vuelve a cargar el inventario del npc NpcIndex
-Dim LoopC As Integer
-Dim ln As String
-
-Dim npcfile As String
-
-If Npclist(NpcIndex).Numero > 499 Then
+If Npclist(NpcIndex).Numero >= 500 Then
     npcfile = DatPath & "NPCs-HOSTILES.dat"
-Else
-    npcfile = DatPath & "NPCs.dat"
+Else: npcfile = DatPath & "NPCs.dat"
 End If
 
 Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "NROITEMS"))
 
 For LoopC = 1 To Npclist(NpcIndex).Invent.NroItems
     ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & LoopC)
-    Npclist(NpcIndex).Invent.Object(LoopC).objIndex = val(ReadField(1, ln, 45))
+    Npclist(NpcIndex).Invent.Object(LoopC).OBJIndex = val(ReadField(1, ln, 45))
     Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
-    
-Next LoopC
+Next
 
 End Sub
-
-

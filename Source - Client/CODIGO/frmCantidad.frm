@@ -1,80 +1,35 @@
 VERSION 5.00
 Begin VB.Form frmCantidad 
-   BackColor       =   &H00000000&
-   BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   1500
-   ClientLeft      =   1680
-   ClientTop       =   4455
-   ClientWidth     =   3240
-   ClipControls    =   0   'False
+   BackColor       =   &H00404040&
+   BorderStyle     =   0  'None
+   ClientHeight    =   1890
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   3540
    ControlBox      =   0   'False
-   KeyPreview      =   -1  'True
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   8.25
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   ForeColor       =   &H00808080&
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1500
-   ScaleWidth      =   3240
+   ScaleHeight     =   1890
+   ScaleWidth      =   3540
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton Command2 
-      Caption         =   "Todo"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   345
-      Left            =   2025
-      MouseIcon       =   "frmCantidad.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   3
-      Top             =   1035
-      Width           =   930
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "A&ceptar"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   345
-      Left            =   330
-      MouseIcon       =   "frmCantidad.frx":0152
-      MousePointer    =   99  'Custom
-      TabIndex        =   2
-      Top             =   1035
-      Width           =   1680
-   End
+   StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Text1 
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000006&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   330
-      TabIndex        =   1
-      Top             =   525
-      Width           =   2550
-   End
-   Begin VB.Label Label1 
-      BackStyle       =   0  'Transparent
-      Caption         =   "Escriba la cantidad:"
-      BeginProperty Font 
-         Name            =   "Verdana"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
@@ -82,12 +37,31 @@ Begin VB.Form frmCantidad
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000000FF&
+      ForeColor       =   &H004DC488&
       Height          =   375
-      Left            =   585
+      Left            =   570
+      MaxLength       =   7
       TabIndex        =   0
-      Top             =   165
-      Width           =   2415
+      Top             =   790
+      Width           =   2535
+   End
+   Begin VB.Image Command2 
+      Height          =   330
+      Left            =   1790
+      MouseIcon       =   "frmCantidad.frx":0000
+      MousePointer    =   99  'Custom
+      Tag             =   "1"
+      Top             =   1280
+      Width           =   1270
+   End
+   Begin VB.Image Command1 
+      Height          =   330
+      Left            =   600
+      MouseIcon       =   "frmCantidad.frx":030A
+      MousePointer    =   99  'Custom
+      Tag             =   "1"
+      Top             =   1280
+      Width           =   1140
    End
 End
 Attribute VB_Name = "frmCantidad"
@@ -95,12 +69,29 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.9
+Private Sub command1_Click()
+
+frmCantidad.Visible = False
+Call SendData("TI" & ItemElegido & "," & frmCantidad.Text1.Text)
+frmCantidad.Text1.Text = "0"
+
+End Sub
+Private Sub Command2_Click()
+
+frmCantidad.Visible = False
+
+If ItemElegido <> FLAGORO Then
+    Call SendData("TI" & ItemElegido & "," & UserInventory(ItemElegido).Amount)
+Else: Call SendData("TI" & ItemElegido & "," & UserGLD)
+End If
+
+frmCantidad.Text1.Text = "0"
+
+End Sub
+'FénixAO 1.0
 '
+'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
-'Copyright (C) 2002 Otto Perez
-'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -112,50 +103,56 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
+'You should have received a copy of the Affero General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
+'You can contact the original creator of Argentum Online at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
-
-Private Sub Command1_Click()
-frmCantidad.Visible = False
-SendData "TI" & ItemElegido & "," & frmCantidad.Text1.Text
-frmCantidad.Text1.Text = "0"
-End Sub
-
-
-Private Sub Command2_Click()
-
-
-frmCantidad.Visible = False
-If ItemElegido <> FLAGORO Then
-    SendData "TI" & ItemElegido & "," & UserInventory(ItemElegido).Amount
-Else
-    SendData "TI" & ItemElegido & "," & UserGLD
-End If
-
-frmCantidad.Text1.Text = "0"
-
-End Sub
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'You can contact me at:
+'elpresi@fenixao.com.ar
+'www.fenixao.com.ar
 
 Private Sub Form_Deactivate()
-Unload Me
-End Sub
 
-Private Sub text1_Change()
+Unload Me
+
+End Sub
+Private Sub Form_Load()
+
+Me.Picture = LoadPicture(DirGraficos & "WinTirar.gif")
+
+End Sub
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving = False And Button = vbLeftButton Then
+    DX = X
+    dy = Y
+    bmoving = True
+End If
+
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If bmoving And ((X <> DX) Or (Y <> dy)) Then Call Move(Left + (X - DX), Top + (Y - dy))
+
+End Sub
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If Button = vbLeftButton Then bmoving = False
+
+End Sub
+Private Sub Text1_Change()
 
 If Val(Text1.Text) < 0 Then
     Text1.Text = MAX_INVENTORY_OBJS
@@ -166,12 +163,11 @@ If Val(Text1.Text) > MAX_INVENTORY_OBJS And ItemElegido <> FLAGORO Then
 End If
 
 End Sub
-
-
 Private Sub Text1_KeyPress(KeyAscii As Integer)
+
 If (KeyAscii <> 8) Then
-    If (Index <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then
-        KeyAscii = 0
-    End If
+    If (Index <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then KeyAscii = 0
 End If
+
 End Sub
+
