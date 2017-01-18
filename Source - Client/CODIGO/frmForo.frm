@@ -1,46 +1,56 @@
 VERSION 5.00
 Begin VB.Form frmForo 
-   BorderStyle     =   0  'None
-   ClientHeight    =   7230
-   ClientLeft      =   0
-   ClientTop       =   0
-   ClientWidth     =   6450
+   BackColor       =   &H00404080&
+   BorderStyle     =   3  'Fixed Dialog
+   ClientHeight    =   6855
+   ClientLeft      =   45
+   ClientTop       =   45
+   ClientWidth     =   6150
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7230
-   ScaleWidth      =   6450
+   ScaleHeight     =   6855
+   ScaleWidth      =   6150
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.TextBox MiMensaje 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000040&
-      BorderStyle     =   0  'None
+   Begin VB.CommandButton Command3 
+      BackColor       =   &H000000C0&
+      Caption         =   "Lista de mensajes"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   4335
-      Index           =   1
-      Left            =   600
-      MultiLine       =   -1  'True
-      TabIndex        =   3
-      Top             =   1800
-      Visible         =   0   'False
-      Width           =   5265
+      Height          =   375
+      Left            =   2205
+      MouseIcon       =   "frmForo.frx":0000
+      MousePointer    =   99  'Custom
+      Style           =   1  'Graphical
+      TabIndex        =   8
+      Top             =   6330
+      Width           =   1560
    End
    Begin VB.TextBox MiMensaje 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000040&
+      BackColor       =   &H00000000&
+      ForeColor       =   &H80000005&
+      Height          =   5070
+      Index           =   1
+      Left            =   330
+      MultiLine       =   -1  'True
+      TabIndex        =   5
+      Top             =   1005
+      Visible         =   0   'False
+      Width           =   5400
+   End
+   Begin VB.TextBox MiMensaje 
+      BackColor       =   &H00000000&
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "MS Sans Serif"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -48,110 +58,96 @@ Begin VB.Form frmForo
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H002EB7EB&
+      ForeColor       =   &H80000005&
       Height          =   345
       Index           =   0
-      Left            =   600
-      TabIndex        =   2
-      Top             =   1200
+      Left            =   330
+      TabIndex        =   4
+      Top             =   285
       Visible         =   0   'False
-      Width           =   5280
+      Width           =   5400
    End
-   Begin VB.TextBox Text 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000040&
-      BorderStyle     =   0  'None
+   Begin VB.CommandButton Command2 
+      BackColor       =   &H000000C0&
+      Caption         =   "Cerrar"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   5115
+      Height          =   375
+      Left            =   4200
+      MouseIcon       =   "frmForo.frx":0152
+      MousePointer    =   99  'Custom
+      Style           =   1  'Graphical
+      TabIndex        =   3
+      Top             =   6330
+      Width           =   1560
+   End
+   Begin VB.CommandButton Command1 
+      BackColor       =   &H000000C0&
+      Caption         =   "Dejar Mensaje"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   345
+      MouseIcon       =   "frmForo.frx":02A4
+      MousePointer    =   99  'Custom
+      Style           =   1  'Graphical
+      TabIndex        =   2
+      Top             =   6330
+      Width           =   1560
+   End
+   Begin VB.TextBox Text 
+      BackColor       =   &H00000000&
+      ForeColor       =   &H80000005&
+      Height          =   5505
       Index           =   0
-      Left            =   600
+      Left            =   330
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       TabIndex        =   1
-      Text            =   "frmForo.frx":0000
-      Top             =   960
+      Text            =   "frmForo.frx":03F6
+      Top             =   285
       Visible         =   0   'False
-      Width           =   5295
+      Width           =   5430
    End
    Begin VB.ListBox List 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000040&
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H002EB7EB&
-      Height          =   5100
-      ItemData        =   "frmForo.frx":0006
-      Left            =   600
-      List            =   "frmForo.frx":0008
+      BackColor       =   &H00000000&
+      ForeColor       =   &H80000005&
+      Height          =   5520
+      Left            =   330
       TabIndex        =   0
-      Top             =   960
-      Width           =   5295
-   End
-   Begin VB.Image command2 
-      Height          =   255
-      Left            =   0
-      MouseIcon       =   "frmForo.frx":000A
-      MousePointer    =   99  'Custom
-      Top             =   6960
-      Width           =   855
-   End
-   Begin VB.Image command3 
-      Height          =   375
-      Left            =   3120
-      MouseIcon       =   "frmForo.frx":0314
-      MousePointer    =   99  'Custom
-      Top             =   6480
-      Width           =   2655
-   End
-   Begin VB.Image command1 
-      Height          =   375
-      Left            =   600
-      MouseIcon       =   "frmForo.frx":061E
-      MousePointer    =   99  'Custom
-      Top             =   6480
-      Width           =   2175
+      Top             =   285
+      Width           =   5430
    End
    Begin VB.Label Label2 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Mensaje:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
+      Caption         =   "Mensaje"
       ForeColor       =   &H8000000E&
       Height          =   195
-      Left            =   600
-      TabIndex        =   5
-      Top             =   1560
+      Left            =   330
+      TabIndex        =   7
+      Top             =   765
       Visible         =   0   'False
-      Width           =   765
+      Width           =   600
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Título del Tema:"
+      Caption         =   "Título"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -163,11 +159,11 @@ Begin VB.Form frmForo
       EndProperty
       ForeColor       =   &H8000000E&
       Height          =   195
-      Left            =   600
-      TabIndex        =   4
-      Top             =   960
+      Left            =   330
+      TabIndex        =   6
+      Top             =   45
       Visible         =   0   'False
-      Width           =   1350
+      Width           =   480
    End
 End
 Attribute VB_Name = "frmForo"
@@ -175,10 +171,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -190,31 +188,29 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
+
 Option Explicit
 
-
 Public ForoIndex As Integer
-Private Sub command1_Click()
-
+Private Sub Command1_Click()
 Dim i
 For Each i In Text
     i.Visible = False
@@ -222,25 +218,22 @@ Next
 
 If Not MiMensaje(0).Visible Then
     List.Visible = False
-    MiMensaje(0).Text = ""
-MiMensaje(1).Text = ""
     MiMensaje(0).Visible = True
     MiMensaje(1).Visible = True
     MiMensaje(0).SetFocus
-    command1.Enabled = False
+    Command1.Enabled = False
     Label1.Visible = True
     Label2.Visible = True
 Else
-    Call SendData("DEMSG" & MiMensaje(0).Text & " [" & frmMain.Label8 & "]" & Chr(176) & "Fecha: " & Date & " || Hora: " & time & " || " & MiMensaje(1).Text)
-
-    List.AddItem MiMensaje(0).Text & " [" & UserName & "]"
+    Call SendData("DEMSG" & MiMensaje(0).Text & Chr(176) & MiMensaje(1).Text)
+    List.AddItem MiMensaje(0).Text
     Load Text(List.ListCount)
-    Text(List.ListCount - 1).Text = "Fecha: " & Date & " || Hora: " & time & vbCrLf & "--------------------------------------------" & vbCrLf & vbCrLf & MiMensaje(1).Text
+    Text(List.ListCount - 1).Text = MiMensaje(1).Text
     List.Visible = True
     
     MiMensaje(0).Visible = False
     MiMensaje(1).Visible = False
-    command1.Enabled = True
+    Command1.Enabled = True
     Label1.Visible = False
     Label2.Visible = False
 End If
@@ -254,7 +247,7 @@ Private Sub Command3_Click()
 
 MiMensaje(0).Visible = False
 MiMensaje(1).Visible = False
-command1.Enabled = True
+Command1.Enabled = True
 Label1.Visible = False
 Label2.Visible = False
 Dim i
@@ -267,11 +260,7 @@ End Sub
 Private Sub Form_Deactivate()
 Me.SetFocus
 End Sub
-Private Sub Form_Load()
 
-Me.Picture = LoadPicture(DirGraficos & "ForoMensajes.gif")
-
-End Sub
 
 Private Sub List_Click()
 List.Visible = False
@@ -281,36 +270,8 @@ End Sub
 
 Private Sub MiMensaje_Change(Index As Integer)
 If Len(MiMensaje(0).Text) <> 0 And Len(MiMensaje(1).Text) <> 0 Then
-command1.Enabled = True
+Command1.Enabled = True
 End If
 
 End Sub
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-If bmoving = False And Button = vbLeftButton Then
-    DX = X
-    dy = Y
-    bmoving = True
-End If
-
-End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
-
-End Sub
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If Button = vbLeftButton Then bmoving = False
-
-End Sub
-Private Sub mensaje_KeyPress(KeyAscii As Integer)
-
-If (KeyAscii <> 209) And (KeyAscii <> 241) And (KeyAscii <> 8) And (KeyAscii <> 32) And (KeyAscii <> 164) And (KeyAscii <> 165) Then
-    If (KeyAscii <> 6) And ((KeyAscii < 40 Or KeyAscii > 122) Or (KeyAscii > 90 And KeyAscii < 96)) Then
-        KeyAscii = 0
-    End If
-End If
-
- KeyAscii = Asc((Chr(KeyAscii)))
-End Sub

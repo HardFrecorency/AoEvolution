@@ -1,0 +1,9 @@
+LIBRARY AOkernel
+EXPORTS
+	SetKernelMaxUsers As _SetKernelMaxUsers@4
+	GetMapUsers As _GetMapUsers@12
+	GetMapUsersButIndex As _GetMapUsersButIndex@16
+	GenCrc As _GenCrc@8
+	SendMapUsers As _SendMapUsers@16
+	SendMapUsersButIndex As _SendMapUsersButIndex@20
+	ReadFieldASM As _ReadFieldASM@12

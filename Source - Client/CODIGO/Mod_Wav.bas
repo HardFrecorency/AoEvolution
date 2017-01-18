@@ -1,8 +1,10 @@
 Attribute VB_Name = "Mod_Wav"
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -14,37 +16,35 @@ Attribute VB_Name = "Mod_Wav"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
 Option Explicit
 
-Public Const SND_SYNC = &H0
-Public Const SND_ASYNC = &H1
-Public Const SND_NODEFAULT = &H2
-Public Const SND_LOOP = &H8
-Public Const SND_NOSTOP = &H10
+Public Const SND_SYNC = &H0 ' SINCRONO
+Public Const SND_ASYNC = &H1 ' ASINCRONO
+Public Const SND_NODEFAULT = &H2 ' silence not default, if sound not found
+Public Const SND_LOOP = &H8 ' loop the sound until next sndPlaySound
+Public Const SND_NOSTOP = &H10 ' don't stop any currently playing sound
 
-
-
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?WAVS¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public Const SND_CLICK = "click.Wav"
-Public Const SND_MONTANDO = "23.Wav"
+
 Public Const SND_PASOS1 = "23.Wav"
 Public Const SND_PASOS2 = "24.Wav"
 Public Const SND_NAVEGANDO = "50.wav"
@@ -65,13 +65,15 @@ Function LoadWavetoDSBuffer(DS As DirectSound, DSB As DirectSoundBuffer, sFile A
     waveFormat.lAvgBytesPerSec = waveFormat.lSamplesPerSec * waveFormat.nBlockAlign
     Set DSB = DS.CreateSoundBufferFromFile(DirSound & sFile, bufferDesc, waveFormat)
 
-    If Err.Number <> 0 Then Exit Function
+    If Err.Number <> 0 Then
+        Exit Function
+    End If
 
     LoadWavetoDSBuffer = True
 End Function
 
 Sub PlayWaveDS(File As String)
-    If FX = 1 Then Exit Sub
+    If Fx = 1 Then Exit Sub
 
     LastSoundBufferUsed = LastSoundBufferUsed + 1
     If LastSoundBufferUsed > NumSoundBuffers Then

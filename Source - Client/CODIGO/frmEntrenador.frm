@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmEntrenador 
-   BorderStyle     =   0  'None
-   Caption         =   "Entrenar"
-   ClientHeight    =   4425
-   ClientLeft      =   0
-   ClientTop       =   -105
-   ClientWidth     =   4500
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "Seleccione la criatura"
+   ClientHeight    =   3705
+   ClientLeft      =   45
+   ClientTop       =   330
+   ClientWidth     =   4230
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -19,13 +19,11 @@ Begin VB.Form frmEntrenador
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4425
-   ScaleWidth      =   4500
-   ShowInTaskbar   =   0   'False
+   ScaleHeight     =   3705
+   ScaleWidth      =   4230
    StartUpPosition =   2  'CenterScreen
-   Begin VB.ListBox lstCriaturas 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000007&
+   Begin VB.CommandButton Command2 
+      Caption         =   "Salir"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -35,30 +33,67 @@ Begin VB.Form frmEntrenador
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H80000005&
-      Height          =   2370
-      ItemData        =   "frmEntrenador.frx":0000
-      Left            =   600
-      List            =   "frmEntrenador.frx":0002
+      Height          =   390
+      Left            =   2460
+      MouseIcon       =   "frmEntrenador.frx":0000
+      MousePointer    =   99  'Custom
+      TabIndex        =   3
+      Top             =   3000
+      Width           =   870
+   End
+   Begin VB.CommandButton Command1 
+      Caption         =   "Luchar"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   390
+      Left            =   780
+      MouseIcon       =   "frmEntrenador.frx":0152
+      MousePointer    =   99  'Custom
+      TabIndex        =   2
+      Top             =   3000
+      Width           =   1710
+   End
+   Begin VB.ListBox lstCriaturas 
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2400
+      Left            =   780
+      TabIndex        =   1
+      Top             =   540
+      Width           =   2490
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      Caption         =   "¿Con qué criatura deseas combatir?"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Left            =   375
       TabIndex        =   0
-      Top             =   960
-      Width           =   3330
-   End
-   Begin VB.Image command2 
-      Height          =   375
-      Left            =   3720
-      MouseIcon       =   "frmEntrenador.frx":0004
-      MousePointer    =   99  'Custom
-      Top             =   4080
-      Width           =   735
-   End
-   Begin VB.Image command1 
-      Height          =   495
-      Left            =   1560
-      MouseIcon       =   "frmEntrenador.frx":030E
-      MousePointer    =   99  'Custom
-      Top             =   3480
-      Width           =   1455
+      Top             =   105
+      Width           =   3525
    End
 End
 Attribute VB_Name = "frmEntrenador"
@@ -66,10 +101,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -81,26 +118,34 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
+
+
+'[CODE]:MatuX
 '
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
+'    Le puse el iconito de la manito a los botones ^_^,
+'   le puse borde a la ventana y le cambié la letra a
+'   una más linda :)
 '
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
-Private Sub command1_Click()
+'[END]'
+
+Private Sub Command1_Click()
 Call SendData("ENTR" & lstCriaturas.ListIndex + 1)
 Unload Me
 End Sub
@@ -108,30 +153,8 @@ End Sub
 Private Sub Command2_Click()
 Unload Me
 End Sub
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-If bmoving = False And Button = vbLeftButton Then
-    DX = X
-    dy = Y
-    bmoving = True
-End If
-
-End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
-
-End Sub
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If Button = vbLeftButton Then bmoving = False
-
-End Sub
 Private Sub Form_Deactivate()
 Me.SetFocus
 End Sub
 
-Private Sub Form_Load()
-Me.Picture = LoadPicture(DirGraficos & "Entrenar.gif")
-
-End Sub

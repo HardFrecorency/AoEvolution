@@ -1,14 +1,12 @@
 VERSION 5.00
 Begin VB.Form frmComerciar 
    BackColor       =   &H00000000&
-   BorderStyle     =   0  'None
+   BorderStyle     =   3  'Fixed Dialog
    ClientHeight    =   7290
-   ClientLeft      =   0
-   ClientTop       =   0
+   ClientLeft      =   45
+   ClientTop       =   45
    ClientWidth     =   6930
    ControlBox      =   0   'False
-   ForeColor       =   &H00000000&
-   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -17,65 +15,37 @@ Begin VB.Form frmComerciar
    ScaleWidth      =   462
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.TextBox precio 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H004DC488&
-      Height          =   285
-      Left            =   5280
-      TabIndex        =   11
-      Text            =   "0"
-      Top             =   6600
-      Visible         =   0   'False
-      Width           =   840
-   End
    Begin VB.TextBox cantidad 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H004DC488&
       Height          =   285
-      Left            =   2445
-      TabIndex        =   8
+      Left            =   3105
+      TabIndex        =   9
       Text            =   "1"
-      Top             =   6600
-      Width           =   840
+      Top             =   6690
+      Width           =   1080
    End
    Begin VB.PictureBox Picture1 
-      Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
       FillStyle       =   0  'Solid
-      ForeColor       =   &H00000000&
-      Height          =   480
-      Left            =   750
-      ScaleHeight     =   480
-      ScaleWidth      =   480
-      TabIndex        =   2
-      Top             =   735
-      Width           =   480
+      Height          =   600
+      Left            =   435
+      ScaleHeight     =   540
+      ScaleWidth      =   495
+      TabIndex        =   3
+      Top             =   750
+      Width           =   555
    End
-   Begin VB.ListBox List1 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+   Begin VB.CommandButton Command2 
+      Caption         =   "OK"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -85,108 +55,17 @@ Begin VB.Form frmComerciar
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H004DC488&
-      Height          =   3930
-      Index           =   1
-      ItemData        =   "frmComerciar.frx":0000
-      Left            =   3780
-      List            =   "frmComerciar.frx":0002
-      TabIndex        =   1
-      Top             =   2070
-      Width           =   2595
-   End
-   Begin VB.ListBox List1 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H004DC488&
-      Height          =   3930
-      Index           =   0
-      ItemData        =   "frmComerciar.frx":0004
-      Left            =   690
-      List            =   "frmComerciar.frx":0006
-      TabIndex        =   0
-      Top             =   2070
-      Width           =   2595
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000000C0&
-      Height          =   195
-      Index           =   6
-      Left            =   3960
-      TabIndex        =   12
-      Top             =   1680
-      Width           =   60
-   End
-   Begin VB.Image Image2 
-      Height          =   210
-      Index           =   1
-      Left            =   3960
-      Top             =   6645
-      Visible         =   0   'False
-      Width           =   1290
-   End
-   Begin VB.Image Image2 
-      Height          =   195
-      Index           =   0
-      Left            =   1470
-      Top             =   6645
-      Width           =   960
-   End
-   Begin VB.Image Image1 
-      Height          =   375
-      Index           =   0
-      Left            =   975
-      MouseIcon       =   "frmComerciar.frx":0008
+      Height          =   240
+      Left            =   6195
+      MouseIcon       =   "frmComerciar.frx":0000
       MousePointer    =   99  'Custom
-      Tag             =   "1"
-      Top             =   6120
-      Width           =   2085
+      TabIndex        =   2
+      Top             =   6780
+      Width           =   465
    End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
+   Begin VB.ListBox List1 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H0080FFFF&
-      Height          =   195
-      Index           =   5
-      Left            =   1320
-      TabIndex        =   10
-      Top             =   1650
-      Width           =   45
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Verdana"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -194,123 +73,125 @@ Begin VB.Form frmComerciar
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Index           =   2
-      Left            =   3960
-      TabIndex        =   9
-      Top             =   960
-      Visible         =   0   'False
-      Width           =   60
+      Height          =   3960
+      Index           =   1
+      Left            =   3855
+      TabIndex        =   1
+      Top             =   1800
+      Width           =   2490
+   End
+   Begin VB.ListBox List1 
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   3960
+      Index           =   0
+      Left            =   615
+      TabIndex        =   0
+      Top             =   1800
+      Width           =   2490
    End
    Begin VB.Label Label2 
-      BackColor       =   &H00000000&
-      ForeColor       =   &H00000000&
-      Height          =   255
-      Left            =   3600
-      TabIndex        =   7
-      Top             =   6600
-      Width           =   975
-   End
-   Begin VB.Image Command2 
-      Height          =   270
-      Left            =   6075
-      MouseIcon       =   "frmComerciar.frx":0312
-      MousePointer    =   99  'Custom
-      Tag             =   "1"
-      Top             =   7005
-      Width           =   780
-   End
-   Begin VB.Image Image1 
-      Height          =   375
-      Index           =   1
-      Left            =   4095
-      MouseIcon       =   "frmComerciar.frx":061C
-      MousePointer    =   99  'Custom
-      Tag             =   "1"
-      Top             =   6120
-      Width           =   2085
-   End
-   Begin VB.Label Label1 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Index           =   3
-      Left            =   3960
-      TabIndex        =   6
-      Top             =   1440
-      Visible         =   0   'False
-      Width           =   60
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Index           =   4
-      Left            =   3960
-      TabIndex        =   5
-      Top             =   1200
-      Visible         =   0   'False
-      Width           =   60
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
+      Caption         =   "Cantidad"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H0080FFFF&
+      ForeColor       =   &H8000000E&
       Height          =   195
+      Left            =   2265
+      TabIndex        =   10
+      Top             =   6750
+      Width           =   645
+   End
+   Begin VB.Image Image1 
+      Height          =   330
       Index           =   1
-      Left            =   2520
-      TabIndex        =   4
-      Top             =   1335
+      Left            =   3855
+      MouseIcon       =   "frmComerciar.frx":0152
+      MousePointer    =   99  'Custom
+      Tag             =   "1"
+      Top             =   6165
+      Width           =   2460
+   End
+   Begin VB.Image Image1 
+      Height          =   330
+      Index           =   0
+      Left            =   615
+      MouseIcon       =   "frmComerciar.frx":02A4
+      MousePointer    =   99  'Custom
+      Tag             =   "1"
+      Top             =   6150
+      Width           =   2460
+   End
+   Begin VB.Label Label1 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      ForeColor       =   &H000000FF&
+      Height          =   195
+      Index           =   3
+      Left            =   3990
+      TabIndex        =   8
+      Top             =   975
+      Visible         =   0   'False
       Width           =   45
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H0080FFFF&
+      ForeColor       =   &H000000FF&
+      Height          =   195
+      Index           =   4
+      Left            =   3990
+      TabIndex        =   7
+      Top             =   630
+      Visible         =   0   'False
+      Width           =   45
+   End
+   Begin VB.Label Label1 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      ForeColor       =   &H000000FF&
+      Height          =   195
+      Index           =   2
+      Left            =   2730
+      TabIndex        =   6
+      Top             =   1170
+      Width           =   45
+   End
+   Begin VB.Label Label1 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      ForeColor       =   &H000000FF&
+      Height          =   195
+      Index           =   1
+      Left            =   1800
+      TabIndex        =   5
+      Top             =   750
+      Width           =   45
+   End
+   Begin VB.Label Label1 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      ForeColor       =   &H000000FF&
       Height          =   195
       Index           =   0
-      Left            =   2040
-      TabIndex        =   3
-      Top             =   1042
+      Left            =   1125
+      TabIndex        =   4
+      Top             =   450
       Width           =   45
    End
 End
@@ -319,10 +200,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -334,171 +217,209 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
 
 Option Explicit
+
+'[CODE]:MatuX
+'
+'    Le puse el iconito de la manito a los botones ^_^ y
+'   le puse borde a la ventana.
+'
+'[END]'
+
+'<-------------------------NUEVO-------------------------->
+'<-------------------------NUEVO-------------------------->
+'<-------------------------NUEVO-------------------------->
 Public LastIndex1 As Integer
 Public LastIndex2 As Integer
+
+
+
+
 Private Sub cantidad_Change()
+If Val(cantidad.Text) < 0 Then
+    cantidad.Text = 1
+End If
 
-If Val(cantidad.Text) < 0 Or Val(cantidad.Text) > MAX_INVENTORY_OBJS Then cantidad.Text = 1
-
-End Sub
-Private Sub cantidad_KeyPress(KeyAscii As Integer)
-
-If (KeyAscii <> 8) And (KeyAscii <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then KeyAscii = 0
-
-End Sub
-Private Sub Command2_Click()
-
-SendData ("FINCOM")
-Call Unload(Me)
-
-End Sub
-Private Sub Form_Deactivate()
-
-Me.SetFocus
-
-End Sub
-Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
-
-If KeyCode = vbKeyE Then
-    If List1(1).ListIndex > -1 And List1(1).ListIndex < MAX_INVENTORY_SLOTS Then
-        Call SendData("EQUI" & List1(1).ListIndex + 1)
-        Call ActualizarInventario(List1(1).ListIndex + 1)
-        Exit Sub
-    End If
+If Val(cantidad.Text) > MAX_INVENTORY_OBJS Then
+    cantidad.Text = 1
 End If
 
 End Sub
 
-Private Sub Form_Load()
+Private Sub cantidad_KeyPress(KeyAscii As Integer)
+If (KeyAscii <> 8) Then
+    If (KeyAscii <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then
+        KeyAscii = 0
+    End If
+End If
+End Sub
 
-frmComerciar.Picture = LoadPicture(DirGraficos & "\comerciar.gif")
-frmComerciar.Image2(0).Picture = LoadPicture(DirGraficos & "\Cantidad.gif")
-frmComerciar.Image2(1).Picture = LoadPicture(DirGraficos & "\Precio.gif")
+Private Sub Command2_Click()
+SendData ("FINCOM")
+End Sub
+
+
+
+Private Sub Form_Deactivate()
+Me.SetFocus
+End Sub
+
+
+Private Sub Form_Load()
+'Cargamos la interfase
+Me.Picture = LoadPicture(App.Path & "\Graficos\comerciar.jpg")
+Image1(0).Picture = LoadPicture(App.Path & "\Graficos\BotónComprar.jpg")
+Image1(1).Picture = LoadPicture(App.Path & "\Graficos\Botónvender.jpg")
 
 End Sub
+
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+If Image1(0).Tag = 0 Then
+    Image1(0).Picture = LoadPicture(App.Path & "\Graficos\BotónComprar.jpg")
+    Image1(0).Tag = 1
+End If
+If Image1(1).Tag = 0 Then
+    Image1(1).Picture = LoadPicture(App.Path & "\Graficos\Botónvender.jpg")
+    Image1(1).Tag = 1
+End If
+End Sub
+
 Private Sub Image1_Click(Index As Integer)
 
 Call PlayWaveDS(SND_CLICK)
 
 If List1(Index).List(List1(Index).ListIndex) = "Nada" Or _
-   List1(Index).ListIndex < 0 Then
-   Picture1.Picture = Nothing
-   Exit Sub
-End If
+   List1(Index).ListIndex < 0 Then Exit Sub
 
 Select Case Index
     Case 0
         frmComerciar.List1(0).SetFocus
         LastIndex1 = List1(0).ListIndex
-        Select Case Comerciando
-            Case 1
-                If UserGLD >= OtherInventory(List1(0).ListIndex + 1).Valor * Val(cantidad) Then
-                    Call SendData("COMP" & List1(0).ListIndex + 1 & "," & cantidad.Text)
-                Else
-                    AddtoRichTextBox frmMain.rectxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
-                    Exit Sub
-                End If
-            Case 2
-                Call SendData("RETI" & List1(0).ListIndex + 1 & "," & cantidad.Text)
-            Case 3
-                Call SendData("SAVE" & List1(0).ListIndex + 1 & "," & cantidad.Text)
-        End Select
-        If lista = 1 Then Call ActualizarInformacionComercio(0)
+        If UserGLD >= NPCInventory(List1(0).ListIndex + 1).Valor * Val(cantidad) Then
+                SendData ("COMP" & "," & List1(0).ListIndex + 1 & "," & cantidad.Text)
+                
+        Else
+            AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            Exit Sub
+        End If
    Case 1
         LastIndex2 = List1(1).ListIndex
-        Select Case Comerciando
-            Case 1
-                If UserInventory(List1(1).ListIndex + 1).Equipped = 0 Then
-                    Call SendData("VEND" & List1(1).ListIndex + 1 & "," & cantidad.Text)
-                Else
-                    AddtoRichTextBox frmMain.rectxt, "No podes vender el item porque lo estás usando.", 2, 51, 223, 1, 1
-                    Exit Sub
-                End If
-            Case 2
-                If UserInventory(List1(1).ListIndex + 1).Equipped = 0 Then
-                    Call SendData("DEPO" & List1(1).ListIndex + 1 & "," & cantidad.Text)
-                Else
-                    AddtoRichTextBox frmMain.rectxt, "No podes depositar el item porque lo estás usando.", 2, 51, 223, 1, 1
-                    Exit Sub
-                End If
-            Case 3
-                If UserInventory(List1(1).ListIndex + 1).Equipped = 0 Then
-                    If Val(precio.Text) > 0 Then
-                        Call SendData("POVE" & List1(1).ListIndex + 1 & "," & cantidad.Text & "," & precio.Text)
-                    Else
-                        AddtoRichTextBox frmMain.rectxt, "¡Debes elegir un precio de venta!", 2, 51, 223, 1, 1
-                        Exit Sub
-                    End If
-                Else
-                    AddtoRichTextBox frmMain.rectxt, "No puedes poner el item a la venta porque lo estás usando.", 2, 51, 223, 1, 1
-                    Exit Sub
-                End If
-
-        End Select
-        If lista = 0 Then Call ActualizarInformacionComercio(1)
+        If UserInventory(List1(1).ListIndex + 1).Equipped = 0 Then
+            SendData ("VEND" & "," & List1(1).ListIndex + 1 & "," & cantidad.Text)
+        Else
+            AddtoRichTextBox frmMain.RecTxt, "No podes vender el item porque lo estas usando.", 2, 51, 223, 1, 1
+            Exit Sub
+        End If
+                
 End Select
+List1(0).Clear
 
+List1(1).Clear
+
+NPCInvDim = 0
 End Sub
 
-Private Sub list1_Click(Index As Integer)
-
-lista = Index
-Call ActualizarInformacionComercio(Index)
-
-End Sub
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
-
 Select Case Index
     Case 0
         If Image1(0).Tag = 1 Then
-            Image1(0).Tag = 0
-            Image1(1).Tag = 1
+                Image1(0).Picture = LoadPicture(App.Path & "\Graficos\BotónComprarApretado.jpg")
+                Image1(0).Tag = 0
+                Image1(1).Picture = LoadPicture(App.Path & "\Graficos\Botónvender.jpg")
+                Image1(1).Tag = 1
         End If
+        
     Case 1
         If Image1(1).Tag = 1 Then
-            Image1(1).Tag = 0
-            Image1(0).Tag = 1
+                Image1(1).Picture = LoadPicture(App.Path & "\Graficos\Botónvenderapretado.jpg")
+                Image1(1).Tag = 0
+                Image1(0).Picture = LoadPicture(App.Path & "\Graficos\BotónComprar.jpg")
+                Image1(0).Tag = 1
         End If
+        
 End Select
+End Sub
+
+Private Sub list1_Click(Index As Integer)
+Dim SR As RECT, DR As RECT
+
+SR.Left = 0
+SR.Top = 0
+SR.Right = 32
+SR.Bottom = 32
+
+DR.Left = 0
+DR.Top = 0
+DR.Right = 32
+DR.Bottom = 32
+
+Select Case Index
+    Case 0
+        Label1(0).Caption = NPCInventory(List1(0).ListIndex + 1).Name
+        Label1(1).Caption = NPCInventory(List1(0).ListIndex + 1).Valor
+        Label1(2).Caption = NPCInventory(List1(0).ListIndex + 1).Amount
+        Select Case NPCInventory(List1(0).ListIndex + 1).ObjType
+            Case 2
+                Label1(3).Caption = "Max Golpe:" & NPCInventory(List1(0).ListIndex + 1).MaxHit
+                Label1(4).Caption = "Min Golpe:" & NPCInventory(List1(0).ListIndex + 1).MinHit
+                Label1(3).Visible = True
+                Label1(4).Visible = True
+            Case 3
+                Label1(3).Visible = False
+                Label1(4).Caption = "Defensa:" & NPCInventory(List1(0).ListIndex + 1).Def
+                Label1(4).Visible = True
+        End Select
+        Call DrawGrhtoHdc(Picture1.hWnd, Picture1.Hdc, NPCInventory(List1(0).ListIndex + 1).GrhIndex, SR, DR)
+    Case 1
+        Label1(0).Caption = UserInventory(List1(1).ListIndex + 1).Name
+        Label1(1).Caption = UserInventory(List1(1).ListIndex + 1).Valor
+        Label1(2).Caption = UserInventory(List1(1).ListIndex + 1).Amount
+        Select Case UserInventory(List1(1).ListIndex + 1).ObjType
+            Case 2
+                Label1(3).Caption = "Max Golpe:" & UserInventory(List1(1).ListIndex + 1).MaxHit
+                Label1(4).Caption = "Min Golpe:" & UserInventory(List1(1).ListIndex + 1).MinHit
+                Label1(3).Visible = True
+                Label1(4).Visible = True
+            Case 3
+                Label1(3).Visible = False
+                Label1(4).Caption = "Defensa:" & UserInventory(List1(1).ListIndex + 1).Def
+                Label1(4).Visible = True
+        End Select
+        Call DrawGrhtoHdc(Picture1.hWnd, Picture1.Hdc, UserInventory(List1(1).ListIndex + 1).GrhIndex, SR, DR)
+End Select
+Picture1.Refresh
 
 End Sub
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If bmoving = False And Button = vbLeftButton Then
-   DX = X
-   dy = Y
-   bmoving = True
+'<-------------------------NUEVO-------------------------->
+'<-------------------------NUEVO-------------------------->
+'<-------------------------NUEVO-------------------------->
+Private Sub List1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+If Image1(0).Tag = 0 Then
+    Image1(0).Picture = LoadPicture(App.Path & "\Graficos\BotónComprar.jpg")
+    Image1(0).Tag = 1
 End If
-
-End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
-
-End Sub
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
-If Button = vbLeftButton Then bmoving = False
-    
+If Image1(1).Tag = 0 Then
+    Image1(1).Picture = LoadPicture(App.Path & "\Graficos\Botónvender.jpg")
+    Image1(1).Tag = 1
+End If
 End Sub

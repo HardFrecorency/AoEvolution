@@ -1,8 +1,10 @@
 Attribute VB_Name = "DibujarInventario"
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -14,33 +16,32 @@ Attribute VB_Name = "DibujarInventario"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
 
 Option Explicit
 
-
-
-
-
-
+'[CODE]:MatuX
+'
+'  Casi todo recodeado menos los calculos
+'
+'[END]'
 
 Public Const XCantItems = 5
 
@@ -52,65 +53,137 @@ Public my As Integer
 Private AuxSurface   As DirectDrawSurface7
 Private BoxSurface   As DirectDrawSurface7
 Private SelSurface   As DirectDrawSurface7
-Private bStaticInit  As Boolean
+Private bStaticInit  As Boolean   'Se inicializaron las Statics?
 Private r1           As RECT, r2 As RECT, auxr As RECT
-Private rBox         As RECT
+Private rBox         As RECT  'Pos del cuadradito rojo
 Private rBoxFrame(2) As RECT
 Private iFrameMod    As Integer
-Sub ActualizarOtherInventory(Slot As Integer)
 
-If OtherInventory(Slot).OBJIndex = 0 Then
-    frmComerciar.List1(0).List(Slot - 1) = "Nada"
+
+Function ClicEnItemElegido(X As Integer, Y As Integer) As Boolean
+bInvMod = True
+mx = X \ 32 + 1
+my = Y \ 32 + 1
+If ItemElegido = 0 Or FLAGORO Then
+    ClicEnItemElegido = False
 Else
-    frmComerciar.List1(0).List(Slot - 1) = OtherInventory(Slot).Name
+    ClicEnItemElegido = (UserInventory(ItemElegido).OBJIndex > 0) And (ItemElegido = (mx + (my - 1) * 5) + OffsetDelInv)
 End If
+End Function
 
-If frmComerciar.List1(0).ListIndex = Slot - 1 And lista = 0 Then Call ActualizarInformacionComercio(0)
+Sub ItemClick(X As Integer, Y As Integer)
+Dim lPreItem As Long
 
+bInvMod = False
+mx = X \ 32 + 1
+my = Y \ 32 + 1
+
+lPreItem = (mx + (my - 1) * 5) + OffsetDelInv
+
+If lPreItem <= MAX_INVENTORY_SLOTS Then _
+If UserInventory(lPreItem).GrhIndex > 0 Then _
+    ItemElegido = lPreItem: bInvMod = True
 End Sub
-Sub ActualizarInventario(Slot As Integer)
-Dim OBJIndex As Long
-Dim NameSize As Byte
 
-If UserInventory(Slot).Amount = 0 Then
-    frmMain.imgObjeto(Slot).ToolTipText = "Nada"
-    frmMain.lblObjCant(Slot).ToolTipText = "Nada"
-    frmMain.lblObjCant(Slot).Caption = ""
-    If ItemElegido = Slot Then frmMain.Shape1.Visible = False
-Else
-    frmMain.imgObjeto(Slot).ToolTipText = UserInventory(Slot).Name
-    frmMain.lblObjCant(Slot).ToolTipText = UserInventory(Slot).Name
-    frmMain.lblObjCant(Slot).Caption = CStr(UserInventory(Slot).Amount)
-    If ItemElegido = Slot Then frmMain.Shape1.Visible = True
-End If
-
-If UserInventory(Slot).GrhIndex > 0 Then
-    frmMain.imgObjeto(Slot).Picture = LoadPicture(DirGraficos & GrhData(UserInventory(Slot).GrhIndex).FileNum & ".bmp")
-Else
-    frmMain.imgObjeto(Slot).Picture = LoadPicture()
-End If
-
-If UserInventory(Slot).Equipped > 0 Then
-    frmMain.Label2(Slot).Visible = True
-Else
-    frmMain.Label2(Slot).Visible = False
-End If
-
-If frmComerciar.Visible Then
-    If UserInventory(Slot).Amount = 0 Then
-        frmComerciar.List1(1).List(Slot - 1) = "Nada"
-     Else
-        frmComerciar.List1(1).List(Slot - 1) = UserInventory(Slot).Name
+'[CODE]:MatuX'
+Public Sub DibujarInvBox()
+    On Error Resume Next
+    If bStaticInit And ItemElegido <> 0 Then
+        Call BoxSurface.BltColorFill(auxr, vbBlack)
+        Call BoxSurface.BltFast(0, 0, SelSurface, auxr, DDBLTFAST_SRCCOLORKEY)
+        
+        'inline hardcoded DDrawTransGrhToSurface()
+       '{
+        With Grh(1)
+            '.FrameCounter = .FrameCounter + iFrameMod
+            'If (.FrameCounter >= GrhData(.GrhIndex).NumFrames) Then
+            '    iFrameMod = -1
+            'ElseIf (.FrameCounter <= 1) Then
+            '    iFrameMod = 1
+            'End If
+            .FrameCounter = 2
+            Call BoxSurface.BltFast(0, 0, SurfaceDB(GrhData(GrhData(.GrhIndex).Frames(.FrameCounter)).FileNum), rBoxFrame(.FrameCounter - 1), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
+        End With
+       '}
+        Call BoxSurface.BltToDC(frmMain.picInv.Hdc, auxr, rBox)
+        Call frmMain.picInv.Refresh
     End If
-    If frmComerciar.List1(1).ListIndex = Slot - 1 And lista = 1 Then Call ActualizarInformacionComercio(1)
-End If
+End Sub
+'[END]'
+
+'Sub DibujarInv(PictureHandler As Long, desp As Integer)
+Sub DibujarInv()
+'[CODE]:MatuX'
+'
+'
+'[END]'
+
+Dim iX As Integer
+
+If Not bStaticInit Then _
+    Call InitMem
+
+r1.Top = 0: r1.Left = 0: r1.Right = 32: r1.Bottom = 32
+r2.Top = 0: r2.Left = 0: r2.Right = 32: r2.Bottom = 32
+
+frmMain.picInv.Cls
+
+For iX = OffsetDelInv + 1 To UBound(UserInventory)
+    If UserInventory(iX).GrhIndex > 0 Then
+        AuxSurface.BltColorFill auxr, vbBlack
+        AuxSurface.BltFast 0, 0, SurfaceDB(GrhData(UserInventory(iX).GrhIndex).FileNum), auxr, DDBLTFAST_NOCOLORKEY
+        AuxSurface.DrawText 0, 0, UserInventory(iX).Amount, False
+
+        If UserInventory(iX).Equipped Then
+            AuxSurface.SetForeColor vbYellow
+            AuxSurface.DrawText 20, 20, "+", False
+            AuxSurface.SetForeColor vbWhite
+        End If
+
+        If ItemElegido = iX Then
+            'Call SelSurface.BltColorFill(auxr, vbBlack)
+            'Call SelSurface.BltFast(0, 0, AuxSurface, auxr, DDBLTFAST_SRCCOLORKEY)
+
+            With r2: .Left = (mx - 1) * 32: .Right = r2.Left + 32: .Top = (my - 1) * 32: .Bottom = r2.Top + 32: End With
+            'With rBox: .Top = r2.Top: .Left = r2.Left: .Bottom = r2.Bottom: .Right = r2.Right: End With
+            
+            Call AuxSurface.BltFast(0, 0, SurfaceDB(GrhData(GrhData(Grh(1).GrhIndex).Frames(2)).FileNum), rBoxFrame(2), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
+        End If
+        AuxSurface.BltToDC frmMain.picInv.Hdc, auxr, r2
+    End If
+
+    r2.Left = r2.Left + 32
+    r2.Right = r2.Right + 32
+    r1.Left = r1.Left + 32
+    r1.Right = r1.Right + 32
+    If r2.Left >= 160 Then
+        r2.Left = 0
+        r1.Left = 0
+        r1.Right = 32
+        r2.Right = 32
+        r2.Top = r2.Top + 32
+        r1.Top = r1.Top + 32
+        r2.Bottom = r2.Bottom + 32
+        r1.Bottom = r1.Bottom + 32
+    End If
+Next iX
+
+'frmMain.picInv.Refresh
+
+'Call DibujarInvBox
+
+bInvMod = False
+
+If ItemElegido = 0 Then _
+    Call ItemClick(2, 2)
 
 End Sub
+
 Private Sub InitMem()
     Dim ddck        As DDCOLORKEY
     Dim SurfaceDesc As DDSURFACEDESC2
     
-    
+    'Back Buffer Surface
     r1.Right = 32: r1.Bottom = 32
     r2.Right = 32: r2.Bottom = 32
     
@@ -121,12 +194,12 @@ Private Sub InitMem()
         .lWidth = r1.Right
     End With
 
-    
+    ' Create surface
     Set AuxSurface = DirectDraw.CreateSurface(SurfaceDesc)
     Set BoxSurface = DirectDraw.CreateSurface(SurfaceDesc)
     Set SelSurface = DirectDraw.CreateSurface(SurfaceDesc)
 
-    
+    'Set color key
     AuxSurface.SetColorKey DDCKEY_SRCBLT, ddck
     BoxSurface.SetColorKey DDCKEY_SRCBLT, ddck
     SelSurface.SetColorKey DDCKEY_SRCBLT, ddck
@@ -138,7 +211,7 @@ Private Sub InitMem()
     SelSurface.SetFontTransparency True
     SelSurface.SetFont frmMain.Font
 
-    
+    'RedBox Frame Position List
     With rBoxFrame(0): .Left = 0:  .Top = 0: .Right = 32: .Bottom = 32: End With
     With rBoxFrame(1): .Left = 32: .Top = 0: .Right = 64: .Bottom = 32: End With
     With rBoxFrame(2): .Left = 64: .Top = 0: .Right = 96: .Bottom = 32: End With

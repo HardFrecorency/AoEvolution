@@ -1,8 +1,9 @@
 Attribute VB_Name = "Comercio"
-'FénixAO 1.0
+'Argentum Online 0.9.0.4
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -14,208 +15,384 @@ Attribute VB_Name = "Comercio"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
 
 Option Explicit
-Sub UserCompraObj(UserIndex As Integer, ByVal OBJIndex As Integer, NpcIndex As Integer, Cantidad As Integer)
-Dim Infla As Integer
-Dim Desc As Single
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%          MODULO DE COMERCIO NPC-USER              %%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Sub UserCompraObj(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal NpcIndex As Integer, ByVal Cantidad As Integer)
+Dim infla As Integer
+Dim Descuento As String
 Dim unidad As Long, monto As Long
-Dim Slot As Byte
-Dim ObjI As Integer
+Dim Slot As Integer
+Dim obji As Integer
 Dim Encontre As Boolean
 
-ObjI = Npclist(UserList(UserIndex).flags.TargetNpc).Invent.Object(OBJIndex).OBJIndex
+If (Npclist(UserList(UserIndex).Flags.TargetNpc).Invent.Object(ObjIndex).Amount <= 0) Then Exit Sub
 
+obji = Npclist(UserList(UserIndex).Flags.TargetNpc).Invent.Object(ObjIndex).ObjIndex
+
+
+'¿Ya tiene un objeto de este tipo?
 Slot = 1
-Do Until UserList(UserIndex).Invent.Object(Slot).OBJIndex = ObjI And _
+Do Until UserList(UserIndex).Invent.Object(Slot).ObjIndex = obji And _
    UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS
     
     Slot = Slot + 1
-    If Slot > MAX_INVENTORY_SLOTS Then Exit Do
+    If Slot > MAX_INVENTORY_SLOTS Then
+        Exit Do
+    End If
 Loop
 
+'Sino se fija por un slot vacio
 If Slot > MAX_INVENTORY_SLOTS Then
-    Slot = 1
-    Do Until UserList(UserIndex).Invent.Object(Slot).OBJIndex = 0
-        Slot = Slot + 1
+        Slot = 1
+        Do Until UserList(UserIndex).Invent.Object(Slot).ObjIndex = 0
+            Slot = Slot + 1
 
-        If Slot > MAX_INVENTORY_SLOTS Then
-            Call SendData(ToIndex, UserIndex, 0, "5P")
-            Exit Sub
-        End If
-    Loop
-    UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems + 1
+            If Slot > MAX_INVENTORY_SLOTS Then
+                Call SendData(ToIndex, UserIndex, 0, "||No podés tener mas objetos." & FONTTYPE_INFO)
+                Exit Sub
+            End If
+        Loop
+        UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems + 1
 End If
 
-If UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
-    UserList(UserIndex).Invent.Object(Slot).OBJIndex = ObjI
-    UserList(UserIndex).Invent.Object(Slot).Amount = UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad
-    Infla = (Npclist(NpcIndex).Inflacion * ObjData(ObjI).Valor) \ 100
 
-    Desc = Descuento(UserIndex)
+
+'Mete el obj en el slot
+If UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
     
-    unidad = Int(((ObjData(Npclist(NpcIndex).Invent.Object(OBJIndex).OBJIndex).Valor + Infla) / Desc))
-    If unidad = 0 Then unidad = 1
+    'Menor que MAX_INV_OBJS
+    UserList(UserIndex).Invent.Object(Slot).ObjIndex = obji
+    UserList(UserIndex).Invent.Object(Slot).Amount = UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad
+    
+    'Le sustraemos el valor en oro del obj comprado
+    infla = (Npclist(NpcIndex).Inflacion * ObjData(obji).Valor) \ 100
+    Descuento = UserList(UserIndex).Flags.Descuento
+    If Descuento = 0 Then Descuento = 1 'evitamos dividir por 0!
+    unidad = ((ObjData(Npclist(NpcIndex).Invent.Object(ObjIndex).ObjIndex).Valor + infla) / Descuento)
     monto = unidad * Cantidad
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - monto
     
+    'tal vez suba el skill comerciar ;-)
     Call SubirSkill(UserIndex, Comerciar)
     
-    If ObjData(ObjI).ObjType = OBJTYPE_LLAVES Then Call LogVentaCasa(UserList(UserIndex).Name & " compro " & ObjData(ObjI).Name)
-    Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNpc, CByte(OBJIndex), Cantidad, UserIndex)
+    If ObjData(obji).ObjType = OBJTYPE_LLAVES Then Call logVentaCasa(UserList(UserIndex).Name & " compro " & ObjData(obji).Name)
+
+'    If UserList(UserIndex).Stats.GLD < 0 Then UserList(UserIndex).Stats.GLD = 0
     
-    Call UpdateUserInv(False, UserIndex, Slot)
+    Call QuitarNpcInvItem(UserList(UserIndex).Flags.TargetNpc, CByte(ObjIndex), Cantidad)
 Else
-    Call SendData(ToIndex, UserIndex, 0, "5P")
+    Call SendData(ToIndex, UserIndex, 0, "||No podés tener mas objetos." & FONTTYPE_INFO)
 End If
 
-End Sub
-Sub UpdateNPCInv(UpdateAll As Boolean, UserIndex As Integer, NpcIndex As Integer, Slot As Byte)
-Dim i As Byte
-Dim MiObj As UserOBJ
 
-If UpdateAll Then
-    For i = 1 To MAX_NPCINVENTORY_SLOTS
-        Call SendNPCItem(UserIndex, NpcIndex, i, UpdateAll)
-    Next
-Else
-    Call SendNPCItem(UserIndex, NpcIndex, i, UpdateAll)
+End Sub
+
+
+Sub NpcCompraObj(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal Cantidad As Integer)
+
+Dim Slot As Integer
+Dim obji As Integer
+Dim NpcIndex As Integer
+Dim infla As Long
+Dim monto As Long
+      
+If Cantidad < 1 Then Exit Sub
+
+NpcIndex = UserList(UserIndex).Flags.TargetNpc
+obji = UserList(UserIndex).Invent.Object(ObjIndex).ObjIndex
+
+If ObjData(obji).Newbie = 1 Then
+    Call SendData(ToIndex, UserIndex, 0, "||No comercio objetos para newbies." & FONTTYPE_INFO)
+    Exit Sub
 End If
 
-End Sub
-Sub SendNPCItem(UserIndex As Integer, NpcIndex As Integer, Slot As Byte, ByVal AllInfo As Boolean)
-Dim MiObj As UserOBJ
-Dim Infla As Long
-Dim Desc As Single
-Dim val As Long
-
-MiObj = Npclist(NpcIndex).Invent.Object(Slot)
-
-Desc = Descuento(UserIndex)
-
-If Desc >= 0 And Desc <= 1 Then Desc = 1
-
-
-
-
-If MiObj.OBJIndex Then
-    If AllInfo Then
-        Infla = (Npclist(NpcIndex).Inflacion * ObjData(MiObj.OBJIndex).Valor) / 100
-        val = Maximo(1, Int((ObjData(MiObj.OBJIndex).Valor + Infla) / Desc))
-        Call SendData(ToIndex, UserIndex, 0, "OTII" & Slot _
-        & "," & ObjData(MiObj.OBJIndex).Name _
-        & "," & MiObj.Amount _
-        & "," & val _
-        & "," & ObjData(MiObj.OBJIndex).GrhIndex _
-        & "," & MiObj.OBJIndex _
-        & "," & ObjData(MiObj.OBJIndex).ObjType _
-        & "," & ObjData(MiObj.OBJIndex).MaxHit _
-        & "," & ObjData(MiObj.OBJIndex).MinHit _
-        & "," & ObjData(MiObj.OBJIndex).MaxDef _
-        & "," & ObjData(MiObj.OBJIndex).MinDef _
-        & "," & ObjData(MiObj.OBJIndex).TipoPocion _
-        & "," & ObjData(MiObj.OBJIndex).MaxModificador _
-        & "," & ObjData(MiObj.OBJIndex).MinModificador _
-        & "," & PuedeUsarObjeto(UserIndex, MiObj.OBJIndex))
-    Else
-        Call SendData(ToIndex, UserIndex, 0, "OTIC" & Slot & "," & MiObj.Amount)
+If Npclist(NpcIndex).TipoItems <> OBJTYPE_CUALQUIERA Then
+    '¿Son los items con los que comercia el npc?
+    If Npclist(NpcIndex).TipoItems <> ObjData(obji).ObjType Then
+            Call SendData(ToIndex, UserIndex, 0, "||El npc no esta interesado en comprar ese objeto." & FONTTYPE_WARNING)
+            Exit Sub
     End If
-Else
-    Call SendData(ToIndex, UserIndex, 0, "OTIV" & Slot)
 End If
-  
+
+'¿Ya tiene un objeto de este tipo?
+Slot = 1
+Do Until Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = obji And _
+         Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS
+            Slot = Slot + 1
+        
+            If Slot > MAX_INVENTORY_SLOTS Then
+                Exit Do
+            End If
+Loop
+
+'Sino se fija por un slot vacio antes del slot devuelto
+If Slot > MAX_INVENTORY_SLOTS Then
+        Slot = 1
+        Do Until Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0
+            Slot = Slot + 1
+
+            If Slot > MAX_INVENTORY_SLOTS Then
+'                Call SendData(ToIndex, NpcIndex, 0, "||El npc no puede cargar mas objetos." & FONTTYPE_INFO)
+'                Exit Sub
+                Exit Do
+            End If
+        Loop
+        If Slot <= MAX_INVENTORY_SLOTS Then Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
+        
+        
+End If
+
+If Slot <= MAX_INVENTORY_SLOTS Then 'Slot valido
+    'Mete el obj en el slot
+    If Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
+        
+        'Menor que MAX_INV_OBJS
+        Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = obji
+        Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad
+        
+        Call QuitarUserInvItem(UserIndex, CByte(ObjIndex), Cantidad)
+        'Le sumamos al user el valor en oro del obj vendido
+        monto = ((ObjData(obji).Valor \ 3 + infla) * Cantidad)
+        Call AddtoVar(UserList(UserIndex).Stats.GLD, monto, MAXORO)
+        'tal vez suba el skill comerciar ;-)
+        Call SubirSkill(UserIndex, Comerciar)
+    
+    Else
+        Call SendData(ToIndex, UserIndex, 0, "||El npc no puede cargar tantos objetos." & FONTTYPE_INFO)
+    End If
+
+Else
+    Call QuitarUserInvItem(UserIndex, CByte(ObjIndex), Cantidad)
+    'Le sumamos al user el valor en oro del obj vendido
+    monto = ((ObjData(obji).Valor \ 3 + infla) * Cantidad)
+    Call AddtoVar(UserList(UserIndex).Stats.GLD, monto, MAXORO)
+End If
+
 End Sub
-Sub IniciarComercioNPC(UserIndex As Integer)
+
+Sub IniciarCOmercioNPC(ByVal UserIndex As Integer)
 On Error GoTo errhandler
 
-Call UpdateNPCInv(True, UserIndex, UserList(UserIndex).flags.TargetNpc, 0)
-Call SendData(ToIndex, UserIndex, 0, "INITCOM")
-UserList(UserIndex).flags.Comerciando = True
+'Mandamos el Inventario
+Call EnviarNpcInv(UserIndex, UserList(UserIndex).Flags.TargetNpc)
+'Hacemos un Update del inventario del usuario
+Call UpdateUserInv(True, UserIndex, 0)
+'Atcualizamos el dinero
+Call SendUserStatsBox(UserIndex)
+'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
+SendData ToIndex, UserIndex, 0, "INITCOM"
+UserList(UserIndex).Flags.Comerciando = True
 
 errhandler:
 
 End Sub
-Sub NPCVentaItem(UserIndex As Integer, ByVal i As Integer, Cantidad As Integer, NpcIndex As Integer)
+
+Sub NPCVentaItem(ByVal UserIndex As Integer, ByVal i As Integer, ByVal Cantidad As Integer, ByVal NpcIndex As Integer)
 On Error GoTo errhandler
-Dim Infla As Long
+
+Dim infla As Long
 Dim val As Long
-Dim Desc As Single
+Dim Desc As String
 
 If Cantidad < 1 Then Exit Sub
 
+'NPC VENDE UN OBJ A UN USUARIO
+Call SendUserStatsBox(UserIndex)
 
-Infla = (Npclist(NpcIndex).Inflacion * ObjData(Npclist(NpcIndex).Invent.Object(i).OBJIndex).Valor) / 100
+'Calculamos el valor unitario
+infla = (Npclist(NpcIndex).Inflacion * ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / 100
 Desc = Descuento(UserIndex)
+If Desc = 0 Then Desc = 1 'evitamos dividir por 0!
+val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
+        
 
-val = Fix((ObjData(Npclist(NpcIndex).Invent.Object(i).OBJIndex).Valor + Infla) / Desc)
-If val = 0 Then val = 1
 
 If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
-    If Npclist(UserList(UserIndex).flags.TargetNpc).Invent.Object(i).Amount > 0 Or Npclist(UserList(UserIndex).flags.TargetNpc).InvReSpawn = 0 Then
-         If Cantidad > Npclist(UserList(UserIndex).flags.TargetNpc).Invent.Object(i).Amount And Npclist(UserList(UserIndex).flags.TargetNpc).InvReSpawn = 1 Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNpc).Invent.Object(i).Amount
-         Call UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).flags.TargetNpc, Cantidad)
-         Call SendUserORO(UserIndex)
-    End If
+       
+       If Npclist(UserList(UserIndex).Flags.TargetNpc).Invent.Object(i).Amount > 0 Then
+            If Cantidad > Npclist(UserList(UserIndex).Flags.TargetNpc).Invent.Object(i).Amount Then Cantidad = Npclist(UserList(UserIndex).Flags.TargetNpc).Invent.Object(i).Amount
+            'Agregamos el obj que compro al inventario
+            Call UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).Flags.TargetNpc, Cantidad)
+            'Actualizamos el inventario del usuario
+            Call UpdateUserInv(True, UserIndex, 0)
+            'Actualizamos el oro
+            Call SendUserStatsBox(UserIndex)
+            'Actualizamos la ventana de comercio
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).Flags.TargetNpc)
+            Call UpdateVentanaComercio(i, 0, UserIndex)
+        
+       End If
 Else
-    Call SendData(ToIndex, UserIndex, 0, "2Q")
+    Call SendData(ToIndex, UserIndex, 0, "||No tenes suficiente dinero." & FONTTYPE_INFO)
     Exit Sub
 End If
+
 
 errhandler:
 
 End Sub
-Sub NPCCompraItem(UserIndex As Integer, ByVal Item As Byte, Cantidad As Integer)
+Sub NPCCompraItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Cantidad As Integer)
+
 On Error GoTo errhandler
 
-If ObjData(UserList(UserIndex).Invent.Object(Item).OBJIndex).Newbie = 1 Then
-    Call SendData(ToIndex, UserIndex, 0, "6P")
-    Exit Sub
-End If
-
-If ObjData(UserList(UserIndex).Invent.Object(Item).OBJIndex).NoSeCae = 1 Or ObjData(UserList(UserIndex).Invent.Object(Item).OBJIndex).Real > 0 Or ObjData(UserList(UserIndex).Invent.Object(Item).OBJIndex).Caos > 0 Or ObjData(UserList(UserIndex).Invent.Object(Item).OBJIndex).Newbie = 1 Then
-    Call SendData(ToIndex, UserIndex, 0, "||No puedes vender este item." & FONTTYPE_WARNING)
-    Exit Sub
-End If
-
+'NPC COMPRA UN OBJ A UN USUARIO
+Call SendUserStatsBox(UserIndex)
+   
 If UserList(UserIndex).Invent.Object(Item).Amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
-    If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
-    UserList(UserIndex).Invent.Object(Item).Amount = UserList(UserIndex).Invent.Object(Item).Amount - Cantidad
-    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + (ObjData(UserList(UserIndex).Invent.Object(Item).OBJIndex).Valor / 3 * Cantidad)
-    If UserList(UserIndex).Invent.Object(Item).Amount <= 0 Then
-        UserList(UserIndex).Invent.Object(Item).Amount = 0
-        UserList(UserIndex).Invent.Object(Item).OBJIndex = 0
-        UserList(UserIndex).Invent.Object(Item).Equipped = 0
-    End If
-    Call SubirSkill(UserIndex, Comerciar)
-    Call UpdateUserInv(False, UserIndex, Item)
+            
+            If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
+            'Agregamos el obj que compro al inventario
+            Call NpcCompraObj(UserIndex, CInt(Item), Cantidad)
+            'Actualizamos el inventario del usuario
+            Call UpdateUserInv(True, UserIndex, 0)
+            'Actualizamos el oro
+            Call SendUserStatsBox(UserIndex)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).Flags.TargetNpc)
+            'Actualizamos la ventana de comercio
+            
+            Call UpdateVentanaComercio(Item, 1, UserIndex)
+            
 End If
 
-Call SendUserORO(UserIndex)
-Exit Sub
 errhandler:
 
 End Sub
-Public Function Descuento(UserIndex As Integer) As Single
 
-Descuento = CSng(Minimo(10 + (Fix((UserList(UserIndex).Stats.UserSkills(Comerciar) + UserList(UserIndex).Stats.UserAtributos(Carisma) - 10) / 10)), 20)) / 10
+
+Sub UpdateVentanaComercio(ByVal Slot As Integer, ByVal NpcInv As Byte, ByVal UserIndex As Integer)
+ 
+ 
+ Call SendData(ToIndex, UserIndex, 0, "TRANSOK" & Slot & "," & NpcInv)
+ 
+End Sub
+
+Function Descuento(ByVal UserIndex As Integer) As String
+
+'Establece el descuento en funcion del skill comercio
+Dim PtsComercio As Integer
+PtsComercio = UserList(UserIndex).Stats.UserSkills(Comerciar)
+
+If PtsComercio <= 10 And PtsComercio > 5 Then
+    UserList(UserIndex).Flags.Descuento = 1.1
+    Descuento = 1.1
+ElseIf PtsComercio <= 20 And PtsComercio >= 12 Then
+    UserList(UserIndex).Flags.Descuento = 1.2
+    Descuento = 1.2
+ElseIf PtsComercio <= 30 And PtsComercio >= 19 Then
+    UserList(UserIndex).Flags.Descuento = 1.3
+    Descuento = 1.3
+ElseIf PtsComercio <= 40 And PtsComercio >= 29 Then
+    UserList(UserIndex).Flags.Descuento = 1.4
+    Descuento = 1.4
+ElseIf PtsComercio <= 50 And PtsComercio >= 39 Then
+    UserList(UserIndex).Flags.Descuento = 1.5
+    Descuento = 1.5
+ElseIf PtsComercio <= 60 And PtsComercio >= 49 Then
+    UserList(UserIndex).Flags.Descuento = 1.6
+    Descuento = 1.6
+ElseIf PtsComercio <= 70 And PtsComercio >= 59 Then
+    UserList(UserIndex).Flags.Descuento = 1.7
+    Descuento = 1.7
+ElseIf PtsComercio <= 80 And PtsComercio >= 69 Then
+    UserList(UserIndex).Flags.Descuento = 1.8
+    Descuento = 1.8
+ElseIf PtsComercio <= 99 And PtsComercio >= 79 Then
+    UserList(UserIndex).Flags.Descuento = 1.9
+    Descuento = 1.9
+ElseIf PtsComercio <= 999999 And PtsComercio >= 99 Then
+    UserList(UserIndex).Flags.Descuento = 2
+    Descuento = 2
+Else
+    UserList(UserIndex).Flags.Descuento = 0
+    Descuento = 0
+End If
 
 End Function
+
+
+
+Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
+
+'Enviamos el inventario del npc con el cual el user va a comerciar...
+Dim i As Integer
+Dim infla As Long
+Dim Desc As String
+Dim val As Long
+Desc = Descuento(UserIndex)
+If Desc = 0 Then Desc = 1 'evitamos dividir por 0!
+
+For i = 1 To MAX_INVENTORY_SLOTS
+  If Npclist(NpcIndex).Invent.Object(i).ObjIndex > 0 Then
+        'Calculamos el porc de inflacion del npc
+        infla = (Npclist(NpcIndex).Inflacion * ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / 100
+        val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
+        SendData ToIndex, UserIndex, 0, "NPCI" & _
+        ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Name _
+        & "," & Npclist(NpcIndex).Invent.Object(i).Amount & _
+        "," & val _
+        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).GrhIndex _
+        & "," & Npclist(NpcIndex).Invent.Object(i).ObjIndex _
+        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ObjType _
+        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).MaxHIT _
+        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).MinHIT _
+        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).MaxDef
+        
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(1) _
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(2) _
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(3) _
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(4) _
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(5) _
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(6) _
+'        & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).ClaseProhibida(7)
+  Else
+        SendData ToIndex, UserIndex, 0, "NPCI" & _
+        "Nada" _
+        & "," & 0 & _
+        "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0 _
+        & "," & 0
+  End If
+  
+Next
+End Sub
+
+

@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmGuildLeader 
-   BorderStyle     =   0  'None
+   BorderStyle     =   1  'Fixed Single
    Caption         =   "Administración del Clan"
-   ClientHeight    =   7950
-   ClientLeft      =   0
-   ClientTop       =   -105
-   ClientWidth     =   6825
+   ClientHeight    =   6555
+   ClientLeft      =   45
+   ClientTop       =   330
+   ClientWidth     =   5880
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -19,131 +19,200 @@ Begin VB.Form frmGuildLeader
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7950
-   ScaleWidth      =   6825
-   ShowInTaskbar   =   0   'False
+   ScaleHeight     =   6555
+   ScaleWidth      =   5880
    StartUpPosition =   2  'CenterScreen
-   Begin VB.TextBox txtguildnews 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H00FFFFFF&
-      Height          =   1335
-      Left            =   600
-      MultiLine       =   -1  'True
-      TabIndex        =   2
-      Top             =   3000
-      Width           =   5535
-   End
-   Begin VB.ListBox members 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H00FFFFFF&
-      Height          =   1590
-      ItemData        =   "frmGuildLeader.frx":0000
-      Left            =   3600
-      List            =   "frmGuildLeader.frx":0002
-      TabIndex        =   1
-      Top             =   840
-      Width           =   2655
-   End
-   Begin VB.ListBox guildslist 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H00FFFFFF&
-      Height          =   1590
-      ItemData        =   "frmGuildLeader.frx":0004
-      Left            =   600
-      List            =   "frmGuildLeader.frx":0006
-      TabIndex        =   0
-      Top             =   840
-      Width           =   2655
-   End
-   Begin VB.ListBox solicitudes 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H00FFFFFF&
-      Height          =   1005
-      ItemData        =   "frmGuildLeader.frx":0008
-      Left            =   600
-      List            =   "frmGuildLeader.frx":000A
-      TabIndex        =   3
-      Top             =   5520
-      Width           =   2655
-   End
-   Begin VB.Label Miembros 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "El clan cuenta con x miembros"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Left            =   720
-      TabIndex        =   4
-      Top             =   6550
-      Width           =   2535
-   End
-   Begin VB.Image command4 
-      Height          =   375
-      Left            =   1200
-      MouseIcon       =   "frmGuildLeader.frx":000C
+   Begin VB.CommandButton Command8 
+      Cancel          =   -1  'True
+      Caption         =   "Cerrar"
+      Height          =   495
+      Left            =   3000
+      MouseIcon       =   "frmGuildLeader.frx":0000
       MousePointer    =   99  'Custom
-      Top             =   2520
-      Width           =   1575
+      TabIndex        =   15
+      Top             =   5880
+      Width           =   2775
    End
-   Begin VB.Image command3 
-      Height          =   375
-      Left            =   2640
-      MouseIcon       =   "frmGuildLeader.frx":0316
+   Begin VB.CommandButton Command7 
+      Caption         =   "Propuestas de paz"
+      Height          =   495
+      Left            =   3000
+      MouseIcon       =   "frmGuildLeader.frx":0152
       MousePointer    =   99  'Custom
-      Top             =   4560
-      Width           =   1815
+      TabIndex        =   14
+      Top             =   5280
+      Width           =   2775
    End
-   Begin VB.Image command2 
-      Height          =   375
-      Left            =   4080
-      MouseIcon       =   "frmGuildLeader.frx":0620
+   Begin VB.CommandButton Command6 
+      Caption         =   "Editar URL de la web del clan"
+      Height          =   495
+      Left            =   3000
+      MouseIcon       =   "frmGuildLeader.frx":02A4
       MousePointer    =   99  'Custom
-      Top             =   2520
-      Width           =   1575
+      TabIndex        =   13
+      Top             =   4680
+      Width           =   2775
    End
-   Begin VB.Image command1 
-      Height          =   375
-      Left            =   1200
-      MouseIcon       =   "frmGuildLeader.frx":092A
+   Begin VB.CommandButton Command5 
+      Caption         =   "Editar Codex o Descripcion"
+      Height          =   495
+      Left            =   3000
+      MouseIcon       =   "frmGuildLeader.frx":03F6
       MousePointer    =   99  'Custom
-      Top             =   6840
-      Width           =   1575
+      TabIndex        =   12
+      Top             =   4080
+      Width           =   2775
    End
-   Begin VB.Image command8 
-      Height          =   255
+   Begin VB.Frame Frame3 
+      Caption         =   "Clanes"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2295
       Left            =   0
-      MouseIcon       =   "frmGuildLeader.frx":0C34
-      MousePointer    =   99  'Custom
-      Top             =   7680
-      Width           =   735
-   End
-   Begin VB.Image command7 
-      Height          =   375
-      Left            =   3360
-      MouseIcon       =   "frmGuildLeader.frx":0F3E
-      MousePointer    =   99  'Custom
-      Top             =   6840
+      TabIndex        =   9
+      Top             =   0
       Width           =   2895
+      Begin VB.ListBox guildslist 
+         Height          =   1425
+         ItemData        =   "frmGuildLeader.frx":0548
+         Left            =   120
+         List            =   "frmGuildLeader.frx":054A
+         TabIndex        =   11
+         Top             =   240
+         Width           =   2655
+      End
+      Begin VB.CommandButton Command4 
+         Caption         =   "Detalles"
+         Height          =   375
+         Left            =   120
+         MouseIcon       =   "frmGuildLeader.frx":054C
+         MousePointer    =   99  'Custom
+         TabIndex        =   10
+         Top             =   1800
+         Width           =   2655
+      End
    End
-   Begin VB.Image command6 
-      Height          =   375
-      Left            =   3480
-      MouseIcon       =   "frmGuildLeader.frx":1248
-      MousePointer    =   99  'Custom
-      Top             =   6240
-      Width           =   2775
+   Begin VB.Frame txtnews 
+      Caption         =   "GuildNews"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1575
+      Left            =   0
+      TabIndex        =   6
+      Top             =   2280
+      Width           =   5775
+      Begin VB.CommandButton Command3 
+         Caption         =   "Actualizar"
+         Height          =   375
+         Left            =   120
+         MouseIcon       =   "frmGuildLeader.frx":069E
+         MousePointer    =   99  'Custom
+         TabIndex        =   8
+         Top             =   1080
+         Width           =   5535
+      End
+      Begin VB.TextBox txtguildnews 
+         Height          =   735
+         Left            =   120
+         MultiLine       =   -1  'True
+         TabIndex        =   7
+         Top             =   240
+         Width           =   5535
+      End
    End
-   Begin VB.Image command5 
-      Height          =   375
-      Left            =   3480
-      MouseIcon       =   "frmGuildLeader.frx":1552
-      MousePointer    =   99  'Custom
-      Top             =   5640
-      Width           =   2775
+   Begin VB.Frame Frame2 
+      Caption         =   "Miembros"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2295
+      Left            =   2880
+      TabIndex        =   3
+      Top             =   0
+      Width           =   2895
+      Begin VB.CommandButton Command2 
+         Caption         =   "Detalles"
+         Height          =   375
+         Left            =   120
+         MouseIcon       =   "frmGuildLeader.frx":07F0
+         MousePointer    =   99  'Custom
+         TabIndex        =   5
+         Top             =   1800
+         Width           =   2655
+      End
+      Begin VB.ListBox members 
+         Height          =   1425
+         ItemData        =   "frmGuildLeader.frx":0942
+         Left            =   120
+         List            =   "frmGuildLeader.frx":0944
+         TabIndex        =   4
+         Top             =   240
+         Width           =   2655
+      End
+   End
+   Begin VB.Frame Frame1 
+      Caption         =   "Solicitudes de ingreso"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2415
+      Left            =   0
+      TabIndex        =   0
+      Top             =   3960
+      Width           =   2895
+      Begin VB.CommandButton Command1 
+         Caption         =   "Detalles"
+         Height          =   375
+         Left            =   120
+         MouseIcon       =   "frmGuildLeader.frx":0946
+         MousePointer    =   99  'Custom
+         TabIndex        =   2
+         Top             =   1560
+         Width           =   2655
+      End
+      Begin VB.ListBox solicitudes 
+         Height          =   1230
+         ItemData        =   "frmGuildLeader.frx":0A98
+         Left            =   120
+         List            =   "frmGuildLeader.frx":0A9A
+         TabIndex        =   1
+         Top             =   240
+         Width           =   2655
+      End
+      Begin VB.Label Miembros 
+         Caption         =   "El clan cuenta con x miembros"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   16
+         Top             =   2040
+         Width           =   2535
+      End
    End
 End
 Attribute VB_Name = "frmGuildLeader"
@@ -151,10 +220,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -166,41 +237,38 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
-Private Sub command1_Click()
 
-frmCharInfo.frmmiembros = 0
+Private Sub Command1_Click()
+
 frmCharInfo.frmsolicitudes = True
 Call SendData("1HRINFO<" & solicitudes.List(solicitudes.ListIndex))
 
-
+'Unload Me
 
 End Sub
 
 Private Sub Command2_Click()
 
-frmCharInfo.frmmiembros = 1
+frmCharInfo.frmmiembros = True
 Call SendData("1HRINFO<" & members.List(members.ListIndex))
-Me.Visible = False
 
+'Unload Me
 
 End Sub
 
@@ -215,28 +283,25 @@ Call SendData("ACTGNEWS" & k$)
 End Sub
 
 Private Sub Command4_Click()
-Dim GuildName As String
-
-
-GuildName = guildslist.List(guildslist.ListIndex)
-If Right$(GuildName, 1) = ")" Then GuildName = Left$(GuildName, Len(GuildName) - 4)
 
 frmGuildBrief.EsLeader = True
-Call SendData("CLANDETAILS" & GuildName)
+Call SendData("CLANDETAILS" & guildslist.List(guildslist.ListIndex))
+
+'Unload Me
 
 End Sub
 
-Private Sub command5_Click()
+Private Sub Command5_Click()
 
 Call frmGuildDetails.Show(vbModal, frmGuildLeader)
 
-
+'Unload Me
 
 End Sub
 
 Private Sub Command6_Click()
 Call frmGuildURL.Show(vbModeless, frmGuildLeader)
-
+'Unload Me
 End Sub
 
 Private Sub Command7_Click()
@@ -244,108 +309,47 @@ Call SendData("ENVPROPP")
 End Sub
 
 Private Sub Command8_Click()
-Me.Visible = False
+Unload Me
 frmMain.SetFocus
-
 End Sub
-Private Function ListaDeClanes(ByVal Data As String) As Integer
-Dim a As Integer
-Dim i As Integer
 
-a = Val(ReadField(1, Data, Asc("¬")))
-ReDim oClan(1 To a) As Clan
 
-For i = 1 To a
-    oClan(i).Name = Left$(ReadField(i + 1, Data, Asc("¬")), Len(ReadField(i + 1, Data, Asc("¬"))) - 2)
-    oClan(i).Relation = Right$(ReadField(1 + i, Data, Asc("¬")), 1)
-Next
-
-For i = 1 To a
-    If oClan(i).Relation = 4 Then
-        Call guildslist.AddItem(oClan(i).Name)
-    End If
-Next
-
-For i = 1 To a
-    If oClan(i).Relation = 1 Then
-        Call guildslist.AddItem(oClan(i).Name & " (A)")
-    End If
-Next
-
-For i = 1 To a
-    If oClan(i).Relation = 2 Then
-        Call guildslist.AddItem(oClan(i).Name & " (E)")
-    End If
-Next
-
-For i = 1 To a
-    If oClan(i).Relation = 0 Then
-        Call guildslist.AddItem(oClan(i).Name)
-    End If
-Next
-
-ListaDeClanes = a + 2
-
-End Function
 Public Sub ParseLeaderInfo(ByVal Data As String)
-
-guildslist.Clear
-members.Clear
-solicitudes.Clear
-txtguildnews = ""
 
 If Me.Visible Then Exit Sub
 
-Dim a As Integer
-Dim b As Integer
-Dim i As Integer
+Dim r%, t%
 
-b = ListaDeClanes(Data)
+r% = Val(ReadField(1, Data, Asc("¬")))
 
-a = Val(ReadField(b, Data, Asc("¬")))
+For t% = 1 To r%
+    guildslist.AddItem ReadField(1 + t%, Data, Asc("¬"))
+Next t%
 
-For i = 1 To a
-    Call members.AddItem(ReadField(b + i, Data, Asc("¬")))
-Next
+r% = Val(ReadField(t% + 1, Data, Asc("¬")))
+Miembros.Caption = "El clan cuenta con " & r% & " miembros."
 
-b = b + a + 1
+Dim k%
 
-Miembros.Caption = "El clan cuenta con " & a & " miembros."
-txtguildnews = Replace(ReadField(b, Data, Asc("¬")), "º", vbCrLf)
+For k% = 1 To r%
+    members.AddItem ReadField(t% + 1 + k%, Data, Asc("¬"))
+Next k%
 
-b = b + 1
+txtguildnews = Replace(ReadField(t% + k% + 1, Data, Asc("¬")), "º", vbCrLf)
 
-a = Val(ReadField(b, Data, Asc("¬")))
+t% = t% + k% + 2
 
-For i = 1 To a
-    solicitudes.AddItem ReadField(b + i, Data, Asc("¬"))
-Next
+r% = Val(ReadField(t%, Data, Asc("¬")))
 
-Call Me.Show(vbModeless, frmMain)
-Call Me.SetFocus
+For k% = 1 To r%
+    solicitudes.AddItem ReadField(t% + k%, Data, Asc("¬"))
+Next k%
 
-End Sub
-
-Private Sub Form_Load()
-Me.Picture = LoadPicture(DirGraficos & "GuildMaster.gif")
+Me.Show vbModeless, frmMain
 
 End Sub
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-If bmoving = False And Button = vbLeftButton Then
-    DX = X
-    dy = Y
-    bmoving = True
-End If
-
+Private Sub Form_Deactivate()
+'Me.SetFocus
 End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-If bmoving And ((X <> DX) Or (Y <> dy)) Then Move Left + (X - DX), Top + (Y - dy)
-
-End Sub
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If Button = vbLeftButton Then bmoving = False
-
-End Sub

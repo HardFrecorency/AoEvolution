@@ -1,8 +1,10 @@
 Attribute VB_Name = "Mod_DX"
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -14,25 +16,24 @@ Attribute VB_Name = "Mod_DX"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
 Option Explicit
 
 Public Const NumSoundBuffers = 20
@@ -45,8 +46,8 @@ Public PrimarySurface As DirectDrawSurface7
 Public PrimaryClipper As DirectDrawClipper
 Public SecundaryClipper As DirectDrawClipper
 Public BackBufferSurface As DirectDrawSurface7
+Public SurfaceDB() As DirectDrawSurface7
 
-Public SurfaceDB As New CBmpMan
 Public Perf As DirectMusicPerformance
 Public Seg As DirectMusicSegment
 Public SegState As DirectMusicSegmentState
@@ -75,19 +76,19 @@ On Error GoTo fin
     End If
     
     LastSoundBufferUsed = 1
-    
+    '<----------------Direct Music--------------->
     Set Perf = DirectX.DirectMusicPerformanceCreate()
     Call Perf.Init(Nothing, 0)
     Perf.SetPort -1, 80
     Call Perf.SetMasterAutoDownload(True)
-    
+    '<------------------------------------------->
     Exit Sub
 fin:
 
 LogError "Error al iniciar IniciarDirectSound, asegurese de tener bien configurada la placa de sonido."
 
 Musica = 1
-FX = 1
+Fx = 1
 
 End Sub
 
@@ -130,22 +131,21 @@ Public Sub IniciarObjetosDirectX()
 
 On Error Resume Next
 
-
-Call AddtoRichTextBox(frmCargando.Status, "Iniciando DirectX....", 255, 150, 50, 0, 0, True)
+Call AddtoRichTextBox(frmCargando.status, "Iniciando DirectX....", 0, 0, 0, 0, 0, True)
 Call IniciarDXobject(DirectX)
-Call AddtoRichTextBox(frmCargando.Status, "Hecho", 255, 150, 50, 1, , False)
+Call AddtoRichTextBox(frmCargando.status, "Hecho", , , , 1, , False)
 
-Call AddtoRichTextBox(frmCargando.Status, "Iniciando DirectDraw....", 255, 150, 50, 0, 0, True)
+Call AddtoRichTextBox(frmCargando.status, "Iniciando DirectDraw....", 0, 0, 0, 0, 0, True)
 Call IniciarDDobject(DirectDraw)
-Call AddtoRichTextBox(frmCargando.Status, "Hecho", 255, 150, 50, 1, , False)
+Call AddtoRichTextBox(frmCargando.status, "Hecho", , , , 1, , False)
 
-If Musica = 0 Or FX = 0 Then
-    Call AddtoRichTextBox(frmCargando.Status, "Iniciando DirectSound....", 255, 150, 50, 0, 0, True)
+If Musica = 0 Or Fx = 0 Then
+    Call AddtoRichTextBox(frmCargando.status, "Iniciando DirectSound....", 0, 0, 0, 0, 0, True)
     Call IniciarDirectSound
-    Call AddtoRichTextBox(frmCargando.Status, "Hecho", 255, 150, 50, 1, , False)
+    Call AddtoRichTextBox(frmCargando.status, "Hecho", , , , 1, , False)
 End If
 
-Call AddtoRichTextBox(frmCargando.Status, "Analizando y preparando la placa de video....", 255, 150, 50, 0, 0, True)
+Call AddtoRichTextBox(frmCargando.status, "Analizando y preparando la placa de video....", 0, 0, 0, 0, 0, True)
 
   
     
@@ -156,19 +156,10 @@ lRes = EnumDisplaySettings(0, 0, MidevM)
 Dim intWidth As Integer
 Dim intHeight As Integer
 
-
 oldResWidth = Screen.Width \ Screen.TwipsPerPixelX
 oldResHeight = Screen.Height \ Screen.TwipsPerPixelY
 
-Dim CambiarResolucion As Boolean
-
-If NoRes Then
-    CambiarResolucion = (oldResWidth < 800 Or oldResHeight < 600)
-Else
-    CambiarResolucion = (oldResWidth <> 800 Or oldResHeight <> 600)
-End If
-
-If CambiarResolucion Then
+If oldResWidth <> 800 Or oldResHeight <> 600 Then
       With MidevM
             .dmFields = DM_PELSWIDTH Or DM_PELSHEIGHT Or DM_BITSPERPEL
             .dmPelsWidth = 800
@@ -180,7 +171,7 @@ Else
       bNoResChange = True
 End If
 
-Call AddtoRichTextBox(frmCargando.Status, "¡DirectX OK!", 255, 150, 50, 1, , False)
+Call AddtoRichTextBox(frmCargando.status, "¡DirectX OK!", 0, 251, 0, 1, 0)
 
 Exit Sub
 
@@ -197,8 +188,9 @@ Set BackBufferSurface = Nothing
 
 LiberarDirectSound
 
-Call SurfaceDB.BorrarTodo
-
+For loopc = 1 To Config_Inicio.NumeroDeBMPs
+    Set SurfaceDB(loopc) = Nothing
+Next loopc
 Set DirectDraw = Nothing
 
 For loopc = 1 To NumSoundBuffers

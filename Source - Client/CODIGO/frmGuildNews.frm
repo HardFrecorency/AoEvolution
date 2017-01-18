@@ -1,63 +1,78 @@
 VERSION 5.00
 Begin VB.Form frmGuildNews 
-   BorderStyle     =   0  'None
-   Caption         =   "Portada del Clan"
-   ClientHeight    =   6750
-   ClientLeft      =   0
-   ClientTop       =   -105
-   ClientWidth     =   5550
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "GuildNews"
+   ClientHeight    =   6315
+   ClientLeft      =   45
+   ClientTop       =   330
+   ClientWidth     =   4935
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6750
-   ScaleWidth      =   5550
-   ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
-   Begin VB.ListBox aliados 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H80000009&
-      Height          =   1005
-      ItemData        =   "frmGuildNews.frx":0000
-      Left            =   610
-      List            =   "frmGuildNews.frx":0002
-      TabIndex        =   2
-      Top             =   5040
-      Width           =   4370
+   ScaleHeight     =   6315
+   ScaleWidth      =   4935
+   StartUpPosition =   1  'CenterOwner
+   Begin VB.Frame Frame3 
+      Caption         =   "Clanes aliados"
+      Height          =   1455
+      Left            =   120
+      TabIndex        =   5
+      Top             =   4320
+      Width           =   4575
+      Begin VB.ListBox aliados 
+         Height          =   1035
+         ItemData        =   "frmGuildNews.frx":0000
+         Left            =   120
+         List            =   "frmGuildNews.frx":0002
+         TabIndex        =   6
+         Top             =   240
+         Width           =   4335
+      End
    End
-   Begin VB.ListBox guerra 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H80000009&
-      Height          =   1005
-      ItemData        =   "frmGuildNews.frx":0004
-      Left            =   610
-      List            =   "frmGuildNews.frx":0006
+   Begin VB.Frame Frame2 
+      Caption         =   "Clanes con los que estamos en guerra"
+      Height          =   1455
+      Left            =   120
+      TabIndex        =   3
+      Top             =   2760
+      Width           =   4575
+      Begin VB.ListBox guerra 
+         Height          =   1035
+         ItemData        =   "frmGuildNews.frx":0004
+         Left            =   120
+         List            =   "frmGuildNews.frx":0006
+         TabIndex        =   4
+         Top             =   240
+         Width           =   4335
+      End
+   End
+   Begin VB.Frame Frame1 
+      Caption         =   "GuildNews"
+      Height          =   2535
+      Left            =   120
       TabIndex        =   1
-      Top             =   3440
-      Width           =   4370
+      Top             =   120
+      Width           =   4575
+      Begin VB.TextBox news 
+         Height          =   2175
+         Left            =   120
+         MultiLine       =   -1  'True
+         TabIndex        =   2
+         Top             =   240
+         Width           =   4335
+      End
    End
-   Begin VB.TextBox news 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      BorderStyle     =   0  'None
-      ForeColor       =   &H80000009&
-      Height          =   2055
-      Left            =   610
-      Locked          =   -1  'True
-      MultiLine       =   -1  'True
-      TabIndex        =   0
-      Top             =   840
-      Width           =   4370
-   End
-   Begin VB.Image command1 
-      Height          =   255
-      Left            =   0
+   Begin VB.CommandButton Command1 
+      Cancel          =   -1  'True
+      Caption         =   "Ok"
+      Height          =   375
+      Left            =   240
       MouseIcon       =   "frmGuildNews.frx":0008
       MousePointer    =   99  'Custom
-      Top             =   6480
-      Width           =   855
+      TabIndex        =   0
+      Top             =   5880
+      Width           =   4335
    End
 End
 Attribute VB_Name = "frmGuildNews"
@@ -130,54 +145,6 @@ For j% = j% + 1 To j% + h%
 Next j%
 
 Me.Show vbModeless, frmMain
-
-End Sub
-
-Private Sub Form_Load()
-Me.Picture = LoadPicture(DirGraficos & "GuildNews.jpg")
-End Sub
-
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-   If bmoving = False And Button = vbLeftButton Then
-
-      DX = X
-
-      dy = Y
-
-      bmoving = True
-
-   End If
-
-   
-
-End Sub
-
- 
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-   If bmoving And ((X <> DX) Or (Y <> dy)) Then
-
-      Move Left + (X - DX), Top + (Y - dy)
-
-   End If
-
-   
-
-End Sub
-
- 
-
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-   If Button = vbLeftButton Then
-
-      bmoving = False
-
-   End If
-
-   
 
 End Sub
 

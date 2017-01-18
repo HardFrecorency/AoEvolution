@@ -1,0 +1,6 @@
+Encoder.exe transforma los archivos.dat en archivos binarios que posteriormente usará el cliente.
+
+IniWorker.exe generador del archivo de configuración del cliente: Inicio.con
+
+
+

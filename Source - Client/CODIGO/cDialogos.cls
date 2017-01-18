@@ -11,10 +11,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -26,25 +28,24 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
 Option Explicit
 
 Private Const MAX_DIALOGOS = 300
@@ -62,28 +63,24 @@ Private Type tDialogo
     Color     As Long
 End Type
 
-
+'Vector que contiene los DIALOGOS
 Private Dialogos(1 To MAX_DIALOGOS) As tDialogo
-
+'Tiempo de vida de cada mensaje
 Private Delay As Integer
-
+'Apunta a el ultimo mensaje
 Public UltimoDialogo As Integer
-
+'Contiene la cantidad de mensajes activos
 Public CantidadDialogos As Integer
 
 
 Private Function PrimerIndiceVacio() As Integer
 On Error Resume Next
-Dim i As Integer, j As Integer
+Dim i As Integer
 Dim flag As Boolean
 
 i = 1
-j = 1
 
 Do While i <= MAX_DIALOGOS And Not flag
-     If (Dialogos(i).Vida < Dialogos(j).Vida) Then
-         j = i
-     End If
     flag = (Dialogos(i).Vida = 0)
     If Not flag Then i = i + 1
 Loop
@@ -91,20 +88,20 @@ Loop
 If flag Then
     PrimerIndiceVacio = i
 Else
-    PrimerIndiceVacio = j
+    PrimerIndiceVacio = 1
 End If
 
 End Function
 
 
-
-
-
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?Formatea la cadena S¿?¿?¿?¿?¿?¿?¿?¿?
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Private Function DarFormato(s As String, i As Integer, k As Integer, anti As Integer, Dialgi As Integer)
 On Error Resume Next
 If anti + i <= Len(s) + 1 Then
     If ((i >= MAXLONG) And Mid$(s, anti + i, 1) = " ") Or (anti + i = Len(s)) Then
-        Dialogos(Dialgi).Formato(k) = Mid$(s, anti, i + 1)
+        Dialogos(Dialgi).Formato(k) = Mid(s, anti, i + 1)
         k = k + 1
         anti = anti + i + 1
         i = 0
@@ -127,7 +124,7 @@ End Function
 
 Private Sub DarleFormatoTXT(Dialgi As Integer)
 On Error Resume Next
- 
+ 'Le damos formato al txt
   If (Len(Dialogos(Dialgi).Texto) > MAXLONG) And HayEspacio(Dialogos(Dialgi).Texto) Then
                 Dim j As Integer
                 ReDim Dialogos(Dialgi).Formato(0 To (Len(Dialogos(Dialgi).Texto) \ (MAXLONG \ 2)))
@@ -137,7 +134,7 @@ On Error Resume Next
                 i = 0
                 Call DarFormato(Dialogos(Dialgi).Texto, i, k, anti, Dialgi)
                 i = 0
-                Do While Dialogos(Dialgi).Formato(i) <> "" And i < UBound(Dialogos(Dialgi).Formato)
+                Do While Dialogos(Dialgi).Formato(i) <> ""
                  i = i + 1
                 Loop
                 ReDim Preserve Dialogos(Dialgi).Formato(0 To i - 1)
@@ -251,9 +248,7 @@ End Sub
 Public Sub MostrarTexto()
 On Error Resume Next
 Dim i As Integer
-
-i = 1
-Do While i <= CantidadDialogos And i <= MAX_DIALOGOS
+For i = 1 To CantidadDialogos
     If Dialogos(i).Vida > 0 Then
         If Dialogos(i).Formateado Then
             Dim j As Integer, desp As Integer
@@ -271,15 +266,12 @@ Do While i <= CantidadDialogos And i <= MAX_DIALOGOS
       Dialogos(i).Formateado = False
       Dialogos(i).Delay = 0
     End If
-    i = i + 1
-Loop
-
+Next
 End Sub
 
 Public Sub QuitarDialogo(ByVal CharIndex As Integer)
 On Error Resume Next
 Dim i As Integer
-
 
 If BuscarUserIndex(CharIndex, i) Then
       Dialogos(i).Vida = 0

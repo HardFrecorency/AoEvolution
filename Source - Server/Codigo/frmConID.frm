@@ -1,100 +1,51 @@
 VERSION 5.00
 Begin VB.Form frmConID 
-   BorderStyle     =   1  'Fixed Single
-   Caption         =   "ConID ~ Servidor Fenix AO ~"
-   ClientHeight    =   2535
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   6885
-   BeginProperty Font 
-      Name            =   "Tahoma"
-      Size            =   8.25
-      Charset         =   0
-      Weight          =   400
-      Underline       =   0   'False
-      Italic          =   0   'False
-      Strikethrough   =   0   'False
-   EndProperty
-   Icon            =   "frmConID.frx":0000
+   Caption         =   "ConID"
+   ClientHeight    =   4440
+   ClientLeft      =   60
+   ClientTop       =   345
+   ClientWidth     =   4680
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
-   ScaleHeight     =   2535
-   ScaleWidth      =   6885
-   StartUpPosition =   2  'CenterScreen
-   Begin VB.Frame Frame2 
-      Caption         =   "Panel:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   -1  'True
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00C00000&
-      Height          =   2295
-      Left            =   4200
-      TabIndex        =   5
-      Top             =   120
-      Width           =   2535
-      Begin VB.CommandButton Command1 
-         Caption         =   "Cerrar"
-         Height          =   390
-         Left            =   120
-         TabIndex        =   3
-         Top             =   1335
-         Width           =   2250
-      End
-      Begin VB.CommandButton Command2 
-         Caption         =   "Ver estado"
-         Height          =   390
-         Left            =   135
-         TabIndex        =   1
-         Top             =   360
-         Width           =   2250
-      End
-      Begin VB.CommandButton Command3 
-         Caption         =   "Liberar todos los slots"
-         Height          =   390
-         Left            =   135
-         TabIndex        =   2
-         Top             =   855
-         Width           =   2250
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Esperando información..."
-         Height          =   255
-         Left            =   120
-         TabIndex        =   6
-         Top             =   1920
-         Width           =   2295
-      End
+   ScaleHeight     =   4440
+   ScaleWidth      =   4680
+   StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton Command3 
+      Caption         =   "Liberar todos los slots"
+      Height          =   390
+      Left            =   135
+      TabIndex        =   3
+      Top             =   3495
+      Width           =   4290
    End
-   Begin VB.Frame Frame1 
-      Caption         =   "Lista ID:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   -1  'True
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00C00000&
-      Height          =   2295
+   Begin VB.CommandButton Command2 
+      Caption         =   "Ver estado"
+      Height          =   390
+      Left            =   135
+      TabIndex        =   2
+      Top             =   3030
+      Width           =   4290
+   End
+   Begin VB.ListBox List1 
+      Height          =   2205
+      Left            =   180
+      TabIndex        =   1
+      Top             =   150
+      Width           =   4215
+   End
+   Begin VB.CommandButton Command1 
+      Caption         =   "Cerrar"
+      Height          =   390
       Left            =   120
+      TabIndex        =   0
+      Top             =   3975
+      Width           =   4290
+   End
+   Begin VB.Label Label1 
+      Height          =   510
+      Left            =   180
       TabIndex        =   4
-      Top             =   120
-      Width           =   3975
-      Begin VB.ListBox List1 
-         Height          =   1815
-         Left            =   120
-         TabIndex        =   0
-         Top             =   360
-         Width           =   3735
-      End
+      Top             =   2430
+      Width           =   4230
    End
 End
 Attribute VB_Name = "frmConID"
@@ -102,10 +53,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.4
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -117,25 +69,22 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
 
 
 Private Sub Command1_Click()
@@ -152,7 +101,7 @@ Dim i As Integer
 For i = 1 To MaxUsers
     List1.AddItem "UserIndex " & i & " -- " & UserList(i).ConnID
     If UserList(i).ConnID <> -1 Then c = c + 1
-Next
+Next i
 
 If c = MaxUsers Then
     Label1.Caption = "No hay slots vacios!"
@@ -166,8 +115,8 @@ Private Sub Command3_Click()
 Dim i As Integer
 
 For i = 1 To MaxUsers
-    If UserList(i).ConnID <> -1 And Not UserList(i).flags.UserLogged Then Call CloseSocket(i)
-Next
+    If UserList(i).ConnID <> -1 And Not UserList(i).Flags.UserLogged Then Call CloseSocket(i)
+Next i
 
 End Sub
 

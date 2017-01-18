@@ -1,0 +1,233 @@
+Guia Re-Completa del AO
+-----------------------
+
+Primero tenés que bajarte el programa de www.argentum-online.com.ar .
+Después descomprimirlo en una carpeta creada en el disco C: (o la unidad de disco que te convenga), con el nombre que mas te guste.
+Para setear las opciones de juego hace doble clic en AOSETUP.EXE.
+Después de seteado hace doble clic en ARGENTUM.EXE.
+
+Requerimientos mínimos:
+
+-Pentium 233.
+-32 Megas de RAM.
+-10 Megas libres en disco rígido. (por lo menos
+-Placa de video.
+-Placa de Sonido
+-Windows 95 en adelante
+
+
+Una vez cargado el juego hacemos clic en el icono CREAR PERSONAJE.
+Saldrá una pantalla que mostrará todas las opciones.
+Esto comprende la 1era vez que se crea el pj (en el mago se pone 6 a magia, porque no tenes el dinero para comprar el provocar hambre) 
+.:Creando el guerrero estrella:.
+
+
+Sexo: HOMBRE
+Raza: ENANO
+Ciudad de nacimiento: BANDERBILL
+Dados:
+18 en fuerza (+3 por clase enana sería un total de 21)
+17 en agilidad
+18 en constitución
+Skill Points: 10 EN APUÑALAR
+
+.:Creando el mago estrella:.
+
+Sexo: HOMBRE
+Raza: Gnomo
+Ciudad de nacimiento: BANDERBILL
+Dados:
+18 en inteligencia (+3 por clase gnomo sería un total de 21)
+Skill Points: 6 EN MAGIA
+4 EN NAVEGACION
+
+
+¿Que armas me conviene usar?
+
+Al empezar el juego empezas con: 
+
+100 botellas de agua (Newbies)
+100 manzanas rojas (Newbies)
+1 Ropa Común (Newbies)
+1 Daga (Newbies)
+
+Al principio, como estamos sin recursos, conviene la daga (Newbies).
+Para conseguir un arma mejor hay que conseguir monedas de oro.
+Para conseguir las monedas de oro hay que matar Gallos y vender lo que dejan al morir. esto les da 2 monedas de oro por cada pollo. 
+También pueden matar lobos que les da la piel del lobo (recomendable en Nivel 7). O si no pueden matar zombies y esqueletos que les da monedas de oro.
+En el siguiente punto (tengo oro...¿Como lo invierto?) les detallo que hacer con el oro.
+Cuando se tienen 4000 monedas de oro, es conveniente comprar una Katana 
+
+NOTA: para matar pollos o cualquier otra criatura tenemos que presionar la tecla C, ponernos delante de la criatura y apretar Ctrl. para agarrar lo que tira nos paramos arriba del objeto y presionamos A,
+
+
+.:Quiero ser mago...¿Puedo usar armas?:.
+
+Al empezar el juego empezas con: 
+
+100 botellas de agua (Newbies)
+100 manzanas rojas (Newbies)
+1 Ropa Común (Newbies)
+1 Daga (Newbies)
+
+Pero como es una clase mágica, solo puede usar: los 5 tipos de daga, espada corta y martillo de guerra.
+Pero no les conviene usar armas. Los magos empiezan con un hechizo llamado DARDO MÁGICO (que quita de 1 a 6 puntos de vida).
+Para usar los hechizos tienen que hacer clic en la pestaña HECHIZOS (al lado de la pestaña INVENTARIO), hacemos clic en el hechizo, clic en el botón lanzar y por ultimo clic en el objetivo.
+Para usar el DARDO MÁGICO necesita 6 skill en Magia.
+Al ser mago les conviene que al pasar de nivel le pongan puntos a Comercio, ya que los hechizos del mago, son muy caros (van desde 350 a 100000), además, al usar muchas veces los hechizos, subirán solos los Skill Points.
+
+.:¿Me mataron, que hago?:.
+
+Cuando te matan, pasas a ser un fantasma, que no puede hablar, ni recoger nada del suelo.
+Para volver a tu estado anterior debes dirigirte al Sacerdote (en Nix, esta en la casa al lado del muelle). Clickerar al Sacerdote (Túnica Azul), y escribir /resucitar y /curar después clickear en la ropa y apretar E.
+
+
+.:El inventario, como equipar las cosas, tirarlas y agarrarlas:.
+
+Nos damos cuenta que tenemos equipada una cosa porque abajo del objeto aparece esto +
+Para equipar/desequipar algo, debemos clickearlo y Apretar E.
+Para tomar aguas, manzanas, pociones debemos clickear sobre el objeto y apretar U.
+Para tirar algo, lo clickeamos y apretamos T.
+Para agarrar algo, nos paramos arriba del objeto y apretamos A.
+Para usar las herramientas (Caña de pescar, hacha de leñador, pico de minero, serrucho o martillo de herrero), clickeamos la herramienta, apretamos E y después U. 
+
+
+.:Pasé de nivel.. ¿Qué hago?:.
+
+Nos damos cuenta que pasamos de nivel porque escuchamos un sonido característico.
+Al mejorará la salud y será mas resistente a los golpes, se sentirá menos cansado al golpear, subirá nuestro golpe máximo y minimo.
+Al lado del numero de nivel aparecerá esto +
+Si lo clickeamos aparecerá una ventana donde nos despliega el menú de skills que se pueden subir.
+Una vez asignado los puntos clickeamos en aceptar.
+
+
+.:¿Que caminos puedo elegir dentro del juego?:.
+
+Cuando creamos un personaje nos aparecerá al clickearlo, por Ej.:
+Super Agente XP <NEWBIE> <CIUDADANO>
+Uno empieza siendo ciudadano por defecto.
+
+Si quiero seguir siendo ciudadano ¿Como hago?
+
+
+Para seguir siendo ciudadano, tenés que matar bichos, talar, pescar y minar.
+
+
+¿Que otro camino hay?
+
+Otro camino es ser criminal, al hacerte clic aparecerá: 
+Super Agente XP <NEWBIE> <CRIMINAL>
+Para hacerse criminal hay que atacar ciudadanos, robar, pegarles a los guardias, matar mascotas.
+Una contradicción es que al entrar a territorio de una ciudad, los guardias irán a atacarte y te darán muerte, igual que los sacerdotes que te paralizarán y te darán muerte.
+Además siendo criminal perderás todas tus cosas como castigo.
+
+¿Que son las armadas?
+
+Existen dos armadas: LA ARMADA REAL Y LA DEL CAOS
+
+LA ARMADA REAL: Para ingresar debes ser nivel 18 y haber matado 10 criminales no Newbies.
+El premio de la primera vez que te enlistas es subir a nivel 19 y ganar una armadura perteneciente a la armada o una túnica, que nunca se caerá al morir. SALVO QUE NOS HAGAMOS CRIMINALES, EN ESE CASO PERDEREMOS UN NIVEL Y LA ARMADURA, PERO TRANQUILO, PUEDES RE ENLISTARTE SI NO HAS MATADO A NADIE.
+Después de matar 100 criminales puedes volver al lugar donde te enlistaste (EL REY DE BANDRBILL) y pedir una recompensa, que es una mejor armadura o túnica
+
+LA ARMADA DEL CAOS: Para ingresar debes ser nivel 25 y haber matado 250 ciudadanos no Newbies.
+El premio de la primera vez que te enlistas es una armadura perteneciente a la armada o túnica, que nunca se caerá al morir EN ESTE CASO NUNCA SE CAERÁ NI MATANDO CRIMINALES NI VOLVIÉNDOSE CIUDADANO.
+Después de matar 250 ciudadanos puedes volver al lugar donde te enlistaste (ENTRADA DEL ANTIGUA DUNGEON DRAGON) y pedir una recompensa, que es una mejor armadura o túnica.
+
+
+.:Además de Guerrero y mago.. ¿Que otras profesiones hay?:.
+
+
+CLÉRIGO: También como un mago, pero puede usar algunas armaduras y mas armas 
+
+ASESINO: Ideal para usar las habilidades de apuñalar y ocultar. Usa magia
+
+BANDIDO: Ideal para usar las habilidades de apuñalar y ocultar Creo que usa magia
+
+BARDO: Como un guerrero pero no usa todas las armaduras y armas. Usa magia, toca instrumentos musicales.
+
+CARPINTERO: Hace objetos relacionados con la madera, Arcos, flechas, barcos, 
+instrumentos musicales, cucharas, sillas.
+
+CAZADOR: Como un guerrero, tiene una armadura propia que se puede comprar.
+
+DRUIDA: También como un mago, parece poder invocar por mas tiempo a las criaturas.
+
+GUERRERO: Usa todas las armas y armaduras.
+
+HERRERO: Hace armas.
+
+LADRÓN: Ideal para usar el Skill robar,
+
+LEÑADOR: Saca de 2 a 6 maderas por talar
+
+MINERO: Saca de 2 a 6 minerales por minar y hace lingotes para el herrero.
+
+PALADÍN: Usa todas las armas y armaduras y además desde nivel 2 puede usar magia.
+
+PESCADOR: Saca de 2 a 6 peces por pescar y necesita menos skill en navegación que un personaje cualquiera.
+
+PIRATA: No puede usar todas las armas y armaduras, pero necesita menos Skill en navegación que un personaje cualquiera.
+
+
+.:¿Que son los barcos y los arcos?:.
+
+
+Barcos:
+
+Los barcos se implementaron en la versión 0.9.0, se crearon para poder navegar hacia los dungeons nuevos que no se llegan caminando, y también para llegar a Lindos, debido a que es una isla y el único portal a Lindos, está en el NEWBIE DUNGEON.
+Para usar la fragata común se necesita:
+Cualquier clase: 80 skill Points en Navegación.
+Pirata: 40 skill Points en Navegación.
+Pescador: 40 skill Points en Navegación.
+Para usarlo nos ponemos en una costa y apretamos E y nos movemos normalmente.
+
+Arcos:
+
+Existen dos tipos de arcos: Los compuestos y los simples. Los arcos necesitan flechas para poder atacar.
+Existen cuatro tipos de flechas: Flecha común, Flecha +1, Flecha +2 y Flecha + 3 .
+Los arcos permiten atacar desde 7 cuadrados de distancia del objetivo.
+Para usarlo debemos clickear en el Arco y apretar E, clickear en las flechas y apretar E. después clickeamos en el arco y apretamos U, finalmente clickeamos sobre el objetivo.
+
+
+.:Tengo oro... ¿Como lo invierto?:.
+
+Una vez que hayamos matado 100 pollos (dan 10 de experiencia cada uno) vamos al gremio de pescadores. en Nix. 
+Ya adentro clickeamos en el vendedor y escribimos en la consola /comerciar y le vendemos los pollos. Obtenemos una suma de 200 monedas de oro. 
+En ese mismo lugar podemos obtener a 200 monedas de oro una caña de pescar.
+Para usar la caña la clickeamos, presionamos E, presionamos U y hacemos clic en el agua.
+Al pescar pueden aparecer alguno de los siguientes mensajes ¡No has pescado nada! o ¡Has pescado un lindo pez!.
+El pez aparecerá en nuestro inventario (cada pez se vende en el gremio de pescadores a 2 de oro)
+Cada tanto aparecerá en el visor de arriba si hemos aumentado nuestros skill Points en la actividad por Ej. en nivel1 la primera vez aparecerá:
+¡Has aumentado el skill pesca en 1 Pts.!
+Has ganado 50 puntos de experiencia
+
+Esta es una manera de ganar dinero.. hay otras maneras a través del trabajo como Recoger minerales de las minas, o Talar árboles.(solo es recomendable usar Talar arboles y recoger minerales si necesitan, en el caso de la madera, flechas y en el caso de los minerales, un arma que se haga con el herrero y para ganar puntos de experiencia.
+
+Parte 2
+-------
+
+Talar árboles, da madera, pero no es un trabajo que nos de buenas ganancias, ya que la madera se vende a 1 moneda de oro.
+
+Cuando tengamos bastante oro en nuestra billetera, debemos ir al banco, clickear en el banquero y escribir en la consola /depositar xx (donde xx es la cantidad de oro a depositar).
+
+
+PROCUREN NO LLEVAR ORO ENCIMA CUANDO SALGAN DE LAS CIUDADES
+
+.:Soy no Newbie ¿Que es esto?:.
+
+Cuando nuestro personaje llega a Nivel 13 deja de ser Newbie ¿Que significa esto?
+
+Del inventario perdemos todas las cosas que sean Newbies (con las que comenzamos el juego) 
+
+No tendremos mas acceso al Newbie Dungeon, de esta manera tendremos que ir de una ciudad a otra a pie, menos Lindos que debemos navegar. 
+
+Aunque seamos CIUDADANOS perderemos todo al morir. 
+
+¿Que hacer en esta situación?
+*Si no hemos comprado ropa y tenemos equipada la que nos dan al principio, quedaremos desnudos.
+*Si depositaron oro en el banco vayan de nuevo y hagan lo mismo que antes pero en vez de depositar escriban /retirar 51 o /retirar 50 (estos números indican la cantidad de oro que sale una ropa para clase humana. Pero con la clase enana este dinero sirve para comprar ropa y daga.)
+*Si tienen algún arma de valor alto no la lleven a las afueras.
+Para eso creense un personaje "Mochila" donde guardarán las cosas mas valiosas (no hace falta darle características especificas ya que solo se quedará en un lugar).
+
+
+

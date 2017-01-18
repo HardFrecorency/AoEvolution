@@ -11,10 +11,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.4
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -26,36 +27,38 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
 Option Explicit
 
+'this member variables should be private.. but i
+'dont have enough time to write the four methods that
+'requires each of them to query and update ....
+
 Public ElectionPeriod  As Long
+
 
 Public Founder As String
 Public FundationDate As String
 Public Description As String
-Private Cod(0 To 7) As String
-Public Codex As String
-Public Leader As String
-Public Bando As Byte
+Private codex(0 To 7) As String
+Public leader As String
+Public Reputation As Double
 Public Gold As Double
 Public GuildName As String
 Public URL As String
@@ -72,47 +75,29 @@ Public Votes As Collection
 Public Elections As Boolean
 
 Private Type tVotes
-    Name As String
-    Cant As Long
+        Name As String
+        cant As Long
 End Type
-Public Function Initialize(ByVal GuildInfo As String, ByVal FounderName As String) As Boolean
-Initialize = ParseGuildInfo(GuildInfo, FounderName)
+
+
+Public Function GetCodex(ByVal Number As Byte) As String
+GetCodex = codex(Number)
 End Function
-Private Function ParseGuildInfo(GuildInfo As String, ByVal FounderName As String) As Boolean
-On Error GoTo errhandler
 
-Founder = FounderName
-Leader = Founder
-FundationDate = Now
-Description = Trim$(ReadField(1, GuildInfo, Asc("¬")))
-GuildName = Trim$(ReadField(2, GuildInfo, Asc("¬")))
-Bando = UserList(NameIndex(FounderName)).Faccion.Bando
-
-If Not TestName(GuildName) Then
-    ParseGuildInfo = False
-    Exit Function
-End If
-
-URL = ReadField(3, GuildInfo, Asc("¬"))
-Codex = ReadField(4, GuildInfo, Asc("¬"))
-GuildNews = "Clan iniciado."
-ParseGuildInfo = True
-
-Exit Function
-
-errhandler:
-
-End Function
 Public Function CodexLenght() As Integer
-Dim T As Integer, NumC As Integer
+Dim t%
+For t% = 0 To 7
+    If codex(t%) = "" Then Exit For
+    If t% = 7 Then Exit For
+Next t%
 
-For T = 1 To Len(Codex)
-    If Mid$(Codex, T, 1) = "|" Then NumC = NumC + 1
-Next
-
-CodexLenght = NumC + 1
-
+CodexLenght = t%
 End Function
+
+Public Function DaysToNextElection() As Integer
+DaysToNextElection = ElectionPeriod - DaysSinceLastElection
+End Function
+
 Private Function TestName(ByVal cad As String) As Boolean
 Dim car As Byte
 Dim i As Integer
@@ -127,17 +112,348 @@ For i = 1 To Len(cad)
         Exit Function
     End If
     
-Next
+Next i
 
 TestName = True
 
 End Function
+
 Public Sub UpdateCodexAndDesc(ByVal rdata As String)
 
 Description = ReadField(1, rdata, Asc("¬"))
-Codex = ReadField(2, rdata, Asc("¬"))
+
+Dim Mandamientos As Integer
+Mandamientos = CInt(ReadField(2, rdata, Asc("¬")))
+
+Dim i As Integer
+For i = 1 To Mandamientos
+    codex(i - 1) = ReadField(2 + i, rdata, Asc("¬"))
+Next i
+
 
 End Sub
+
+Private Function ParseGuildInfo(ByRef GuildInfo As String, ByVal FounderName As String, ByVal Rep As Long) As Boolean
+
+On Err GoTo errhandler
+
+Founder = FounderName
+leader = Founder
+FundationDate = Now
+Description = ReadField(1, GuildInfo, Asc("¬"))
+GuildName = ReadField(2, GuildInfo, Asc("¬"))
+
+If Not TestName(GuildName) Then
+    ParseGuildInfo = False
+    Exit Function
+End If
+
+URL = ReadField(3, GuildInfo, Asc("¬"))
+Dim Mandamientos As Integer
+Mandamientos = CInt(ReadField(4, GuildInfo, Asc("¬")))
+Dim i As Integer
+For i = 1 To Mandamientos
+    codex(i - 1) = ReadField(4 + i, GuildInfo, Asc("¬"))
+Next i
+Reputation = Rep
+Gold = 0
+GuildExperience = 0
+DaysSinceLastElection = 0
+GuildNews = "Clan iniciado."
+
+ParseGuildInfo = True
+
+Exit Function
+
+errhandler:
+
+End Function
+
+Public Sub InitializeGuildFromDisk(ByVal Number As Integer)
+Dim file As String
+
+file = App.Path & "\Guilds\" & "GuildsInfo.inf"
+
+GuildName = GetVar(file, "Guild" & Number, "GuildName")
+Founder = GetVar(file, "Guild" & Number, "Founder")
+FundationDate = GetVar(file, "Guild" & Number, "Date")
+Description = GetVar(file, "Guild" & Number, "Desc")
+codex(0) = GetVar(file, "Guild" & Number, "Codex0")
+codex(1) = GetVar(file, "Guild" & Number, "Codex1")
+codex(2) = GetVar(file, "Guild" & Number, "Codex2")
+codex(3) = GetVar(file, "Guild" & Number, "Codex3")
+codex(4) = GetVar(file, "Guild" & Number, "Codex4")
+codex(5) = GetVar(file, "Guild" & Number, "Codex5")
+codex(6) = GetVar(file, "Guild" & Number, "Codex6")
+codex(7) = GetVar(file, "Guild" & Number, "Codex7")
+leader = GetVar(file, "Guild" & Number, "Leader")
+Reputation = val(GetVar(file, "Guild" & Number, "Rep"))
+Gold = val(GetVar(file, "Guild" & Number, "Gold"))
+URL = GetVar(file, "Guild" & Number, "URL")
+GuildExperience = val(GetVar(file, "Guild" & Number, "Exp"))
+DaysSinceLastElection = val(GetVar(file, "Guild" & Number, "DaysLast"))
+GuildNews = GetVar(file, "Guild" & Number, "GuildNews")
+
+
+Call LoadGuildMembers(GuildName)
+Call LoadSolicitudes(GuildName)
+Call LoadAlliedGuilds(GuildName)
+Call LoadEnemyGuilds(GuildName)
+Call LoadPeacePropositions(GuildName)
+
+End Sub
+
+
+Private Sub LoadGuildMembers(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Members" & ".mem"
+
+
+Dim t As Long
+t = val(GetVar(f, "INIT", "NroMembers"))
+
+Dim j As Integer
+
+For j = 1 To t
+    Call Members.Add(GetVar(f, "Members", "Member" & j))
+Next j
+
+
+End Sub
+
+Private Sub LoadSolicitudes(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Solicitudes" & ".sol"
+
+
+Dim t As Long
+t = val(GetVar(f, "INIT", "Nro"))
+
+If t > 25 Then Exit Sub
+
+Dim j As Integer
+Dim sol As cSolicitud
+For j = 1 To t
+    Set sol = New cSolicitud
+    sol.UserName = GetVar(f, "Sol" & j, "Name")
+    sol.Desc = GetVar(f, "Sol" & j, "Desc")
+    Call Solicitudes.Add(sol)
+Next j
+
+
+End Sub
+
+Private Sub LoadPeacePropositions(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Propositions" & ".pro"
+
+Dim t As Long
+
+t = val(GetVar(f, "INIT", "Nro"))
+
+Dim j As Integer
+Dim sol As cSolicitud
+For j = 1 To t
+    Set sol = New cSolicitud
+    sol.UserName = GetVar(f, "Sol" & j, "Name")
+    sol.Desc = GetVar(f, "Sol" & j, "Desc")
+    Call PeacePropositions.Add(sol)
+Next j
+
+
+End Sub
+
+
+
+
+Private Sub SaveAlliedGuilds(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Allied" & ".all"
+
+If FileExist(f, vbNormal) Then Kill f
+
+Call WriteVar(f, "INIT", "NroAllies", AlliedGuilds.Count)
+
+Dim j As Integer
+
+For j = 1 To AlliedGuilds.Count
+    Call WriteVar(f, "Allies", "Allie" & j, AlliedGuilds(j))
+Next j
+
+End Sub
+
+
+Private Sub LoadAlliedGuilds(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Allied" & ".all"
+
+
+Dim t As Long
+t = val(GetVar(f, "INIT", "NroAllies"))
+
+Dim j As Integer
+
+For j = 1 To t
+    Call AlliedGuilds.Add(GetVar(f, "Allies", "Allie" & j))
+Next j
+
+
+End Sub
+
+
+
+Private Sub SaveEnemyGuilds(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Enemys" & ".ene"
+
+If FileExist(f, vbNormal) Then Kill f
+
+Call WriteVar(f, "INIT", "NroEnemys", EnemyGuilds.Count)
+
+Dim j As Integer
+
+For j = 1 To EnemyGuilds.Count
+    Call WriteVar(f, "Enemys", "Enemy" & j, EnemyGuilds(j))
+Next j
+
+End Sub
+
+
+Private Sub LoadEnemyGuilds(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Enemys" & ".ene"
+
+
+Dim t As Long
+t = val(GetVar(f, "INIT", "NroEnemys"))
+
+Dim j As Integer
+
+For j = 1 To t
+    Call AlliedGuilds.Add(GetVar(f, "Enemys", "Enemy" & j))
+Next j
+
+
+End Sub
+
+
+Private Sub SaveGuildMembers(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Members" & ".mem"
+
+If FileExist(f, vbNormal) Then Kill f
+
+Call WriteVar(f, "INIT", "NroMembers", Members.Count)
+
+Dim j As Integer
+
+For j = 1 To Members.Count
+    Call WriteVar(f, "Members", "Member" & j, Members(j))
+Next j
+
+
+End Sub
+
+Private Sub SaveSolicitudes(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Solicitudes" & ".sol"
+
+If FileExist(f, vbNormal) Then Kill f
+
+Call WriteVar(f, "INIT", "Nro", Solicitudes.Count)
+
+Dim j As Integer
+
+For j = 1 To Solicitudes.Count
+    Call WriteVar(f, "Sol" & j, "Name", Solicitudes(j).UserName)
+    Call WriteVar(f, "Sol" & j, "Desc", Solicitudes(j).Desc)
+Next j
+
+
+End Sub
+
+Private Sub SavePeacePropositions(ByVal GuildName As String)
+
+Dim f As String
+
+f = App.Path & "\Guilds\" & GuildName & "-Propositions" & ".pro"
+
+If FileExist(f, vbNormal) Then Kill f
+
+Call WriteVar(f, "INIT", "Nro", PeacePropositions.Count)
+
+Dim j As Integer
+
+For j = 1 To PeacePropositions.Count
+    Call WriteVar(f, "Pro" & j, "Name", PeacePropositions(j).UserName)
+    Call WriteVar(f, "Pro" & j, "Desc", PeacePropositions(j).Desc)
+Next j
+
+
+End Sub
+
+
+Public Sub SaveGuild(ByVal file As String, ByVal GuildNumber)
+
+On Error GoTo errhandler
+
+
+
+Call WriteVar(file, "GUILD" & GuildNumber, "GuildName", GuildName)
+Call WriteVar(file, "GUILD" & GuildNumber, "Founder", Founder)
+Call WriteVar(file, "GUILD" & GuildNumber, "GuildName", GuildName)
+Call WriteVar(file, "GUILD" & GuildNumber, "Date", FundationDate)
+Call WriteVar(file, "GUILD" & GuildNumber, "Desc", Description)
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex0", codex(0))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex1", codex(1))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex2", codex(2))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex3", codex(3))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex4", codex(4))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex5", codex(5))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex6", codex(6))
+Call WriteVar(file, "GUILD" & GuildNumber, "Codex7", codex(7))
+Call WriteVar(file, "GUILD" & GuildNumber, "Leader", leader)
+Call WriteVar(file, "GUILD" & GuildNumber, "URL", URL)
+Call WriteVar(file, "GUILD" & GuildNumber, "GuildExp", Str(GuildExperience))
+Call WriteVar(file, "GUILD" & GuildNumber, "DaysLast", Str(DaysSinceLastElection))
+Call WriteVar(file, "GUILD" & GuildNumber, "GuildNews", GuildNews)
+Call WriteVar(file, "GUILD" & GuildNumber, "Rep", Str(Reputation))
+
+Call SaveAlliedGuilds(GuildName)
+Call SaveEnemyGuilds(GuildName)
+Call SaveGuildMembers(GuildName)
+Call SaveSolicitudes(GuildName)
+Call SavePeacePropositions(GuildName)
+
+Exit Sub
+
+errhandler:
+
+
+End Sub
+
+Public Function Initialize(ByVal GuildInfo As String, ByVal FounderName As String, ByVal Rep As Long) As Boolean
+Initialize = ParseGuildInfo(GuildInfo, FounderName, Rep)
+End Function
+
 Private Sub Class_Initialize()
 
 Set AlliedGuilds = New Collection
@@ -150,57 +466,70 @@ Set Votes = New Collection
 ElectionPeriod = 45
 
 End Sub
+
 Public Function IsEnemy(ByVal GuildName As String) As Boolean
+
 Dim k As Integer
 
-GuildName = UCase$(GuildName)
+GuildName = UCase(GuildName)
 
 For k = 1 To EnemyGuilds.Count
-    If UCase$(EnemyGuilds(k)) = GuildName Then
-        IsEnemy = True
-        Exit Function
+    If UCase(EnemyGuilds(k)) = GuildName Then
+            IsEnemy = True
+            Exit Function
     End If
-Next
+Next k
 
 End Function
+
+
 Public Function IsAllie(ByVal GuildName As String) As Boolean
+
 Dim k As Integer
 
-GuildName = UCase$(GuildName)
+GuildName = UCase(GuildName)
 
 For k = 1 To AlliedGuilds.Count
-    If UCase$(AlliedGuilds(k)) = GuildName Then
+    If UCase(AlliedGuilds(k)) = GuildName Then
             IsAllie = True
             Exit Function
     End If
-Next
+Next k
 
 End Function
+
 Public Function SolicitudesIncludes(ByVal UserName As String) As Boolean
+
 Dim k As Integer
 
-UserName = UCase$(UserName)
+
+UserName = UCase(UserName)
 
 For k = 1 To Solicitudes.Count
-    If UCase$(Solicitudes(k).UserName) = UserName Then
+    If UCase(Solicitudes(k).UserName) = UserName Then
             SolicitudesIncludes = True
             Exit Function
     End If
-Next
+Next k
 
 
 End Function
+
 Public Sub RemoveSolicitud(ByVal UserName As String)
+
 Dim k As Integer
 
-UserName = UCase$(UserName)
+
+UserName = UCase(UserName)
 
 For k = 1 To Solicitudes.Count
-    If UCase$(Solicitudes(k).UserName) = UserName Then
-        Call Solicitudes.Remove(k)
-        Exit Sub
+    If UCase(Solicitudes(k).UserName) = UserName Then
+            Call Solicitudes.Remove(k)
+            Exit Sub
     End If
-Next
+Next k
+
+
 
 End Sub
 
@@ -209,14 +538,14 @@ Public Sub RemoveProposition(ByVal UserName As String)
 Dim k As Integer
 
 
-UserName = UCase$(UserName)
+UserName = UCase(UserName)
 
 For k = 1 To PeacePropositions.Count
-    If UCase$(PeacePropositions(k).UserName) = UserName Then
+    If UCase(PeacePropositions(k).UserName) = UserName Then
             Call PeacePropositions.Remove(k)
             Exit Sub
     End If
-Next
+Next k
 
 
 
@@ -225,74 +554,90 @@ End Sub
 
 Public Sub RemoveAllie(ByVal Name As String)
 Dim k As Integer
-Name = UCase$(Name)
+Name = UCase(Name)
 For k = 1 To AlliedGuilds.Count
-    If UCase$(AlliedGuilds(k)) = Name Then
+    If UCase(AlliedGuilds(k)) = Name Then
             Call AlliedGuilds.Remove(k)
             Exit Sub
     End If
-Next
+Next k
 End Sub
+
 Public Sub RemoveEnemy(ByVal Name As String)
 Dim k As Integer
-
-Name = UCase$(Name)
-
+Name = UCase(Name)
 For k = 1 To EnemyGuilds.Count
-    If UCase$(EnemyGuilds(k)) = Name Then
+    If UCase(EnemyGuilds(k)) = Name Then
             Call EnemyGuilds.Remove(k)
             Exit Sub
     End If
-Next
-
+Next k
 End Sub
+
+
 Public Sub RemoveMember(ByVal UserName As String)
+
 Dim k As Integer
 
-UserName = UCase$(UserName)
+
+UserName = UCase(UserName)
 
 For k = 1 To Members.Count
-    If UCase$(Members(k)) = UserName Then
+    If UCase(Members(k)) = UserName Then
             Call Members.Remove(k)
             Exit Sub
     End If
-Next
+Next k
+
+
 
 End Sub
+
+
+
+
+
 Public Function GetPeaceRequest(ByVal UserName As String) As cSolicitud
+
 Dim k As Integer
 
-UserName = UCase$(UserName)
+
+UserName = UCase(UserName)
 
 For k = 1 To PeacePropositions.Count
-    If UCase$(PeacePropositions(k).UserName) = UserName Then
+    If UCase(PeacePropositions(k).UserName) = UserName Then
             Set GetPeaceRequest = PeacePropositions(k)
             Exit Function
     End If
-Next
+Next k
+
 
 End Function
-Public Sub TestSolicitudBound()
 
+
+Public Sub TestSolicitudBound()
+'Nos aseguramos que no halla más de 25 solicitudes
 If Me.Solicitudes.Count > 25 Then
     Dim i As Integer
     For i = 1 To Me.Solicitudes.Count
         Solicitudes.Remove 1
-    Next
+    Next i
 End If
-
 End Sub
+
 Public Function GetSolicitud(ByVal UserName As String) As cSolicitud
+
 Dim k As Integer
 
-UserName = UCase$(UserName)
+
+UserName = UCase(UserName)
 
 For k = 1 To Solicitudes.Count
-    If UCase$(Solicitudes(k).UserName) = UCase$(UserName) Then
-        Set GetSolicitud = Solicitudes(k)
-        Exit Function
+    If UCase(Solicitudes(k).UserName) = UserName Then
+            Set GetSolicitud = Solicitudes(k)
+            Exit Function
     End If
-Next
+Next k
 
 
 End Function
@@ -301,14 +646,14 @@ Public Function IncludesPeaceOffer(ByVal Name As String) As Boolean
 
 Dim k As Integer
 
-Name = UCase$(Name)
+Name = UCase(Name)
 
 For k = 1 To PeacePropositions.Count
-    If UCase$(PeacePropositions(k).UserName) = Name Then
+    If UCase(PeacePropositions(k).UserName) = Name Then
             IncludesPeaceOffer = True
             Exit Function
     End If
-Next
+Next k
 
 
 
@@ -319,7 +664,7 @@ Public Sub ResetVotes()
 Dim k As Integer
 For k = 1 To Votes.Count
     Call Votes.Remove(1)
-Next
+Next k
 
 End Sub
 
@@ -328,14 +673,14 @@ Public Function IsMember(ByVal Name As String) As Boolean
 
 Dim k As Integer
 
-Name = UCase$(Name)
+Name = UCase(Name)
 
 For k = 1 To Members.Count
-    If UCase$(Members(k)) = Name Then
+    If UCase(Members(k)) = Name Then
             IsMember = True
             Exit Function
     End If
-Next
+Next k
 
 End Function
 
@@ -357,30 +702,30 @@ ReDim totals(1 To Members.Count)
 For j = 1 To Members.Count
 
     totals(j).Name = Members(j)
-    totals(j).Cant = 0
+    totals(j).cant = 0
     
-Next
+Next j
 
 
 For j = 1 To Votes.Count
     
     For c = 1 To Members.Count
-        If UCase$(totals(c).Name) = UCase$(Votes(j)) Then
-            totals(c).Cant = totals(c).Cant + 1
+        If UCase(totals(c).Name) = UCase(Votes(j)) Then
+            totals(c).cant = totals(c).cant + 1
             Exit For
         End If
-    Next
+    Next c
     
-Next
+Next j
 
-Dim MAX As Integer
-MAX = -1
+Dim max As Integer
+max = -1
 
 For j = 1 To Members.Count
-    If totals(j).Cant > MAX Then
-        MAX = totals(j).Cant
-        NuevoLider = totals(j).Name
+    If totals(j).cant > max Then
+            max = totals(j).cant
+            NuevoLider = totals(j).Name
     End If
-Next
+Next j
 
 End Function

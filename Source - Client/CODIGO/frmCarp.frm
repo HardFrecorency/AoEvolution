@@ -1,32 +1,43 @@
 VERSION 5.00
 Begin VB.Form frmCarp 
-   BorderStyle     =   0  'None
    Caption         =   "Carpintero"
-   ClientHeight    =   4350
-   ClientLeft      =   0
-   ClientTop       =   -105
-   ClientWidth     =   5250
+   ClientHeight    =   3195
+   ClientLeft      =   60
+   ClientTop       =   345
+   ClientWidth     =   4680
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
-   ScaleHeight     =   4350
-   ScaleWidth      =   5250
-   ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
-   Begin VB.TextBox txtCantidad 
-      Alignment       =   1  'Right Justify
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
-      ForeColor       =   &H00FFFFFF&
-      Height          =   285
-      Left            =   840
-      TabIndex        =   1
-      Text            =   "1"
-      Top             =   3560
-      Width           =   1695
-   End
+   ScaleHeight     =   3195
+   ScaleWidth      =   4680
+   StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox lstArmas 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000006&
+      Height          =   2205
+      Left            =   270
+      TabIndex        =   2
+      Top             =   240
+      Width           =   4080
+   End
+   Begin VB.CommandButton Command3 
+      Caption         =   "Construir"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   435
+      Left            =   2640
+      MouseIcon       =   "frmCarp.frx":0000
+      MousePointer    =   99  'Custom
+      TabIndex        =   1
+      Top             =   2670
+      Width           =   1710
+   End
+   Begin VB.CommandButton Command4 
+      Caption         =   "Salir"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -36,31 +47,13 @@ Begin VB.Form frmCarp
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   2370
-      ItemData        =   "frmCarp.frx":0000
-      Left            =   600
-      List            =   "frmCarp.frx":0002
+      Height          =   435
+      Left            =   255
+      MouseIcon       =   "frmCarp.frx":0152
       MousePointer    =   99  'Custom
       TabIndex        =   0
-      Top             =   870
-      Width           =   4080
-   End
-   Begin VB.Image Image2 
-      Height          =   375
-      Left            =   0
-      MouseIcon       =   "frmCarp.frx":0004
-      MousePointer    =   99  'Custom
-      Top             =   3960
-      Width           =   855
-   End
-   Begin VB.Image Image1 
-      Height          =   375
-      Left            =   3000
-      MouseIcon       =   "frmCarp.frx":030E
-      MousePointer    =   99  'Custom
-      Top             =   3480
-      Width           =   1575
+      Top             =   2670
+      Width           =   1710
    End
 End
 Attribute VB_Name = "frmCarp"
@@ -68,10 +61,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.9
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
+'Copyright (C) 2002 Matías Fernando Pequeño
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -83,25 +78,24 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
+
+
 
 Private Sub Command3_Click()
 On Error Resume Next
@@ -119,55 +113,3 @@ Private Sub Form_Deactivate()
 Me.SetFocus
 End Sub
 
-
-
-Private Sub Form_Load()
-Me.Picture = LoadPicture(DirGraficos & "fragua-carpinteria.gif")
-End Sub
-
-Private Sub Image1_Click()
-On Error Resume Next
-Dim stxtCantBuffer As String
-stxtCantBuffer = txtCantidad.Text
-
-Call SendData("CNC" & ObjCarpintero(lstArmas.ListIndex) & " " & stxtCantBuffer)
-Unload Me
-
-End Sub
-Private Sub txtCantidad_Change()
-
-If Val(txtCantidad.Text) < 0 Then
-    txtCantidad.Text = 1
-End If
-
-If Val(txtCantidad.Text) > MAX_INVENTORY_OBJS Then
-    txtCantidad.Text = 1
-End If
-
-If Not IsNumeric(txtCantidad.Text) Then txtCantidad.Text = "1"
-
-End Sub
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If bmoving = False And Button = vbLeftButton Then
-    DX = X
-    dy = Y
-    bmoving = True
-End If
-
-End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If bmoving And ((X <> DX) Or (Y <> dy)) Then Call Move(Left + (X - DX), Top + (Y - dy))
-
-End Sub
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-If Button = vbLeftButton Then bmoving = False
-
-End Sub
-Private Sub Image2_Click()
-
-Unload Me
-
-End Sub

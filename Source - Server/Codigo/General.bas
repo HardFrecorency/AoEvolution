@@ -1,8 +1,9 @@
 Attribute VB_Name = "General"
-'FénixAO 1.0
+'Argentum Online 0.9.0.4
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -14,157 +15,103 @@ Attribute VB_Name = "General"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
-
-Global ANpc As Long
-Global Anpc_host As Long
 
 Option Explicit
-Public Function MapaPorUbicacion(X As Integer, Y As Integer) As Integer
-Dim i As Integer
 
-For i = 1 To NumMaps
-    If MapInfo(i).LeftPunto = X And MapInfo(i).TopPunto = Y And MapInfo(i).Zona <> Dungeon Then
-        MapaPorUbicacion = i
-        Exit Function
-    End If
-Next
+Sub DarCuerpoDesnudo(ByVal UserIndex As Integer)
 
-End Function
-Public Sub WriteBIT(Variable As Byte, POS As Byte, Value As Byte)
-
-If ReadBIT(Variable, POS) = Value Then Exit Sub
-
-If Value = 0 Then
-    Variable = Variable - 2 ^ (POS - 1)
-Else: Variable = Variable + 2 ^ (POS - 1)
-End If
-
-End Sub
-Public Function Valorcito(Variable As Byte, POS As Byte, Valor As Byte) As Byte
-
-Call WriteBIT(Variable, POS, Valor)
-Valorcito = Variable
-
-End Function
-Public Function ReadBIT(Variable As Byte, POS As Byte) As Byte
-Dim i As Integer
-
-ReadBIT = Variable
-
-For i = 7 To POS Step -1
-    ReadBIT = ReadBIT Mod 2 ^ i
-Next
-
-ReadBIT = ReadBIT \ 2 ^ (POS - 1)
-
-End Function
-Public Function Enemigo(ByVal Bando As Byte) As Byte
-
-Select Case Bando
-    Case Neutral
-        Enemigo = 3
-    Case Real
-        Enemigo = Caos
-    Case Caos
-        Enemigo = Real
-End Select
-
-End Function
-Sub DarCuerpoDesnudo(UserIndex As Integer)
-
-If UserList(UserIndex).flags.Navegando Then
-    UserList(UserIndex).Char.Head = 0
-    UserList(UserIndex).Char.Body = ObjData(UserList(UserIndex).Invent.BarcoObjIndex).Ropaje
-    Exit Sub
-End If
-
-UserList(UserIndex).Char.Head = UserList(UserIndex).OrigChar.Head
-
-Select Case UserList(UserIndex).Raza
-    Case HUMANO
-      Select Case UserList(UserIndex).Genero
-        Case HOMBRE
-             UserList(UserIndex).Char.Body = 21
-        Case MUJER
-             UserList(UserIndex).Char.Body = 39
+Select Case UCase$(UserList(UserIndex).Raza)
+    Case "HUMANO"
+      Select Case UCase$(UserList(UserIndex).Genero)
+                Case "HOMBRE"
+                     UserList(UserIndex).Char.Body = 21
+                Case "MUJER"
+                     UserList(UserIndex).Char.Body = 39
       End Select
-    Case ELFO_OSCURO
-      Select Case UserList(UserIndex).Genero
-        Case HOMBRE
-             UserList(UserIndex).Char.Body = 32
-        Case MUJER
-             UserList(UserIndex).Char.Body = 40
+    Case "ELFO OSCURO"
+      Select Case UCase$(UserList(UserIndex).Genero)
+                Case "HOMBRE"
+                     UserList(UserIndex).Char.Body = 32
+                Case "MUJER"
+                     UserList(UserIndex).Char.Body = 40
       End Select
-    Case ENANO
-      Select Case UserList(UserIndex).Genero
-        Case HOMBRE
-             UserList(UserIndex).Char.Body = 53
-        Case MUJER
-             UserList(UserIndex).Char.Body = 60
+    Case "ENANO"
+      Select Case UCase$(UserList(UserIndex).Genero)
+                Case "HOMBRE"
+                     UserList(UserIndex).Char.Body = 53
+                Case "MUJER"
+                     UserList(UserIndex).Char.Body = 60
       End Select
-    Case GNOMO
-      Select Case UserList(UserIndex).Genero
-        Case HOMBRE
-             UserList(UserIndex).Char.Body = 53
-        Case MUJER
-             UserList(UserIndex).Char.Body = 60
+    Case "GNOMO"
+      Select Case UCase$(UserList(UserIndex).Genero)
+                Case "HOMBRE"
+                     UserList(UserIndex).Char.Body = 53
+                Case "MUJER"
+                     UserList(UserIndex).Char.Body = 60
       End Select
-      
     Case Else
-      Select Case UserList(UserIndex).Genero
-        Case HOMBRE
-             UserList(UserIndex).Char.Body = 21
-        Case MUJER
-             UserList(UserIndex).Char.Body = 39
+      Select Case UCase$(UserList(UserIndex).Genero)
+                Case "HOMBRE"
+                     UserList(UserIndex).Char.Body = 21
+                Case "MUJER"
+                     UserList(UserIndex).Char.Body = 39
       End Select
     
 End Select
 
-UserList(UserIndex).flags.Desnudo = 1
+UserList(UserIndex).Flags.Desnudo = 1
 
 End Sub
-Public Function PuedeDestrabarse(UserIndex As Integer) As Boolean
-Dim i As Byte, nPos As WorldPos
 
-If (UserList(UserIndex).flags.Muerto = 0) Or (Not MapInfo(UserList(UserIndex).POS.Map).Pk And UserList(UserIndex).POS.Map <> 37) Then Exit Function
 
-For i = NORTH To WEST
-    nPos = UserList(UserIndex).POS
-    Call HeadtoPos(i, nPos)
-    If InMapBounds(nPos.X, nPos.Y) Then
-        If LegalPos(nPos.Map, nPos.X, nPos.Y, CBool(UserList(UserIndex).flags.Navegando)) Then Exit Function
+Sub Bloquear(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, ByVal X As Integer, ByVal Y As Integer, b As Byte)
+'b=1 bloquea el tile en (x,y)
+'b=0 desbloquea el tile indicado
+
+Call SendData(sndRoute, sndIndex, sndMap, "BQ" & X & "," & Y & "," & b)
+
+End Sub
+
+
+Function HayAgua(Map As Integer, X As Integer, Y As Integer) As Boolean
+
+If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+    If MapData(Map, X, Y).Graphic(1) >= 1505 And _
+       MapData(Map, X, Y).Graphic(1) <= 1520 And _
+       MapData(Map, X, Y).Graphic(2) = 0 Then
+            HayAgua = True
+    Else
+            HayAgua = False
     End If
-Next
-
-PuedeDestrabarse = True
+Else
+  HayAgua = False
+End If
 
 End Function
-Sub Bloquear(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, X As Integer, Y As Integer, B As Byte)
 
-Call SendData(sndRoute, sndIndex, sndMap, "BQ" & X & "," & Y & "," & B)
 
-End Sub
+
+
 Sub LimpiarMundo()
+
 On Error Resume Next
+
 Dim i As Integer
 
 For i = 1 To TrashCollector.Count
@@ -173,239 +120,70 @@ For i = 1 To TrashCollector.Count
     Call EraseObj(ToMap, 0, d.Map, 1, d.Map, d.X, d.Y)
     Call TrashCollector.Remove(1)
     Set d = Nothing
-Next
+Next i
+
+
 
 End Sub
-Sub ConfigListeningSocket(ByRef Obj As Object, ByVal Port As Integer)
-#If UsarQueSocket = 0 Then
 
-Obj.AddressFamily = AF_INET
-Obj.protocol = IPPROTO_IP
-Obj.SocketType = SOCK_STREAM
-Obj.Binary = False
-Obj.Blocking = False
-Obj.BufferSize = 1024
-Obj.LocalPort = Port
-Obj.backlog = 5
-Obj.listen
-
-#End If
-End Sub
-Sub EnviarSpawnList(UserIndex As Integer)
+Sub EnviarSpawnList(ByVal UserIndex As Integer)
 Dim k As Integer, SD As String
 SD = "SPL" & UBound(SpawnList) & ","
 
 For k = 1 To UBound(SpawnList)
     SD = SD & SpawnList(k).NpcName & ","
-Next
+Next k
 
 Call SendData(ToIndex, UserIndex, 0, SD)
 End Sub
-Sub EstablecerRecompensas()
 
-Recompensas(MINERO, 1, 1).SubeHP = 120
+Sub ConfigListeningSocket(ByRef Obj As Object, ByVal port As Integer)
 
-Recompensas(MAGO, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(MAGO, 1, 1).Obj(1).Amount = 1000
-Recompensas(MAGO, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(MAGO, 1, 2).Obj(1).Amount = 1000
-Recompensas(MAGO, 2, 1).SubeHP = 10
-
-Recompensas(NIGROMANTE, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(NIGROMANTE, 1, 1).Obj(1).Amount = 1000
-Recompensas(NIGROMANTE, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(NIGROMANTE, 1, 2).Obj(1).Amount = 1000
-Recompensas(NIGROMANTE, 2, 1).SubeHP = 15
-Recompensas(NIGROMANTE, 2, 2).SubeMP = 40
-
-Recompensas(PALADIN, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(PALADIN, 1, 1).Obj(1).Amount = 1000
-Recompensas(PALADIN, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(PALADIN, 1, 2).Obj(1).Amount = 1000
-Recompensas(PALADIN, 2, 1).SubeHP = 5
-Recompensas(PALADIN, 2, 1).SubeMP = 10
-Recompensas(PALADIN, 2, 2).SubeMP = 30
-
-Recompensas(CLERIGO, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(CLERIGO, 1, 1).Obj(1).Amount = 1000
-Recompensas(CLERIGO, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(CLERIGO, 1, 2).Obj(1).Amount = 1000
-Recompensas(CLERIGO, 2, 1).SubeHP = 10
-Recompensas(CLERIGO, 2, 2).SubeMP = 50
-
-Recompensas(BARDO, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(BARDO, 1, 1).Obj(1).Amount = 1000
-Recompensas(BARDO, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(BARDO, 1, 2).Obj(1).Amount = 1000
-Recompensas(BARDO, 2, 1).SubeHP = 10
-Recompensas(BARDO, 2, 2).SubeMP = 50
-
-Recompensas(DRUIDA, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(DRUIDA, 1, 1).Obj(1).Amount = 1000
-Recompensas(DRUIDA, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(DRUIDA, 1, 2).Obj(1).Amount = 1000
-Recompensas(DRUIDA, 2, 1).SubeHP = 15
-Recompensas(DRUIDA, 2, 2).SubeMP = 40
-
-Recompensas(ASESINO, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(ASESINO, 1, 1).Obj(1).Amount = 1000
-Recompensas(ASESINO, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(ASESINO, 1, 2).Obj(1).Amount = 1000
-Recompensas(ASESINO, 2, 1).SubeHP = 10
-Recompensas(ASESINO, 2, 2).SubeMP = 30
-
-Recompensas(CAZADOR, 1, 1).Obj(1).OBJIndex = PocionAzulNoCae
-Recompensas(CAZADOR, 1, 1).Obj(1).Amount = 1000
-Recompensas(CAZADOR, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(CAZADOR, 1, 2).Obj(1).Amount = 1000
-Recompensas(CAZADOR, 2, 1).SubeHP = 10
-Recompensas(CAZADOR, 2, 2).SubeMP = 50
-
-Recompensas(ARQUERO, 1, 1).Obj(1).OBJIndex = Flecha
-Recompensas(ARQUERO, 1, 1).Obj(1).Amount = 1500
-Recompensas(ARQUERO, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(ARQUERO, 1, 2).Obj(1).Amount = 1000
-Recompensas(ARQUERO, 2, 1).SubeHP = 10
-
-Recompensas(GUERRERO, 1, 1).Obj(1).OBJIndex = PocionVerdeNoCae
-Recompensas(GUERRERO, 1, 1).Obj(1).Amount = 80
-Recompensas(GUERRERO, 1, 1).Obj(2).OBJIndex = PocionAmarillaNoCae
-Recompensas(GUERRERO, 1, 1).Obj(2).Amount = 100
-Recompensas(GUERRERO, 1, 2).Obj(1).OBJIndex = PocionRojaNoCae
-Recompensas(GUERRERO, 1, 2).Obj(1).Amount = 1000
-Recompensas(GUERRERO, 2, 1).SubeHP = 5
-
-Recompensas(PIRATA, 1, 1).SubeHP = 20
-Recompensas(PIRATA, 2, 2).SubeHP = 40
-End Sub
-Sub EstablecerRestas()
-
-Resta(CIUDADANO) = 3
-AumentoHit(CIUDADANO) = 3
-Resta(TRABAJADOR) = 2.5
-AumentoHit(TRABAJADOR) = 3
-Resta(EXPERTO_MINERALES) = 2.5
-AumentoHit(EXPERTO_MINERALES) = 3
-Resta(MINERO) = 2.5
-AumentoHit(MINERO) = 2
-Resta(HERRERO) = 2.5
-AumentoHit(HERRERO) = 2
-Resta(EXPERTO_MADERA) = 2.5
-AumentoHit(EXPERTO_MADERA) = 3
-Resta(TALADOR) = 2.5
-AumentoHit(TALADOR) = 2
-Resta(CARPINTERO) = 2.5
-AumentoHit(CARPINTERO) = 2
-Resta(PESCADOR) = 2.5
-AumentoHit(PESCADOR) = 1
-Resta(SASTRE) = 2.5
-AumentoHit(SASTRE) = 2
-Resta(ALQUIMISTA) = 2.5
-AumentoHit(ALQUIMISTA) = 2
-Resta(LUCHADOR) = 3
-AumentoHit(LUCHADOR) = 3
-Resta(CON_MANA) = 3
-AumentoHit(CON_MANA) = 3
-Resta(HECHICERO) = 3
-AumentoHit(HECHICERO) = 3
-Resta(MAGO) = 3
-AumentoHit(MAGO) = 1
-Resta(NIGROMANTE) = 3
-AumentoHit(NIGROMANTE) = 1
-Resta(ORDEN_SAGRADA) = 1.5
-AumentoHit(ORDEN_SAGRADA) = 3
-Resta(PALADIN) = 0.5
-AumentoHit(PALADIN) = 3
-Resta(CLERIGO) = 1.5
-AumentoHit(CLERIGO) = 2
-Resta(NATURALISTA) = 2.5
-AumentoHit(NATURALISTA) = 3
-Resta(BARDO) = 1.5
-AumentoHit(BARDO) = 2
-Resta(DRUIDA) = 3
-AumentoHit(DRUIDA) = 2
-Resta(SIGILOSO) = 1.5
-AumentoHit(SIGILOSO) = 3
-Resta(ASESINO) = 1.5
-AumentoHit(ASESINO) = 3
-Resta(CAZADOR) = 0.5
-AumentoHit(CAZADOR) = 3
-Resta(SIN_MANA) = 2
-AumentoHit(SIN_MANA) = 2
-AumentoHit(ARQUERO) = 3
-AumentoHit(GUERRERO) = 3
-AumentoHit(CABALLERO) = 3
-AumentoHit(BANDIDO) = 2
-Resta(PIRATA) = 1.5
-AumentoHit(PIRATA) = 2
-Resta(LADRON) = 2.5
-AumentoHit(LADRON) = 2
+Obj.AddressFamily = AF_INET
+Obj.Protocol = IPPROTO_IP
+Obj.SocketType = SOCK_STREAM
+Obj.Binary = False
+Obj.Blocking = False
+Obj.BufferSize = 1024
+Obj.LocalPort = port
+Obj.Backlog = 5
+Obj.Listen
 
 End Sub
-Sub LoadMensajes()
 
-Mensajes(Real, 1) = "||&HFF8080°¡No eres fiel al rey!°"
-Mensajes(Real, 2) = "||&HFF8080°¡¡Maldito insolente!! ¡Los seguidores de Lord Thek no tienen lugar en nuestro ejército!°"
-Mensajes(Real, 3) = "||&HFF8080°Tu Clan no responde a la Alianza del Fénix, debes retirarte de él para poder enlistarte.°"
-Mensajes(Real, 4) = "||&HFF8080°¡Ya perteneces a las tropas reales! ¡Ve a combatir criminales!°"
-Mensajes(Real, 5) = "||&HFF8080°¡Para unirte a nuestras fuerzas debes matar al menos 150 criminales, solo has matado "
-Mensajes(Real, 6) = "||&HFF8080°¡Para unirte a nuestras fuerzas debes ser al menos de nivel 25!°"
-Mensajes(Real, 7) = "||&HFF8080°¡¡Bienvenido a al Ejército Imperial!! Si demuestras fidelidad al rey y destreza en las peleas, podrás aumentar de jerarquía.°"
-Mensajes(Real, 8) = "%4"
-Mensajes(Real, 9) = "5&"
-Mensajes(Real, 10) = "8&"
-Mensajes(Real, 11) = "N0"
-Mensajes(Real, 12) = "L0"
-Mensajes(Real, 13) = "J0"
-Mensajes(Real, 14) = "K0"
-Mensajes(Real, 15) = "M0"
-Mensajes(Real, 16) = "||&HFF8080°¡No perteneces a las tropas reales!°"
-Mensajes(Real, 17) = "||&HFF8080°Tu deber es combatir criminales, cada 100 criminales que derrotes te dare una recompensa.°"
-Mensajes(Real, 18) = "||&HFF8080°¿Has decidido abandonarnos? Bien, ya nunca volveremos a aceptarte como ciudadano.°"
-Mensajes(Real, 19) = "1W"
-Mensajes(Real, 20) = "||Si ambos juraron fidelidad a la Alianza tienen que estar en clanes enemigos para poder atacarse." & FONTTYPE_FIGHT
-Mensajes(Real, 21) = "/E"
-Mensajes(Real, 22) = "||&HFF8080°¡Ya haz alcanzado la jerarquia más alta en las filas de la Alianza del Fenix!°"
-Mensajes(Real, 23) = "||&HFF8080°¡No puedes abandonar la Alianza del Fénix! Perteneces a un clan ya, debes abandonarlo primero.°"
 
-Mensajes(Caos, 1) = "||&H8080FF°¡No eres fiel a Lord Thek!°"
-Mensajes(Caos, 2) = "||&H8080FF°¡¡Maldito insolente!! ¡Los seguidores del rey no tienen lugar en nuestro ejército!°"
-Mensajes(Caos, 3) = "||&H8080FF°Tu Clan no responde al Ejército de Lord Thek, debes retirarte de él para poder enlistarte.°"
-Mensajes(Caos, 4) = "||&H8080FF°¡Ya perteneces a las tropas del mal! ¡Ve a combatir ciudadanos!°"
-Mensajes(Caos, 5) = "||&H8080FF°¡Para unirte a nuestras fuerzas debes matar al menos 150 ciudadanos, solo has matado "
-Mensajes(Caos, 6) = "||&H8080FF°¡Para unirte a nuestras fuerzas debes ser al menos de nivel 25!°"
-Mensajes(Caos, 7) = "||&H8080FF°¡Bienvenido al Ejército de Lord Thek! Si demuestras tu fidelidad y destreza en las peleas, podrás aumentar de jerarquía.°"
-Mensajes(Caos, 8) = "%5"
-Mensajes(Caos, 9) = "6&"
-Mensajes(Caos, 10) = "9&"
-Mensajes(Caos, 11) = "R0"
-Mensajes(Caos, 12) = "P0"
-Mensajes(Caos, 13) = "Ñ0"
-Mensajes(Caos, 14) = "O0"
-Mensajes(Caos, 15) = "Q0"
-Mensajes(Caos, 16) = "||&H8080FF°¡No perteneces al Ejército de Lord Thek!°"
-Mensajes(Caos, 17) = "||&H8080FF°Tu deber es combatir ciudadanos, cada 100 ciudadanos que derrotes te dare una recompensa.°"
-Mensajes(Caos, 18) = "||&H8080FF°¡Traidor! ¡Jamás podrás volver con nosotros!°"
-Mensajes(Caos, 19) = "2&"
-Mensajes(Caos, 20) = "||Si ambos son seguidores de Lord Thek tienen que estar en clanes enemigos para poder atacarse." & FONTTYPE_FIGHT
-Mensajes(Caos, 21) = "/D"
-Mensajes(Caos, 22) = "||&H8080FF°¡Ya haz alcanzado la jerarquia más alta en las filas del Ejército de Lord Thek!°"
-Mensajes(Caos, 23) = "||&H8080FF°¡No puedes abandonar el Ejército de Lord Thek! Perteneces a un clan ya, debes abandonarlo primero.°"
 
-End Sub
-Sub RevisarCarpetas()
 
-If Not FileExist(App.Path & "\Logs", vbDirectory) Then Call MkDir$(App.Path & "\Logs")
-If Not FileExist(App.Path & "\Logs\Consejeros", vbDirectory) Then Call MkDir$(App.Path & "\Logs\Consejeros")
-If Not FileExist(App.Path & "\Logs\Data", vbDirectory) Then Call MkDir$(App.Path & "\Logs\Data")
-If Not FileExist(App.Path & "\Foros", vbDirectory) Then Call MkDir$(App.Path & "\Foros")
-If Not FileExist(App.Path & "\Guilds", vbDirectory) Then Call MkDir$(App.Path & "\Guilds")
-If Not FileExist(App.Path & "\WorldBackUp", vbDirectory) Then Call MkDir$(App.Path & "\WorldBackUp")
-If FileExist(App.Path & "\Logs\NPCs.log", vbNormal) Then Call Kill(App.Path & "\Logs\NPCs.log")
+Sub Main()
+On Error Resume Next
 
-End Sub
-Sub Listas()
-Dim i As Integer
+
+
+
+
+
+Prision.Map = 66
+Libertad.Map = 66
+
+Prision.X = 75
+Prision.Y = 47
+Libertad.X = 75
+Libertad.Y = 65
+
+
+LastBackup = Format(Now, "Short Time")
+Minutos = Format(Now, "Short Time")
+
+
+
+ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
+ReDim CharList(1 To MAXCHARS) As Integer
+
+
+IniPath = App.Path & "\"
+DatPath = App.Path & "\Dat\"
+
+
 
 LevelSkill(1).LevelValue = 3
 LevelSkill(2).LevelValue = 5
@@ -458,90 +236,57 @@ LevelSkill(48).LevelValue = 100
 LevelSkill(49).LevelValue = 100
 LevelSkill(50).LevelValue = 100
 
-ELUs(1) = 300
-
-For i = 2 To 10
-    ELUs(i) = ELUs(i - 1) * 1.5
-Next
-
-For i = 11 To 24
-    ELUs(i) = ELUs(i - 1) * 1.3
-Next
-
-For i = 25 To STAT_MAXELV - 1
-    ELUs(i) = ELUs(i - 1) * 1.2
-Next
 
 ReDim ListaRazas(1 To NUMRAZAS) As String
 ListaRazas(1) = "Humano"
-ListaRazas(2) = "Enano"
-ListaRazas(3) = "Elfo"
-ListaRazas(4) = "Elfo oscuro"
-ListaRazas(5) = "Gnomo"
-
-ReDim ListaBandos(0 To 2) As String
-ListaBandos(0) = "Neutral"
-ListaBandos(1) = "Alianza del Fenix"
-ListaBandos(2) = "Ejército de Lord Thek"
+ListaRazas(2) = "Elfo"
+ListaRazas(3) = "Elfo Oscuro"
+ListaRazas(4) = "Gnomo"
+ListaRazas(5) = "Enano"
 
 ReDim ListaClases(1 To NUMCLASES) As String
-ListaClases(1) = "Ciudadano"
-ListaClases(2) = "Trabajador"
-ListaClases(3) = "Experto en minerales"
-ListaClases(4) = "Minero"
-ListaClases(8) = "Herrero"
-ListaClases(13) = "Experto en uso de madera"
-ListaClases(14) = "Leñador"
-ListaClases(18) = "Carpintero"
-ListaClases(23) = "Pescador"
-ListaClases(27) = "Sastre"
-ListaClases(31) = "Alquimista"
-ListaClases(35) = "Luchador"
-ListaClases(36) = "Con uso de mana"
-ListaClases(37) = "Hechicero"
-ListaClases(38) = "Mago"
-ListaClases(39) = "Nigromante"
-ListaClases(40) = "Orden sagrada"
-ListaClases(41) = "Paladin"
-ListaClases(42) = "Clerigo"
-ListaClases(43) = "Naturalista"
-ListaClases(44) = "Bardo"
-ListaClases(45) = "Druida"
-ListaClases(46) = "Sigiloso"
-ListaClases(47) = "Asesino"
-ListaClases(48) = "Cazador"
-ListaClases(49) = "Sin uso de mana"
-ListaClases(50) = "Arquero"
-ListaClases(51) = "Guerrero"
-ListaClases(52) = "Caballero"
-ListaClases(53) = "Bandido"
-ListaClases(55) = "Pirata"
-ListaClases(56) = "Ladron"
+
+ListaClases(1) = "Mago"
+ListaClases(2) = "Clerigo"
+ListaClases(3) = "Guerrero"
+ListaClases(4) = "Asesino"
+ListaClases(5) = "Ladron"
+ListaClases(6) = "Bardo"
+ListaClases(7) = "Druida"
+ListaClases(8) = "Bandido"
+ListaClases(9) = "Paladin"
+ListaClases(10) = "Cazador"
+ListaClases(11) = "Pescador"
+ListaClases(12) = "Herrero"
+ListaClases(13) = "Leñador"
+ListaClases(14) = "Minero"
+ListaClases(15) = "Carpintero"
+ListaClases(16) = "Sastre"
+ListaClases(17) = "Pirata"
 
 ReDim SkillsNames(1 To NUMSKILLS) As String
 
-SkillsNames(1) = "Magia"
-SkillsNames(2) = "Robar"
-SkillsNames(3) = "Tacticas de combate"
-SkillsNames(4) = "Combate con armas"
-SkillsNames(5) = "Meditar"
-SkillsNames(6) = "Destreza con dagas"
-SkillsNames(7) = "Ocultarse"
-SkillsNames(8) = "Supervivencia"
-SkillsNames(9) = "Talar árboles"
-SkillsNames(10) = "Defensa con escudos"
-SkillsNames(11) = "Pesca"
-SkillsNames(12) = "Mineria"
-SkillsNames(13) = "Carpinteria"
-SkillsNames(14) = "Herreria"
-SkillsNames(15) = "Liderazgo"
-SkillsNames(16) = "Domar animales"
-SkillsNames(17) = "Armas de proyectiles"
-SkillsNames(18) = "Wresterling"
-SkillsNames(19) = "Navegacion"
-SkillsNames(20) = "Sastrería"
-SkillsNames(21) = "Comercio"
-SkillsNames(22) = "Resistencia Mágica"
+SkillsNames(1) = "Suerte"
+SkillsNames(2) = "Magia"
+SkillsNames(3) = "Robar"
+SkillsNames(4) = "Tacticas de combate"
+SkillsNames(5) = "Combate con armas"
+SkillsNames(6) = "Meditar"
+SkillsNames(7) = "Apuñalar"
+SkillsNames(8) = "Ocultarse"
+SkillsNames(9) = "Supervivencia"
+SkillsNames(10) = "Talar arboles"
+SkillsNames(11) = "Comercio"
+SkillsNames(12) = "Defensa con escudos"
+SkillsNames(13) = "Pesca"
+SkillsNames(14) = "Mineria"
+SkillsNames(15) = "Carpinteria"
+SkillsNames(16) = "Herreria"
+SkillsNames(17) = "Liderazgo"
+SkillsNames(18) = "Domar animales"
+SkillsNames(19) = "Armas de proyectiles"
+SkillsNames(20) = "Wresterling"
+SkillsNames(21) = "Navegacion"
 
 
 ReDim UserSkills(1 To NUMSKILLS) As Integer
@@ -554,287 +299,152 @@ AtributosNames(3) = "Inteligencia"
 AtributosNames(4) = "Carisma"
 AtributosNames(5) = "Constitucion"
 
-End Sub
-
-Public Sub LoadGuildsNew()
-Dim NumGuilds As Integer, GuildNum As Integer
-Dim i As Integer, Num As Integer
-Dim A As Long, S As Long
-Dim NewGuild As cGuild
-
-If Not FileExist(App.Path & "\Guilds\GuildsInfo.inf", vbNormal) Then Exit Sub
-
-A = INICarga(App.Path & "\Guilds\GuildsInfo.inf")
-Call INIConf(A, 0, "", 0)
-
-S = INIBuscarSeccion(A, "INIT")
-NumGuilds = INIDarClaveInt(A, S, "NroGuilds")
-
-For GuildNum = 1 To NumGuilds
-    
-    S = INIBuscarSeccion(A, "Guild" & GuildNum)
-
-    If S >= 0 Then
-        Set NewGuild = New cGuild
-        With NewGuild
-        .GuildName = INIDarClaveStr(A, S, "GuildName")
-        .Founder = INIDarClaveStr(A, S, "Founder")
-        .FundationDate = INIDarClaveStr(A, S, "Date")
-        .Description = INIDarClaveStr(A, S, "Desc")
-        
-        .Codex = INIDarClaveStr(A, S, "Codex")
-        
-        .Leader = INIDarClaveStr(A, S, "Leader")
-        .Gold = INIDarClaveInt(A, S, "Gold")
-        .URL = INIDarClaveStr(A, S, "URL")
-        .GuildExperience = INIDarClaveInt(A, S, "Exp")
-        .DaysSinceLastElection = INIDarClaveInt(A, S, "DaysLast")
-        .GuildNews = INIDarClaveStr(A, S, "GuildNews")
-        .Bando = INIDarClaveInt(A, S, "Bando")
-        
-        Num = INIDarClaveInt(A, S, "NumAliados")
-        
-        For i = 1 To Num
-            Call .AlliedGuilds.Add(INIDarClaveStr(A, S, "Aliado" & i))
-        Next
-        
-        Num = INIDarClaveInt(A, S, "NumEnemigos")
-        
-        For i = 1 To Num
-            Call .EnemyGuilds.Add(INIDarClaveStr(A, S, "Enemigo" & i))
-        Next
-        
-        Num = INIDarClaveInt(A, S, "NumMiembros")
-        
-        For i = 1 To Num
-            Call .Members.Add(INIDarClaveStr(A, S, "Miembro" & i))
-        Next
-        
-        Num = INIDarClaveInt(A, S, "NumSolicitudes")
-        
-        Dim sol As cSolicitud
-    
-        For i = 1 To Num
-            Set sol = New cSolicitud
-            sol.UserName = ReadField(1, INIDarClaveStr(A, S, "Solicitud" & i), 172)
-            sol.Desc = ReadField(2, INIDarClaveStr(A, S, "Solicitud" & i), 172)
-            Call .Solicitudes.Add(sol)
-        Next
-        
-        Num = INIDarClaveInt(A, S, "NumProposiciones")
-        
-        For i = 1 To Num
-            Set sol = New cSolicitud
-            sol.UserName = ReadField(1, INIDarClaveStr(A, S, "Proposicion" & i), 172)
-            sol.Desc = ReadField(2, INIDarClaveStr(A, S, "Proposicion" & i), 172)
-            Call .PeacePropositions.Add(sol)
-        Next
-        
-        Call Guilds.Add(NewGuild)
-        End With
-    End If
-Next
-
-End Sub
-Sub Main()
-On Error Resume Next
-
-Call Randomize(Timer)
-
-ChDir App.Path
-ChDrive App.Path
-
-Call RevisarCarpetas
-Call LoadMotd
-
-Prision.Map = 66
-Libertad.Map = 66
-
-Prision.X = 75
-Prision.Y = 47
-Libertad.X = 75
-Libertad.Y = 65
-
-ReDim Resta(1 To NUMCLASES) As Single
-ReDim Recompensas(1 To NUMCLASES, 1 To 3, 1 To 2) As Recompensa
-ReDim AumentoHit(1 To NUMCLASES) As Byte
-Call EstablecerRestas
-
-LastBackup = Format(Now, "Short Time")
-Minutos = Format(Now, "Short Time")
-
-ReDim Npclist(1 To MAXNPCS) As Npc
-ReDim CharList(1 To MAXCHARS) As Integer
-
-IniPath = App.Path & "\"
-DatPath = App.Path & "\Dat\"
-MapPath = App.Path & "\Maps\"
-MapDatFile = MapPath & "Info.dat"
-
-Call Listas
 
 frmCargando.Show
+
+
 
 Call PlayWaveAPI(App.Path & "\wav\harp3.wav")
 
 frmMain.Caption = frmMain.Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
-ENDL = Chr$(13) & Chr$(10)
-ENDC = Chr$(1)
+ENDL = Chr(13) & Chr(10)
+ENDC = Chr(1)
 IniPath = App.Path & "\"
-CharPath = App.Path & "\charfile\"
+CharPath = App.Path & "\Charfile\"
 
+'Bordes del mapa
 MinXBorder = XMinMapSize + (XWindow \ 2)
 MaxXBorder = XMaxMapSize - (XWindow \ 2)
 MinYBorder = YMinMapSize + (YWindow \ 2)
 MaxYBorder = YMaxMapSize - (YWindow \ 2)
 DoEvents
 
-Call LoadBans
 frmCargando.Label1(2).Caption = "Iniciando Arrays..."
-Call LoadGuildsNew
-Call CargarMods
+
+Call LoadGuildsDB
+
+
 Call CargarSpawnList
 Call CargarForbidenWords
+'¿?¿?¿?¿?¿?¿?¿?¿ CARGAMOS DATOS DESDE ARCHIVOS ¿??¿?¿?¿?¿?¿?¿?¿
 frmCargando.Label1(2).Caption = "Cargando Server.ini"
+
 Call LoadSini
-Call CargaNpcsDat
+
 frmCargando.Label1(2).Caption = "Cargando Obj.Dat"
 Call LoadOBJData
-Call LoadTops(Nivel)
-Call LoadTops(Muertos)
-Call LoadMensajes
+    
 frmCargando.Label1(2).Caption = "Cargando Hechizos.Dat"
 Call CargarHechizos
+    
+    
 Call LoadArmasHerreria
 Call LoadArmadurasHerreria
-Call LoadEscudosHerreria
-Call LoadCascosHerreria
 Call LoadObjCarpintero
-Call LoadObjSastre
-Call LoadVentas
-Call CargarDB
-Call EstablecerRecompensas
-Call LoadCasino
-frmCargando.Label1(2).Caption = "Cargando Mapas"
-Call LoadMapDataNew
+
 If BootDelBackUp Then
+    
     frmCargando.Label1(2).Caption = "Cargando BackUp"
     Call CargarBackUp
+Else
+    frmCargando.Label1(2).Caption = "Cargando Mapas"
+    Call LoadMapData
 End If
+
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
 Dim LoopC As Integer
 
-NpcNoIniciado.Name = "NPC SIN INICIAR"
-UserOffline.ConnID = -1
+'Resetea las conexiones de los usuarios
 For LoopC = 1 To MaxUsers
     UserList(LoopC).ConnID = -1
-Next
+    GameInputMapArray(LoopC) = -1
+Next LoopC
 
-If ClientsCommandsQueue = 1 Then
-frmMain.CmdExec.Enabled = True
-Else
-frmMain.CmdExec.Enabled = False
-End If
+frmMain.AutoSave.Enabled = True
 
-#If UsarQueSocket = 1 Then
-    Call IniciaWsApi
-    SockListen = ListenForConnect(Puerto, hWndMsg, "")
-#ElseIf UsarQueSocket = 0 Then
-    
-    frmCargando.Label1(2).Caption = "Configurando Sockets"
-    
-    frmMain.Socket2(0).AddressFamily = AF_INET
-    frmMain.Socket2(0).protocol = IPPROTO_IP
-    frmMain.Socket2(0).SocketType = SOCK_STREAM
-    frmMain.Socket2(0).Binary = False
-    frmMain.Socket2(0).Blocking = False
-    frmMain.Socket2(0).BufferSize = 2048
-    
-    Call ConfigListeningSocket(frmMain.Socket1, Puerto)
-#End If
+
+
+
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'Configuracion de los sockets
+frmCargando.Label1(2).Caption = "Configurando Sockets"
+
+frmMain.Socket2(0).AddressFamily = AF_INET
+frmMain.Socket2(0).Protocol = IPPROTO_IP
+frmMain.Socket2(0).SocketType = SOCK_STREAM
+frmMain.Socket2(0).Binary = False
+frmMain.Socket2(0).Blocking = False
+frmMain.Socket2(0).BufferSize = 2048
+
+
+
+Call ConfigListeningSocket(frmMain.Socket1, puerto)
+
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
+'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
-Call NpcCanAttack(True)
-Call NpcAITimer(True)
-Call AutoTimer(True)
+
+
 
 Unload frmCargando
 
-Call LogMain("Server iniciado.")
 
+'Log
+Dim n As Integer
+n = FreeFile
+Open App.Path & "\logs\Main.log" For Append Shared As #n
+Print #n, Date & " " & Time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+Close #n
+
+'Ocultar
 If HideMe = 1 Then
     Call frmMain.InitMain(1)
 Else
     Call frmMain.InitMain(0)
 End If
 
-tInicioServer = Timer
-Call InicializaEstadisticas
+'ResetThread.CreateNewThread AddressOf ThreadResetActions, tpNormal
+
+'Call MainThread
+
 
 End Sub
-Public Sub ApagarSistema()
-On Error GoTo Terminar
-Dim UI As Integer
 
-Call WorldSave
-Call SaveGuildsNew
-For UI = 1 To LastUser
-    Call CloseSocket(UI)
-Next
-Call DescargaNpcsDat
-Call NpcCanAttack(False)
-Call NpcAITimer(False)
-Call AutoTimer(False)
-Call CerrarDB
 
-Terminar:
-End
 
-End Sub
 Function FileExist(file As String, FileType As VbFileAttribute) As Boolean
 
-FileExist = Len(Dir$(file, FileType))
+On Error Resume Next
+'*****************************************************************
+'Se fija si existe el archivo
+'*****************************************************************
+
+If Dir(file, FileType) = "" Then
+    FileExist = False
+Else
+    FileExist = True
+End If
 
 End Function
-Public Function Tilde(Data As String) As String
 
-Tilde = Replace(Replace(Replace(Replace(Replace(UCase$(Data), "Á", "A"), "É", "E"), "Í", "I"), "Ó", "O"), "Ú", "U")
-
-End Function
-Public Function ReadField(POS As Integer, Text As String, SepASCII As Integer) As String
-Dim i As Integer, LastPos As Integer, FieldNum As Integer
-
-For i = 1 To Len(Text)
-    If Mid$(Text, i, 1) = Chr$(SepASCII) Then
-        FieldNum = FieldNum + 1
-        If FieldNum = POS Then
-            ReadField = Mid$(Text, LastPos + 1, (InStr(LastPos + 1, Text, Chr$(SepASCII), vbTextCompare) - 1) - (LastPos))
-            Exit Function
-        End If
-        LastPos = i
-    End If
-Next
-
-If FieldNum + 1 = POS Then ReadField = Mid$(Text, LastPos + 1)
-
-End Function
-Function MapaValido(Map As Integer) As Boolean
-
+Function MapaValido(ByVal Map As Integer) As Boolean
 MapaValido = Map >= 1 And Map <= NumMaps
-
 End Function
+
 Sub MostrarNumUsers()
 
-frmMain.CantUsuarios.Caption = NumNoGMs
-Call SendData(ToAll, 0, 0, "NON" & NumNoGMs)
+frmMain.CantUsuarios.Caption = "Numero de usuarios jugando: " & NumUsers
 
 End Sub
+
+
 Public Sub LogCriticEvent(Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
+nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
 Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
@@ -844,17 +454,13 @@ Exit Sub
 errhandler:
 
 End Sub
-Public Sub LogBando(Bando As Byte, Desc As String)
+
+Public Sub LogEjercitoReal(Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
-Select Case Bando
-    Case Real
-        Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
-    Case Caos
-        Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
-End Select
+nfile = FreeFile ' obtenemos un canal
+Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
 Print #nfile, Desc
 Close #nfile
 
@@ -863,13 +469,14 @@ Exit Sub
 errhandler:
 
 End Sub
-Public Sub LogMain(Desc As String)
+
+Public Sub LogEjercitoCaos(Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
-Open App.Path & "\Logs\Main.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time, Desc
+nfile = FreeFile ' obtenemos un canal
+Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
+Print #nfile, Desc
 Close #nfile
 
 Exit Sub
@@ -877,39 +484,13 @@ Exit Sub
 errhandler:
 
 End Sub
-Public Sub Logear(Archivo As String, Desc As String)
-On Error GoTo errhandler
 
-Dim nfile As Integer
-nfile = FreeFile
-Open App.Path & "\Logs\" & Archivo & ".log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time, Desc
-Close #nfile
 
-Exit Sub
-
-errhandler:
-
-End Sub
-Public Sub LogErrorUrgente(Desc As String)
-On Error GoTo errhandler
-
-Dim nfile As Integer
-nfile = FreeFile
-Open App.Path & "\ErroresUrgentes.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & Desc
-Close #nfile
-
-Exit Sub
-
-errhandler:
-
-End Sub
 Public Sub LogError(Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
+nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\errores.log" For Append Shared As #nfile
 Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
@@ -919,20 +500,14 @@ Exit Sub
 errhandler:
 
 End Sub
-Public Sub LogGM(Nombre As String, Texto As String, Consejero As Boolean)
+
+Public Sub LogStatic(Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
-
-
-
-If Consejero Then
-    Open App.Path & "\logs\consejeros\" & Nombre & ".log" For Append Shared As #nfile
-Else
-    Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
-End If
-Print #nfile, Date & " " & Time & " " & Texto
+nfile = FreeFile ' obtenemos un canal
+Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
+Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
 
 Exit Sub
@@ -940,11 +515,43 @@ Exit Sub
 errhandler:
 
 End Sub
+
+Public Sub LogTarea(Desc As String)
+On Error GoTo errhandler
+
+Dim nfile As Integer
+nfile = FreeFile(1) ' obtenemos un canal
+Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
+Print #nfile, Date & " " & Time & " " & Desc
+Close #nfile
+
+Exit Sub
+
+errhandler:
+
+
+End Sub
+
+Public Sub LogGM(Nombre As String, texto As String)
+On Error GoTo errhandler
+
+Dim nfile As Integer
+nfile = FreeFile ' obtenemos un canal
+Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
+Print #nfile, Date & " " & Time & " " & texto
+Close #nfile
+
+Exit Sub
+
+errhandler:
+
+End Sub
+
 Public Sub SaveDayStats()
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
+nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\" & Replace(Date, "/", "-") & ".log" For Append Shared As #nfile
 
 Print #nfile, "<stats>"
@@ -964,15 +571,32 @@ Exit Sub
 errhandler:
 
 End Sub
-Public Sub LogVentaCasa(ByVal Texto As String)
+
+
+Public Sub LogAsesinato(texto As String)
+On Error GoTo errhandler
+Dim nfile As Integer
+
+nfile = FreeFile ' obtenemos un canal
+
+Open App.Path & "\logs\asesinatos.log" For Append Shared As #nfile
+Print #nfile, Date & " " & Time & " " & texto
+Close #nfile
+
+Exit Sub
+
+errhandler:
+
+End Sub
+Public Sub logVentaCasa(ByVal texto As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
+nfile = FreeFile ' obtenemos un canal
 
 Open App.Path & "\logs\propiedades.log" For Append Shared As #nfile
 Print #nfile, "----------------------------------------------------------"
-Print #nfile, Date & " " & Time & " " & Texto
+Print #nfile, Date & " " & Time & " " & texto
 Print #nfile, "----------------------------------------------------------"
 Close #nfile
 
@@ -980,15 +604,16 @@ Exit Sub
 
 errhandler:
 
+
 End Sub
-Public Sub LogHackAttemp(Texto As String)
+Public Sub LogHackAttemp(texto As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
-nfile = FreeFile
+nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\HackAttemps.log" For Append Shared As #nfile
 Print #nfile, "----------------------------------------------------------"
-Print #nfile, Date & " " & Time & " " & Texto
+Print #nfile, Date & " " & Time & " " & texto
 Print #nfile, "----------------------------------------------------------"
 Close #nfile
 
@@ -997,109 +622,104 @@ Exit Sub
 errhandler:
 
 End Sub
-Function ValidInputNP(cad As String) As Boolean
-Dim Arg As String, i As Integer
+
+Public Sub LogCriticalHackAttemp(texto As String)
+On Error GoTo errhandler
+
+Dim nfile As Integer
+nfile = FreeFile ' obtenemos un canal
+Open App.Path & "\logs\CriticalHackAttemps.log" For Append Shared As #nfile
+Print #nfile, "----------------------------------------------------------"
+Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, "----------------------------------------------------------"
+Close #nfile
+
+Exit Sub
+
+errhandler:
+
+End Sub
+Function ValidInputNP(ByVal cad As String) As Boolean
+Dim Arg As String
+Dim i As Integer
+
 
 For i = 1 To 33
-    Arg = ReadField(i, cad, 44)
-    If Len(Arg) = 0 Then Exit Function
-Next
+
+Arg = ReadField(i, cad, 44)
+
+If Arg = "" Then Exit Function
+
+Next i
 
 ValidInputNP = True
 
 End Function
-Sub Recargar()
-Dim i As Integer
 
-Call SendData(ToAll, 0, 0, "!!Recargando información, espere unos momentos.")
 
-For i = 1 To LastUser
-    Call CloseSocket(i)
-Next
-
-ReDim Npclist(1 To MAXNPCS) As Npc
-ReDim CharList(1 To MAXCHARS) As Integer
-
-Recargando = True
-
-Call CargarSpawnList
-Call LoadSini
-Call CargaNpcsDat
-Call LoadOBJData
-Call CargarHechizos
-Call LoadArmasHerreria
-Call LoadArmadurasHerreria
-Call LoadEscudosHerreria
-Call LoadCascosHerreria
-Call LoadObjCarpintero
-Call LoadObjSastre
-Call LoadMapDataNew
-If BootDelBackUp Then Call CargarBackUp
-
-For i = 1 To MaxUsers
-    UserList(i).ConnID = -1
-Next
-
-Recargando = False
-
-End Sub
 Sub Restart()
 
+
+'Se asegura de que los sockets estan cerrados e ignora cualquier err
 On Error Resume Next
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
 
 Dim LoopC As Integer
   
+frmMain.Socket1.Cleanup
+frmMain.Socket1.Startup
+  
+frmMain.Socket2(0).Cleanup
+frmMain.Socket2(0).Startup
+
 For LoopC = 1 To MaxUsers
     Call CloseSocket(LoopC)
 Next
   
+
 LastUser = 0
 NumUsers = 0
-NumNoGMs = 0
 
-ReDim Npclist(1 To MAXNPCS) As Npc
+ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 
 Call LoadSini
 Call LoadOBJData
-Call LoadMapDataNew
+
+Call LoadMapData
 
 Call CargarHechizos
 
-#If UsarQueSocket = 0 Then
-    frmMain.Socket1.Cleanup
-    frmMain.Socket1.Startup
-      
-    frmMain.Socket2(0).Cleanup
-    frmMain.Socket2(0).Startup
-    
-    
-    frmMain.Socket1.AddressFamily = AF_INET
-    frmMain.Socket1.protocol = IPPROTO_IP
-    frmMain.Socket1.SocketType = SOCK_STREAM
-    frmMain.Socket1.Binary = False
-    frmMain.Socket1.Blocking = False
-    frmMain.Socket1.BufferSize = 1024
-    
-    frmMain.Socket2(0).AddressFamily = AF_INET
-    frmMain.Socket2(0).protocol = IPPROTO_IP
-    frmMain.Socket2(0).SocketType = SOCK_STREAM
-    frmMain.Socket2(0).Blocking = False
-    frmMain.Socket2(0).BufferSize = 2048
-    
-    
-    frmMain.Socket1.LocalPort = val(Puerto)
-    frmMain.Socket1.listen
-#End If
+
+'*****************Setup socket
+frmMain.Socket1.AddressFamily = AF_INET
+frmMain.Socket1.Protocol = IPPROTO_IP
+frmMain.Socket1.SocketType = SOCK_STREAM
+frmMain.Socket1.Binary = False
+frmMain.Socket1.Blocking = False
+frmMain.Socket1.BufferSize = 1024
+
+frmMain.Socket2(0).AddressFamily = AF_INET
+frmMain.Socket2(0).Protocol = IPPROTO_IP
+frmMain.Socket2(0).SocketType = SOCK_STREAM
+frmMain.Socket2(0).Blocking = False
+frmMain.Socket2(0).BufferSize = 2048
+
+'Escucha
+frmMain.Socket1.LocalPort = val(puerto)
+frmMain.Socket1.Listen
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
 
+'Log it
+Dim n As Integer
+n = FreeFile
+Open App.Path & "\logs\Main.log" For Append Shared As #n
+Print #n, Date & " " & Time & " servidor reiniciado."
+Close #n
 
-Call LogMain(" Servidor reiniciado.")
-
-
+'Ocultar
 
 If HideMe = 1 Then
     Call frmMain.InitMain(1)
@@ -1109,122 +729,253 @@ End If
 
   
 End Sub
-Public Function Intemperie(UserIndex As Integer) As Boolean
+
+
+Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
     
-If MapInfo(UserList(UserIndex).POS.Map).Zona <> "DUNGEON" Then
-    Intemperie = MapData(UserList(UserIndex).POS.Map, UserList(UserIndex).POS.X, UserList(UserIndex).POS.Y).trigger <> 1 And _
-                MapData(UserList(UserIndex).POS.Map, UserList(UserIndex).POS.X, UserList(UserIndex).POS.Y).trigger <> 2 And _
-                MapData(UserList(UserIndex).POS.Map, UserList(UserIndex).POS.X, UserList(UserIndex).POS.Y).trigger <> 4
-End If
+    If MapInfo(UserList(UserIndex).Pos.Map).Zona <> "DUNGEON" Then
+        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger <> 1 And _
+           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger <> 2 And _
+           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger <> 4 Then Intemperie = True
+    Else
+        Intemperie = False
+    End If
     
 End Function
-Sub Desmontar(UserIndex As Integer)
-Dim Posss As WorldPos
 
-UserList(UserIndex).flags.Montado = 0
-Call Tilelibre(UserList(UserIndex).POS, Posss)
-Call TraerCaballo(UserIndex, UserList(UserIndex).flags.CaballoMontado + 1, Posss.X, Posss.Y, Posss.Map)
-UserList(UserIndex).flags.CaballoMontado = -1
-UserList(UserIndex).Char.Head = UserList(UserIndex).OrigChar.Head
-If UserList(UserIndex).Invent.ArmourEqpObjIndex Then
-    UserList(UserIndex).Char.Body = ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Ropaje
-Else
-    Call DarCuerpoDesnudo(UserIndex)
-End If
-If UserList(UserIndex).Invent.EscudoEqpObjIndex Then _
-    UserList(UserIndex).Char.ShieldAnim = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex).ShieldAnim
-If UserList(UserIndex).Invent.WeaponEqpObjIndex Then _
-    UserList(UserIndex).Char.WeaponAnim = ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).WeaponAnim
-If UserList(UserIndex).Invent.CascoEqpObjIndex Then _
-    UserList(UserIndex).Char.CascoAnim = ObjData(UserList(UserIndex).Invent.CascoEqpObjIndex).CascoAnim
-Call ChangeUserChar(ToMap, 0, UserList(UserIndex).POS.Map, UserIndex, RopaEquitacion(UserIndex), UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-Call SendData(ToIndex, UserIndex, 0, "MONTA0")
-End Sub
-Function RopaEquitacion(UserIndex As Integer) As Integer
-
-If RazaBaja(UserIndex) Then
-    RopaEquitacion = ROPA_DE_EQUITACION_ENANO
-Else
-    RopaEquitacion = ROPA_DE_EQUITACION_NORMAL
-End If
-
-End Function
-Public Sub TraerCaballo(UserIndex As Integer, ByVal Num As Integer, Optional X As Integer, Optional Y As Integer, Optional Map As Integer)
-Dim NPCNN As Integer
-Dim Poss As WorldPos
-If Map Then
-    Poss.Map = Map
-    Poss.X = X
-    Poss.Y = Y
-Else
-    Poss = Ubicar(UserList(UserIndex).POS)
-End If
-
-NPCNN = SpawnNpc(108, Poss, False, False)
-
-UserList(UserIndex).Caballos.NpcNum(Num - 1) = NPCNN
-UserList(UserIndex).Caballos.POS(Num - 1) = Npclist(NPCNN).POS
-
-End Sub
-Public Function Ubicar(POS As WorldPos) As WorldPos
+Public Sub EfectoLluvia(ByVal UserIndex As Integer)
 On Error GoTo errhandler
 
-Dim NuevaPos As WorldPos
-NuevaPos.X = 0
-NuevaPos.Y = 0
-Call Tilelibre(POS, NuevaPos)
-If NuevaPos.X <> 0 And NuevaPos.Y Then
-    Ubicar = NuevaPos
+
+If UserList(UserIndex).Flags.UserLogged Then
+    If Intemperie(UserIndex) Then
+                Dim modifi As Long
+                modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 3)
+                Call QuitarSta(UserIndex, modifi)
+                Call SendData(ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, busca pronto refugio de la lluvia!!." & FONTTYPE_INFO)
+                Call SendUserStatsBox(UserIndex)
+    End If
 End If
 
-Exit Function
-
+Exit Sub
 errhandler:
-End Function
-Sub QuitarCaballos(UserIndex As Integer)
+ LogError ("Error en EfectoLluvia")
+End Sub
+
+
+Public Sub TiempoInvocacion(ByVal UserIndex As Integer)
 Dim i As Integer
+For i = 1 To MAXMASCOTAS
+    If UserList(UserIndex).MascotasIndex(i) > 0 Then
+        If Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia > 0 Then
+           Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia = _
+           Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia - 1
+           If Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia = 0 Then Call MuereNpc(UserList(UserIndex).MascotasIndex(i), 0)
+        End If
+    End If
+Next i
+End Sub
 
-For i = 0 To UserList(UserIndex).Caballos.Num - 1
-    QuitarNPC (UserList(UserIndex).Caballos.NpcNum(i))
-Next
+Public Sub EfectoFrio(ByVal UserIndex As Integer)
+
+Dim modifi As Integer
+
+If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
+  UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
+Else
+  If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
+    Call SendData(ToIndex, UserIndex, 0, "||¡¡Estas muriendo de frio, abrigate o moriras!!." & FONTTYPE_INFO)
+    modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
+    UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
+    If UserList(UserIndex).Stats.MinHP < 1 Then
+            Call SendData(ToIndex, UserIndex, 0, "||¡¡Has muerto de frio!!." & FONTTYPE_INFO)
+            UserList(UserIndex).Stats.MinHP = 0
+            Call UserDie(UserIndex)
+    End If
+  Else
+    modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
+    Call QuitarSta(UserIndex, modifi)
+    Call SendData(ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, si no te abrigas rapido perderas toda!!." & FONTTYPE_INFO)
+  End If
+  
+  UserList(UserIndex).Counters.Frio = 0
+  Call SendUserStatsBox(UserIndex)
+End If
 
 End Sub
-Public Sub CargaNpcsDat()
-Dim npcfile As String
 
-npcfile = DatPath & "NPCs.dat"
-ANpc = INICarga(npcfile)
-Call INIConf(ANpc, 0, "", 0)
 
-npcfile = DatPath & "NPCs-HOSTILES.dat"
-Anpc_host = INICarga(npcfile)
-Call INIConf(Anpc_host, 0, "", 0)
+Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
+
+If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
+  UserList(UserIndex).Counters.Invisibilidad = UserList(UserIndex).Counters.Invisibilidad + 1
+Else
+  Call SendData(ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
+  UserList(UserIndex).Counters.Invisibilidad = 0
+  UserList(UserIndex).Flags.Invisible = 0
+  Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+End If
+            
+End Sub
+
+
+Public Sub EfectoParalisisNpc(ByVal NpcIndex As Integer)
+
+If Npclist(NpcIndex).Contadores.Paralisis > 0 Then
+    Npclist(NpcIndex).Contadores.Paralisis = Npclist(NpcIndex).Contadores.Paralisis - 1
+Else
+    Npclist(NpcIndex).Flags.Paralizado = 0
+End If
 
 End Sub
-Public Sub DescargaNpcsDat()
 
-If ANpc Then Call INIDescarga(ANpc)
-If Anpc_host Then Call INIDescarga(Anpc_host)
+Public Sub EfectoCegueEstu(ByVal UserIndex As Integer)
 
-End Sub
-Sub GuardarUsuarios()
-Dim i As Integer
+If UserList(UserIndex).Counters.Ceguera > 0 Then
+    UserList(UserIndex).Counters.Ceguera = UserList(UserIndex).Counters.Ceguera - 1
+Else
+    If UserList(UserIndex).Flags.Ceguera = 1 Then
+        UserList(UserIndex).Flags.Ceguera = 0
+        Call SendData(ToIndex, UserIndex, 0, "NSEGUE")
+    Else
+        UserList(UserIndex).Flags.Estupidez = 0
+        Call SendData(ToIndex, UserIndex, 0, "NESTUP")
+    End If
+    
+End If
 
-Call SendData(ToAll, 0, 0, "2R")
-
-For i = 1 To LastUser
-    If UserList(i).flags.UserLogged Then Call SaveUserSQL(i)
-Next
-
-Call SendData(ToAll, 0, 0, "3R")
-
-End Sub
-Sub InicializaEstadisticas()
-
-Call EstadisticasWeb.Inicializa(frmMain.hwnd)
-Call EstadisticasWeb.Informar(CANTIDAD_MAPAS, NumMaps)
-Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
-Call EstadisticasWeb.Informar(UPTIME_SERVER, (TiempoTranscurrido(tInicioServer)) / 1000)
-Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
 
 End Sub
+
+
+Public Sub EfectoParalisisUser(ByVal UserIndex As Integer)
+
+If UserList(UserIndex).Counters.Paralisis > 0 Then
+    UserList(UserIndex).Counters.Paralisis = UserList(UserIndex).Counters.Paralisis - 1
+Else
+    UserList(UserIndex).Flags.Paralizado = 0
+    Call SendData(ToIndex, UserIndex, 0, "PARADOK")
+End If
+
+End Sub
+Public Sub RecStamina(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Integer)
+
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 4 Then Exit Sub
+       
+      
+Dim massta As Integer
+If UserList(UserIndex).Stats.MinSta < UserList(UserIndex).Stats.MaxSta Then
+   If UserList(UserIndex).Counters.STACounter < Intervalo Then
+       UserList(UserIndex).Counters.STACounter = UserList(UserIndex).Counters.STACounter + 1
+   Else
+       UserList(UserIndex).Counters.STACounter = 0
+       massta = CInt(RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 10)))
+       UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta + massta
+       If UserList(UserIndex).Stats.MinSta > UserList(UserIndex).Stats.MaxSta Then UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MaxSta
+           Call SendData(ToIndex, UserIndex, 0, "||Te sentis menos cansado." & FONTTYPE_INFO)
+           EnviarStats = True
+       End If
+End If
+
+End Sub
+
+Public Sub EfectoVeneno(UserIndex As Integer, EnviarStats As Boolean)
+Dim n As Integer
+
+If UserList(UserIndex).Counters.Veneno < IntervaloVeneno Then
+  UserList(UserIndex).Counters.Veneno = UserList(UserIndex).Counters.Veneno + 1
+Else
+  Call SendData(ToIndex, UserIndex, 0, "||Estas envenenado, si no te curas moriras." & FONTTYPE_VENENO)
+  UserList(UserIndex).Counters.Veneno = 0
+  n = RandomNumber(1, 5)
+  UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - n
+  If UserList(UserIndex).Stats.MinHP < 1 Then Call UserDie(UserIndex)
+  EnviarStats = True
+End If
+
+End Sub
+
+Public Sub DuracionPociones(UserIndex As Integer)
+
+'Controla la duracion de las pociones
+If UserList(UserIndex).Flags.DuracionEfecto > 0 Then
+   UserList(UserIndex).Flags.DuracionEfecto = UserList(UserIndex).Flags.DuracionEfecto - 1
+   If UserList(UserIndex).Flags.DuracionEfecto = 0 Then
+        UserList(UserIndex).Flags.TomoPocion = False
+        UserList(UserIndex).Flags.TipoPocion = 0
+        'volvemos los atributos al estado normal
+        Dim loopX As Integer
+        For loopX = 1 To NUMATRIBUTOS
+              UserList(UserIndex).Stats.UserAtributos(loopX) = UserList(UserIndex).Stats.UserAtributosBackUP(loopX)
+        Next
+   End If
+End If
+
+End Sub
+
+Public Sub HambreYSed(UserIndex As Integer, fenviarAyS As Boolean)
+'Sed
+If UserList(UserIndex).Stats.MinAGU > 0 Then
+    If UserList(UserIndex).Counters.AGUACounter < IntervaloSed Then
+          UserList(UserIndex).Counters.AGUACounter = UserList(UserIndex).Counters.AGUACounter + 1
+    Else
+          UserList(UserIndex).Counters.AGUACounter = 0
+          UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU - 10
+                            
+          If UserList(UserIndex).Stats.MinAGU <= 0 Then
+               UserList(UserIndex).Stats.MinAGU = 0
+               UserList(UserIndex).Flags.Sed = 1
+          End If
+                            
+          fenviarAyS = True
+                            
+    End If
+End If
+
+'hambre
+If UserList(UserIndex).Stats.MinHam > 0 Then
+   If UserList(UserIndex).Counters.COMCounter < IntervaloHambre Then
+        UserList(UserIndex).Counters.COMCounter = UserList(UserIndex).Counters.COMCounter + 1
+   Else
+        UserList(UserIndex).Counters.COMCounter = 0
+        UserList(UserIndex).Stats.MinHam = UserList(UserIndex).Stats.MinHam - 10
+        If UserList(UserIndex).Stats.MinHam < 0 Then
+               UserList(UserIndex).Stats.MinHam = 0
+               UserList(UserIndex).Flags.Hambre = 1
+        End If
+        fenviarAyS = True
+    End If
+End If
+
+End Sub
+
+Public Sub Sanar(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Integer)
+
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).Trigger = 4 Then Exit Sub
+       
+
+Dim mashit As Integer
+'con el paso del tiempo va sanando....pero muy lentamente ;-)
+If UserList(UserIndex).Stats.MinHP < UserList(UserIndex).Stats.MaxHP Then
+   If UserList(UserIndex).Counters.HPCounter < Intervalo Then
+      UserList(UserIndex).Counters.HPCounter = UserList(UserIndex).Counters.HPCounter + 1
+   Else
+      mashit = CInt(RandomNumber(2, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)))
+                           
+      UserList(UserIndex).Counters.HPCounter = 0
+      UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + mashit
+      If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
+         Call SendData(ToIndex, UserIndex, 0, "||Has sanado." & FONTTYPE_INFO)
+         EnviarStats = True
+      End If
+End If
+
+End Sub
+
+
+
+

@@ -11,10 +11,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'FénixAO 1.0
+'Argentum Online 0.9.0.4
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -26,51 +27,52 @@ Attribute VB_Exposed = False
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
 Option Explicit
 
 Private Const MaximoPersonajesPorIP = 15
 Private m_coleccion As New Collection
+
 Public Function MaxPersonajes(sIp As String) As Boolean
 Dim i As Integer
 
 For i = 1 To m_coleccion.Count
-    If m_coleccion.Item(i).ip = sIp Then
-        m_coleccion.Item(i).PersonajesCreados = m_coleccion.Item(i).PersonajesCreados + 1
-        MaxPersonajes = (m_coleccion.Item(i).PersonajesCreados > MaximoPersonajesPorIP)
-        If MaxPersonajes Then m_coleccion.Item(i).PersonajesCreados = 16
-        Exit Function
-    End If
+        If m_coleccion.Item(i).ip = sIp Then
+            m_coleccion.Item(i).PersonajesCreados = m_coleccion.Item(i).PersonajesCreados + 1
+            MaxPersonajes = (m_coleccion.Item(i).PersonajesCreados > MaximoPersonajesPorIP)
+            If MaxPersonajes Then m_coleccion.Item(i).PersonajesCreados = 16
+            Exit Function
+        End If
         
 Next
 
-Dim oIp As New UserIpAdress
-oIp.ip = sIp
-oIp.PersonajesCreados = 1
-m_coleccion.Add oIp
-MaxPersonajes = False
-Exit Function
+           Dim oIp As New UserIpAdress
+           oIp.ip = sIp
+           oIp.PersonajesCreados = 1
+           m_coleccion.Add oIp
+           MaxPersonajes = False
+           Exit Function
+ 
 
 End Function
+
 Public Function VaciarColeccion()
+
 On Error GoTo errhandler
 
 Dim i As Integer
@@ -78,6 +80,7 @@ Dim i As Integer
 For i = 1 To m_coleccion.Count
    Call m_coleccion.Remove(1)
 Next
+
 
 Exit Function
 errhandler:

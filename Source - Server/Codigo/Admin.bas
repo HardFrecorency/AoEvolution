@@ -1,8 +1,9 @@
 Attribute VB_Name = "Admin"
-'FénixAO 1.0
+'Argentum Online 0.9.0.4
 '
-'Based on Argentum Online 0.99z
 'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Otto Perez
+'Copyright (C) 2002 Aaron Perkins
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the GNU General Public License as published by
@@ -14,44 +15,32 @@ Attribute VB_Name = "Admin"
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 'GNU General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
+'You should have received a copy of the GNU General Public License
 'along with this program; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'You can contact the original creator of Argentum Online at:
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
 'Calle 3 número 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'You can contact me at:
-'elpresi@fenixao.com.ar
-'www.fenixao.com.ar
-
 Option Explicit
 
-Public Type tMotd
-    Texto As String
-    Formato As String
-End Type
-
-Public MaxLines As Integer
-Public MOTD() As tMotd
 
 Public NPCs As Long
+Public DebugSocket As Boolean
 
 Public Horas As Long
 Public Dias As Long
 Public MinsRunning As Long
 
-Public tInicioServer As Single
-Public EstadisticasWeb As New clsEstadisticasIPC
 
 Public SanaIntervaloSinDescansar As Integer
 Public StaminaIntervaloSinDescansar As Integer
@@ -60,7 +49,6 @@ Public StaminaIntervaloDescansar As Integer
 Public IntervaloSed As Integer
 Public IntervaloHambre As Integer
 Public IntervaloVeneno As Integer
-Public IntervaloParalizadoUsuario As Integer
 Public IntervaloParalizado As Integer
 Public IntervaloInvisible As Integer
 Public IntervaloFrio As Integer
@@ -70,20 +58,12 @@ Public IntervaloLanzaHechizo As Integer
 Public IntervaloNPCPuedeAtacar As Integer
 Public IntervaloNPCAI As Integer
 Public IntervaloInvocacion As Integer
-Public IntervaloUserPuedeAtacar As Single
-Public IntervaloUserFlechas As Single
-Public IntervaloUserSH As Single
-Public IntervaloUserPuedeGolpeHechi As Single
-Public IntervaloUserPuedeHechiGolpe As Single
-Public IntervaloUserPuedePocion As Single
-Public IntervaloUserPuedePocionC As Single
-Public IntervaloUserPuedeCastear As Single
-Public IntervaloFlechasCazadores As Single
-Public IntervaloUserPuedeUsar As Long
+Public IntervaloUserPuedeAtacar As Long
+Public IntervaloUserPuedeCastear As Long
+Public IntervaloUserPuedeTrabajar As Long
 Public IntervaloParaConexion As Long
-Public IntervaloCerrarConexion As Long
 Public MinutosWs As Long
-Public Puerto As Integer
+Public puerto As Integer
 
 Public MAXPASOS As Long
 
@@ -92,104 +72,167 @@ Public Lloviendo As Boolean
 
 Public IpList As New Collection
 Public ClientsCommandsQueue As Byte
-Public Function ValidarLoginMSG(ByVal N As Integer) As Integer
-On Error Resume Next
 
+'Public ResetThread As New clsThreading
+
+Function VersionOK(ByVal Ver As String) As Boolean
+VersionOK = (Ver = ULTIMAVERSION)
+End Function
+
+Sub GrabarInfoUsuarios()
+Dim t As Integer
+
+For t = 1 To LastUser
+    If UserList(t).Flags.UserLogged Then Call SaveUser(t, CharPath & UCase(UserList(t).Name) & ".chr")
+Next t
+End Sub
+
+
+Public Function ValidarLoginMSG(ByVal n As Integer) As Integer
+On Error Resume Next
 Dim AuxInteger As Integer
 Dim AuxInteger2 As Integer
-AuxInteger = SD(N)
-AuxInteger2 = SDM(N)
+AuxInteger = SD(n)
+AuxInteger2 = SDM(n)
 ValidarLoginMSG = Complex(AuxInteger + AuxInteger2)
-
 End Function
+
+
 Sub ReSpawnOrigPosNpcs()
 On Error Resume Next
+
 Dim i As Integer
 Dim MiNPC As Npc
    
 For i = 1 To LastNPC
-   If Npclist(i).flags.NPCActive Then
-        If InMapBounds(Npclist(i).Orig.X, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
-            MiNPC = Npclist(i)
-            Call QuitarNPC(i)
-            Call ReSpawnNpc(MiNPC)
+   'OJO
+   If Npclist(i).Flags.NPCActive Then
+        
+        If InMapBounds(Npclist(i).Orig.Map, Npclist(i).Orig.X, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
+                MiNPC = Npclist(i)
+                Call QuitarNPC(i)
+                Call ReSpawnNpc(MiNPC)
         End If
         
-        If Npclist(i).Contadores.TiempoExistencia Then
-            Call MuereNpc(i, 0)
+        If Npclist(i).Contadores.TiempoExistencia > 0 Then
+                Call MuereNpc(i, 0)
         End If
    End If
-Next
+   
+Next i
 
 End Sub
+
 Sub WorldSave()
 On Error Resume Next
+'Call LogTarea("Sub WorldSave")
 
-Dim LoopX As Integer
+Dim loopX As Integer
 Dim Porc As Long
 
-Call ReSpawnOrigPosNpcs
+Call SendData(ToAll, 0, 0, "||%%%%POR FAVOR ESPERE, INICIANDO WORLDSAVE%%%%" & FONTTYPE_INFO)
+
+Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
 
 Dim j As Integer, k As Integer
 
 For j = 1 To NumMaps
-    If MapInfo(j).BackUp Then k = k + 1
-Next
+    If MapInfo(j).BackUp = 1 Then k = k + 1
+Next j
 
-FrmStat.ProgressBar1.MIN = 0
-FrmStat.ProgressBar1.MAX = k
+FrmStat.ProgressBar1.Min = 0
+FrmStat.ProgressBar1.max = k
 FrmStat.ProgressBar1.Value = 0
 
-For LoopX = 1 To NumMaps
+For loopX = 1 To NumMaps
+    DoEvents
     
+    If MapInfo(loopX).BackUp = 1 Then
     
-    If MapInfo(LoopX).BackUp Then
-        Call SaveMapData(LoopX)
-        FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
+            Call SaveMapData(loopX)
+            FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
     End If
 
-Next
+Next loopX
 
 FrmStat.Visible = False
 
 If FileExist(DatPath & "\bkNpc.dat", vbNormal) Then Kill (DatPath & "bkNpc.dat")
 If FileExist(DatPath & "\bkNPCs-HOSTILES.dat", vbNormal) Then Kill (DatPath & "bkNPCs-HOSTILES.dat")
 
-For LoopX = 1 To LastNPC
-    If Npclist(LoopX).InvReSpawn Then Call BackUPnPc(LoopX)
+For loopX = 1 To LastNPC
+    If Npclist(loopX).Flags.BackUp = 1 Then
+            Call BackUPnPc(loopX)
+    End If
 Next
 
-Call SendData(ToAll, 0, 0, "3P")
+Call SendData(ToAll, 0, 0, "||%%%%WORLDSAVE DONE%%%%" & FONTTYPE_INFO)
 
 
 End Sub
-Public Sub Encarcelar(UserIndex As Integer, ByVal Minutos As Long, Optional ByVal GmName As String = "")
 
-UserList(UserIndex).Counters.TiempoPena = 60 * Minutos
-UserList(UserIndex).flags.Encarcelado = 1
-UserList(UserIndex).Counters.Pena = Timer
- 
-Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
+Public Sub PurgarPenas()
+Dim i As Integer
+For i = 1 To LastUser
+    If UserList(i).Flags.UserLogged Then
+    
+        If UserList(i).Counters.Pena > 0 Then
+                
+                UserList(i).Counters.Pena = UserList(i).Counters.Pena - 1
+                
+                If UserList(i).Counters.Pena < 1 Then
+                    UserList(i).Counters.Pena = 0
+                    Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
+                    Call SendData(ToIndex, i, 0, "||Has sido liberado!" & FONTTYPE_INFO)
+                End If
+                
+        End If
+        
+    End If
+Next i
+End Sub
 
-If Len(GmName) = 0 Then
-    Call SendData(ToIndex, UserIndex, 0, "2O" & Minutos)
-Else
-    Call SendData(ToIndex, UserIndex, 0, "3O" & GmName & "," & Minutos)
-End If
+
+Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optional ByVal GmName As String = "")
+        
+        UserList(UserIndex).Counters.Pena = Minutos
+       
+        
+        Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
+        
+        If GmName = "" Then
+            Call SendData(ToIndex, UserIndex, 0, "||Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
+        Else
+            Call SendData(ToIndex, UserIndex, 0, "||" & GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
+        End If
         
 End Sub
-Public Sub BanTemporal(ByVal Nombre As String, ByVal Dias As Integer, Causa As String, Baneador As String)
-Dim tBan As tBaneo
 
-Set tBan = New tBaneo
-tBan.Name = UCase$(Nombre)
-tBan.FechaLiberacion = (Now + Dias)
-tBan.Causa = Causa
-tBan.Baneador = UCase$(Baneador)
 
-Call Baneos.Add(tBan)
-Call SaveBan(Baneos.Count)
-Call SendData(ToAdmins, 0, 0, "||" & Nombre & " fue baneado por " & Causa & " durante los próximos " & Dias & " días." & FONTTYPE_FENIX)
-
+Public Sub BorrarUsuario(ByVal UserName As String)
+On Error Resume Next
+If FileExist(CharPath & UCase(UserName) & ".chr", vbNormal) Then
+    Kill CharPath & UCase(UserName) & ".chr"
+End If
 End Sub
 
+Public Function BANCheck(ByVal Name As String) As Boolean
+
+BANCheck = (val(GetVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "Ban")) = 1) 'Or _
+(val(GetVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "AdminBan")) = 1)
+
+End Function
+
+Public Function PersonajeExiste(ByVal Name As String) As Boolean
+
+PersonajeExiste = FileExist(CharPath & UCase(Name) & ".chr", vbNormal)
+
+End Function
+
+Public Function UnBan(ByVal Name As String) As Boolean
+'Unban the character
+Call WriteVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "Ban", "0")
+'Remove it from the banned people database
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "BannedBy", "NOBODY")
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "Reason", "NOONE")
+End Function
